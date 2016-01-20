@@ -150,9 +150,34 @@ public class RouteParser {
 		} else if (firstToken.equalsIgnoreCase("carbos")) {
 			return GameAction.eatCarbos;
 		}
+		
+        else if(firstToken.equalsIgnoreCase("boulderbadge")) {
+            return GameAction.getBoulderBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("soulbadge")) {
+            return GameAction.getSoulBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("thunderbadge")) {
+            return GameAction.getThunderBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("volcanobadge")) {
+            return GameAction.getVolcanoBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("battletowerflag")) {
+        	Constants.battleTower = true;
+        	return GameAction.battleTowerFlag;
+        }
+        else if(firstToken.equalsIgnoreCase("returnpower")) {
+        	int newPower = Integer.parseInt(tokens[1]);
+        	return new ChangeReturnPower(newPower);
+        }		
 		else if (firstToken.equalsIgnoreCase("pinkbowflag")) {
 			return GameAction.pinkBowFlag;
 		}
+		else if (firstToken.equalsIgnoreCase("charcoalflag")) {
+			return GameAction.charcoalFlag;
+		}
+
 		// printing commands
 		else if (firstToken.equalsIgnoreCase("stats")) {
 			if (n == 1) {
@@ -171,8 +196,13 @@ public class RouteParser {
 				return GameAction.printStatRangesNoBoost;
 			}
 		} else if (!firstToken.trim().isEmpty()) {
+			Battleable b = null;
 			// attempt to parse as trainer name
-			Battleable b = Trainer.getTrainer(firstToken.toUpperCase());
+			if(Constants.battleTower == false) {
+				b = Trainer.getTrainer(firstToken.toUpperCase());
+			} else {
+				b = Trainer.getTowerPoke(firstToken.toUpperCase());
+			}
 			if (b == null) {
 				Main.appendln("ERROR ON LINE "
 						+ lineNum
@@ -186,7 +216,7 @@ public class RouteParser {
 	}
 
 	enum NextFlag {
-		ANY_FLAG, XITEMS, YITEMS, XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, VERBOSE, SXP, BBS,
+		ANY_FLAG, XITEMS, YITEMS, XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, VERBOSE, SXP, SXPS, BBS,
 	}
 
 	private static GameAction addFlagsToBattleable(Battleable b,
@@ -273,6 +303,10 @@ public class RouteParser {
 				// split exp
 				else if (s.equalsIgnoreCase("-sxp")) {
 					nf = NextFlag.SXP;
+					continue;
+				}
+				else if (s.equalsIgnoreCase("-sxps")) {
+					nf = NextFlag.SXPS;
 					continue;
 				}
 				// print stat ranges if level
@@ -371,13 +405,25 @@ public class RouteParser {
 					options.setVerbose(BattleOptions.SOME);
 				} else if (s.equalsIgnoreCase("ALL")) {
 					options.setVerbose(BattleOptions.ALL);
-				}
+				} else if(s.equalsIgnoreCase("EVERYTHING")) {
+                    options.setVerbose(BattleOptions.EVERYTHING);
+                }
 				nf = NextFlag.ANY_FLAG;
 				continue;
 			}
 			// sxp
 			else if (nf == NextFlag.SXP) {
 				options.setParticipants(Integer.parseInt(s));
+				nf = NextFlag.ANY_FLAG;
+				continue;
+			}
+			else if(nf == NextFlag.SXPS) {
+				String[] nums = s.split("/");
+				Integer[] sxps = new Integer[nums.length];
+				for(int i=0; i<nums.length; i++) {
+					sxps[i] = Integer.parseInt(nums[i]);
+				}
+				options.setSxps(sxps);
 				nf = NextFlag.ANY_FLAG;
 				continue;
 			}

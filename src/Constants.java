@@ -534,6 +534,8 @@ public class Constants {
 			100, 70, 100 };
 	
 	static boolean pinkBow = false;
+	static boolean charcoal = false;
+	public static boolean battleTower = false;
 	
 	static public boolean givesSpDefBadgeBoost(int spA) {
 		int aVal = (spA - 999)/256;

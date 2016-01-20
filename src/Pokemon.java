@@ -70,6 +70,20 @@ public class Pokemon implements Battleable {
 		this.wild = wild;
 		setExpForLevel();
 	}
+	
+	public Pokemon(Species s, int newLevel, Moveset moves, IVs ivs, int hp, int atk, int def, int spe, int spA, int spD) {
+		species = s;
+		level = newLevel;
+		this.ivs = ivs;
+    	this.hp = hp;
+		this.atk = atk;
+		this.def = def;
+		this.spcAtk = spA;
+		this.spcDef = spD;
+		this.spd = spe;
+		this.moves = moves;
+		setExpForLevel();
+	}
 
 	// TODO constructor which accepts EVs
 	public void setZeroEVs() {
@@ -437,6 +451,14 @@ public class Pokemon implements Battleable {
 			return;
 		}
 		elementalBadgeBoosts[index] = true;
+	}
+	
+	public void unboostType(Type t) {
+		int index = Type.typeIndex(t);
+		if (index < 0 || index > 16) {
+			return;
+		}
+		elementalBadgeBoosts[index] = false;
 	}
 
 	public void setAllBadges() {

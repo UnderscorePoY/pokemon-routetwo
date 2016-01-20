@@ -25,6 +25,26 @@ public abstract class GameAction {
         void performAction(Pokemon p) { Constants.pinkBow = true; }
     };
     
+    public static final GameAction charcoalFlag = new GameAction() {
+    	void performAction(Pokemon p) { Constants.charcoal = !Constants.charcoal; }
+    };
+    
+    public static final GameAction battleTowerFlag = new GameAction() {
+    	void performAction(Pokemon p) {
+    		p.setAtkBadge(false);
+    		p.setDefBadge(false);
+    		p.setSpcBadge(false);
+    		p.setSpdBadge(false);
+    		p.unboostType(Type.FLYING);
+    		p.unboostType(Type.BUG);
+    		p.unboostType(Type.NORMAL);
+    		p.unboostType(Type.GHOST);
+    		p.unboostType(Type.ICE);
+    		p.unboostType(Type.FIGHTING);
+    		p.unboostType(Type.STEEL);
+    		p.unboostType(Type.DRAGON);
+    	}
+    };
     
     //badges
     public static final GameAction getBoulderBadge = new GameAction() {
@@ -37,9 +57,11 @@ public abstract class GameAction {
         void performAction(Pokemon p) { p.setSpcBadge(true); }
     };
     public static final GameAction getThunderBadge = new GameAction() {
-        void performAction(Pokemon p) { p.setDefBadge(true); }
+        void performAction(Pokemon p) { 
+        	p.setTypeBoosted(Type.ICE);
+        	p.setDefBadge(true); 
+        }
     };
-    
     
     //not really a game action, but it's a nice hack?
     public static final GameAction printAllStats = new GameAction() {
@@ -63,6 +85,13 @@ public abstract class GameAction {
         void performAction(Pokemon p) { Main.appendln(p.statRanges(false)); }
     };
 
+}
+
+class ChangeReturnPower extends GameAction {
+	private int power;
+	ChangeReturnPower(int newPower) { power = newPower; }
+	@Override
+	void performAction(Pokemon p) { Constants.base_powers[216] = power; }
 }
 
 class LearnMove extends GameAction {

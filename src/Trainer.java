@@ -49,6 +49,8 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 	}
 
 	private static HashMap<Integer, Trainer> allTrainers;
+	
+	private static HashMap<String, Pokemon> towerPokes = new HashMap<String, Pokemon>();
 
 	public static Trainer getTrainer(int offset) {
 		if (!allTrainers.containsKey(offset))
@@ -62,7 +64,50 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 	public static Trainer getTrainer(String name) {
 		return trainersByName.get(name);
 	}
+	
+	public static Pokemon getTowerPoke(String name) {
+		return towerPokes.get(name);
+	}
 
+	public static void initTowerPokes() {
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new InputStreamReader(System.class
+					.getResource("/resources/battle_tower.txt").openStream()));
+			Pokemon p = null;
+			while (in.ready()) {
+				String text = in.readLine();
+				String[] parts = text.split(" ");
+				String name = parts[0];
+				Species s = Species.getSpecies(Integer.parseInt(parts[1]));
+				int level = Integer.parseInt(parts[2]);
+				int hp = Integer.parseInt(parts[3]);
+				int atk = Integer.parseInt(parts[4]);
+				int def = Integer.parseInt(parts[5]);
+				int spe = Integer.parseInt(parts[6]);
+				int spA = Integer.parseInt(parts[7]);
+				int spD = Integer.parseInt(parts[8]);
+				int move1 = Integer.parseInt(parts[9]);
+				int move2 = Integer.parseInt(parts[10]);
+				int move3 = Integer.parseInt(parts[11]);
+				int move4 = Integer.parseInt(parts[12]);
+				Moveset moveset = new Moveset();
+				moveset.addMove(move1);
+				moveset.addMove(move2);
+				moveset.addMove(move3);
+				moveset.addMove(move4);
+				p = new Pokemon(s, level, moveset, new IVs(0,0,0,0), hp, atk, def, spe, spA, spD);
+				towerPokes.put(name, p);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	// must be called before any other calls are made
 	public static void initTrainers() {
 		allTrainers = new HashMap<Integer, Trainer>();

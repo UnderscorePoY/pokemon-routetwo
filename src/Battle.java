@@ -92,71 +92,87 @@ public class Battle extends GameAction {
 	private void doBattle(Pokemon p) {
 		// TODO: automatically determine whether or not to print
 		if (opponent instanceof Pokemon) {
-			if (getVerbose() == BattleOptions.ALL)
+			if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.EVERYTHING)
 				printBattle(p, (Pokemon) opponent);
 			else if (getVerbose() == BattleOptions.SOME)
 				printShortBattle(p, (Pokemon) opponent);
 
-			opponent.battle(p, options);
-            Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
+			// TODO: Fix this hack
+			if(!Constants.battleTower || ((Pokemon) opponent).getLevel() != 50) {
+				opponent.battle(p, options);
+				Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
                     p.expToNextLevel(), p.expForLevel()));
+			}
 		} else { // is a Trainer
 			Trainer t = (Trainer) opponent;
-			if (getVerbose() == BattleOptions.ALL
-					|| getVerbose() == BattleOptions.SOME)
+			if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.SOME || getVerbose() == BattleOptions.EVERYTHING)
 				Main.appendln(t.toString());
 			int lastLvl = p.getLevel();
+			int sxpIdx = 0;
+			int sxp = 1;
+			Integer[] sxps = options.getSxps();
 			for (Pokemon opps : t) {
-				if (getVerbose() == BattleOptions.ALL)
-					printBattle(p, (Pokemon) opps);
-				else if (getVerbose() == BattleOptions.SOME)
-					printShortBattle(p, (Pokemon) opps);
-                if (getVerbose() != BattleOptions.NONE) {
-					if (options.getMod1().modSpdWithIV(p, 0) <= options.getMod2().modSpd(opps)
-							&& options.getMod1().modSpdWithIV(p, 15) >= options.getMod2().modSpd(opps)) {
-						int tieDV = 16, outspeedDV = 16;
-						int oppSpd = options.getMod2().modSpd(opps);
-						for (int sDV = 0; sDV < 16; sDV++) {
-							int mySpd = options.getMod1().modSpdWithIV(p, sDV);
-							if (mySpd == oppSpd && sDV < tieDV) {
-								tieDV = sDV;
-							}
-							if (mySpd > oppSpd && sDV < outspeedDV) {
-								outspeedDV = sDV;
-								break;
-							}
-						}
-						Main.append("(Speed DV required");
-						if (tieDV != 16 && outspeedDV != 16 && (tieDV != outspeedDV)) {
-							Main.append(" to outspeed: " + outspeedDV + ", to speedtie: " + tieDV);
-						} else if (outspeedDV != 16) {
-							Main.append(" to outspeed: " + outspeedDV);
-						} else {
-							Main.append(" to speedtie: " + tieDV);
-						}
-						Main.appendln(")");
-						Main.appendln("");
+				if(sxps != null) {
+					sxp = sxps[sxpIdx];
+					if(sxp != 0) {
+						options.setParticipants(sxp);
 					}
 				}
-                opps.battle(p, options);
-				// test if you leveled up on this pokemon
-				if (p.getLevel() > lastLvl) {
-					lastLvl = p.getLevel();
-					if (options.isPrintSRsOnLvl()) {
-						Main.appendln(p.statRanges(false));
+				if(sxp != 0) {
+					if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.EVERYTHING)
+						printBattle(p, (Pokemon) opps);
+					else if (getVerbose() == BattleOptions.SOME)
+						printShortBattle(p, (Pokemon) opps);
+	                if (getVerbose() != BattleOptions.NONE) {
+						if (options.getMod1().modSpdWithIV(p, 0) <= options.getMod2().modSpd(opps)
+								&& options.getMod1().modSpdWithIV(p, 15) >= options.getMod2().modSpd(opps)) {
+							int tieDV = 16, outspeedDV = 16;
+							int oppSpd = options.getMod2().modSpd(opps);
+							for (int sDV = 0; sDV < 16; sDV++) {
+								int mySpd = options.getMod1().modSpdWithIV(p, sDV);
+								if (mySpd == oppSpd && sDV < tieDV) {
+									tieDV = sDV;
+								}
+								if (mySpd > oppSpd && sDV < outspeedDV) {
+									outspeedDV = sDV;
+									break;
+								}
+							}
+							Main.append("(Speed DV required");
+							if (tieDV != 16 && outspeedDV != 16 && (tieDV != outspeedDV)) {
+								Main.append(" to outspeed: " + outspeedDV + ", to speedtie: " + tieDV);
+							} else if (outspeedDV != 16) {
+								Main.append(" to outspeed: " + outspeedDV);
+							} else {
+								Main.append(" to speedtie: " + tieDV);
+							}
+							Main.appendln(")");
+							Main.appendln("");
+						}
 					}
-					if (options.isPrintSRsBoostOnLvl()) {
-						Main.appendln(p.statRanges(true));
+	                opps.battle(p, options);
+					// test if you leveled up on this pokemon
+					if (p.getLevel() > lastLvl) {
+						lastLvl = p.getLevel();
+						if (options.isPrintSRsOnLvl()) {
+							Main.appendln(p.statRanges(false));
+						}
+						if (options.isPrintSRsBoostOnLvl()) {
+							Main.appendln(p.statRanges(true));
+						}
+					}
+					if(getVerbose() == BattleOptions.EVERYTHING) {
+						Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d",
+								p.getLevel(), p.expToNextLevel(), p.expForLevel()));
 					}
 				}
-				Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d",
-						p.getLevel(), p.expToNextLevel(), p.expForLevel()));
-
+				sxpIdx++;
 			}
 		}
-//		if (getVerbose() == BattleOptions.ALL
-//				|| getVerbose() == BattleOptions.SOME) {
-//		}
+        if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.SOME) {
+            Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
+            		p.expToNextLevel(), p.expForLevel()));
+        }
 	}
 
 	// does not actually do the battle, just prints summary

@@ -80,7 +80,11 @@ public class Move {
         return pp;
     }
     public int getPower() {
-        return power;
+    	int retVal = power;
+    	if(name.equalsIgnoreCase("Return")) {
+    		retVal = Constants.base_powers[216];
+    	}
+        return retVal;
     }
     public int getAccuracy() {
         return accuracy;

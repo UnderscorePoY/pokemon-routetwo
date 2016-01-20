@@ -67,6 +67,9 @@ public class DamageCalculator {
 		if (Constants.pinkBow && attack.getType() == Type.NORMAL) {
 			damage = damage * 110 / 100;
 		}
+		if (Constants.charcoal && attack.getType() == Type.FIRE) {
+			damage = damage * 110 / 100;
+		}
 		if (crit) {
 			damage *= 2;
 		}
@@ -120,7 +123,12 @@ public class DamageCalculator {
 		StatModifier mod1 = options.getMod1();
 		StatModifier mod2 = options.getMod2();
 
-		sb.append(p1.levelName() + " vs " + p2.levelName() + "          >>> EXP GIVEN: " + p2.expGiven(1) + endl);
+		sb.append(p1.levelName() + " vs " + p2.levelName());
+		// TODO: Don't show exp for tower pokes (minor thing since exp isn't added anyway)
+//		if(!Constants.battleTower) {
+			sb.append("          >>> EXP GIVEN: " + p2.expGiven(options.getParticipants()));
+//		}
+		sb.append(endl);
 		// sb.append(String.format("EXP to next level: %d EXP gained: %d",
 		// p1.expToNextLevel(), p2.expGiven()) + endl);
 		sb.append(String.format("%s (%s) ", p1.pokeName(), p1.statsStr()));
@@ -136,64 +144,68 @@ public class DamageCalculator {
 
 		sb.append(endl);
 
-		for(Move move : p1.getMoveset())
-    	{
-			if (move.getIndexNum() == 205 || move.getIndexNum() == 210) {
-				for (int i = 1; i <= 5; i++) {
-					Move m2 = new Move(move, i);
-					damage_help(sb, m2, p1, p2, mod1, mod2, 1 << (i - 1));					
+		if(options.getVerbose() == BattleOptions.EVERYTHING) {
+			for(Move move : p1.getMoveset())
+	    	{
+				if (move.getIndexNum() == 205 || move.getIndexNum() == 210) {
+					for (int i = 1; i <= 5; i++) {
+						Move m2 = new Move(move, i);
+						damage_help(sb, m2, p1, p2, mod1, mod2, 1 << (i - 1));					
+					}
+	      		} else if (move.getIndexNum() == 99) {
+					for (int i = 1; i <= 8; i++) {
+						Move m2 = new Move(move, i);
+						damage_help(sb, m2, p1, p2, mod1, mod2, i);
+					}
+				} else if(move.getIndexNum() == 222) {
+					for (int i=4; i<=10; i++) {
+						Move m2 = new Move(move, i);
+						if(i==10) { i++; }
+						m2.setPower(i*20-70);
+						damage_help(sb, m2, p1, p2, mod1, mod2, 1);
+					}
+				} else {
+					damage_help(sb, move, p1, p2, mod1, mod2, 1);
 				}
-      		} else if (move.getIndexNum() == 99) {
-				for (int i = 1; i <= 8; i++) {
-					Move m2 = new Move(move, i);
-					damage_help(sb, m2, p1, p2, mod1, mod2, i);
-				}
-			} else if(move.getIndexNum() == 222) {
-				for (int i=4; i<=10; i++) {
-					Move m2 = new Move(move, i);
-					if(i==10) { i++; }
-					m2.setPower(i*20-70);
-					damage_help(sb, m2, p1, p2, mod1, mod2, 1);
-				}
+	    	}
+			
+			if (mod2.hasMods()) {
+				sb.append(String.format("%s (%s) %s -> (%s): ", p2.pokeName(),
+						p2.statsStr(), mod2.summary(), mod2.modStatsStr(p2))
+						+ endl);
 			} else {
-				damage_help(sb, move, p1, p2, mod1, mod2, 1);
+				sb.append(String.format("%s (%s): ", p2.pokeName(), p2.statsStr())
+						+ endl);
 			}
-    	}
-		
-		if (mod2.hasMods()) {
-			sb.append(String.format("%s (%s) %s -> (%s): ", p2.pokeName(),
-					p2.statsStr(), mod2.summary(), mod2.modStatsStr(p2))
-					+ endl);
-		} else {
-			sb.append(String.format("%s (%s): ", p2.pokeName(), p2.statsStr())
-					+ endl);
 		}
 		sb.append(summary_help(p2, p1, mod2, mod1));
 
-        sb.append(endl);
-        for(Move move : p2.getMoveset())
-    	{
-			if (move.getIndexNum() == 205 || move.getIndexNum() == 210) {
-				for (int i = 1; i <= 5; i++) {
-					Move m2 = new Move(move, i);
-					damage_help(sb, m2, p2, p1, mod2, mod1, 1 << (i - 1));					
+		if(options.getVerbose() == BattleOptions.EVERYTHING) {
+	        sb.append(endl);
+	        for(Move move : p2.getMoveset())
+	    	{
+				if (move.getIndexNum() == 205 || move.getIndexNum() == 210) {
+					for (int i = 1; i <= 5; i++) {
+						Move m2 = new Move(move, i);
+						damage_help(sb, m2, p2, p1, mod2, mod1, 1 << (i - 1));					
+					}
+	      		} else if (move.getIndexNum() == 99) {
+					for (int i = 1; i <= 8; i++) {
+						Move m2 = new Move(move, i);
+						damage_help(sb, m2, p2, p1, mod2, mod1, i);
+					}
+				} else if(move.getIndexNum() == 222) {
+					for (int i=4; i<=10; i++) {
+						Move m2 = new Move(move, i);
+						if(i==10) { i++; }
+						m2.setPower(i*20-70);
+						damage_help(sb, m2, p2, p1, mod2, mod1, 1);
+					}
+				} else {
+					damage_help(sb, move, p2, p1, mod2, mod1, 1);
 				}
-      		} else if (move.getIndexNum() == 99) {
-				for (int i = 1; i <= 8; i++) {
-					Move m2 = new Move(move, i);
-					damage_help(sb, m2, p2, p1, mod2, mod1, i);
-				}
-			} else if(move.getIndexNum() == 222) {
-				for (int i=4; i<=10; i++) {
-					Move m2 = new Move(move, i);
-					if(i==10) { i++; }
-					m2.setPower(i*20-70);
-					damage_help(sb, m2, p2, p1, mod2, mod1, 1);
-				}
-			} else {
-				damage_help(sb, move, p2, p1, mod2, mod1, 1);
-			}
-    	}		
+	    	}		
+		}
 		return sb.toString();
 	}
 

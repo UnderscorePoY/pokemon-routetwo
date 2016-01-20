@@ -1,6 +1,7 @@
 
 public class BattleOptions {
     private int participants = 1;
+    private Integer[] sxps = null;
     private boolean printSRsOnLvl = false;
     private boolean printSRsBoostOnLvl = false;
     private StatModifier mod1;
@@ -31,6 +32,16 @@ public class BattleOptions {
 
     public void setParticipants(int participants) {
         this.participants = participants;
+    }
+    
+    public void setSxps(Integer[] sxps) {
+    	int len = sxps.length;
+    	this.sxps = new Integer[len];
+    	System.arraycopy(sxps, 0, this.sxps, 0, len);
+    }
+    
+    public Integer[] getSxps() {
+    	return sxps;
     }
 
     public boolean isPrintSRsOnLvl() {
