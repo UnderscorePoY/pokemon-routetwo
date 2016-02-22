@@ -93,7 +93,10 @@ public class Move {
         return indexNum;
     }
     public void setPower(int newPower) {
-    	power = newPower;
+    	this.power = newPower;
+    }
+    public void setType(Type type) {
+    	this.type = type;
     }
     
     //TODO: consider checking more

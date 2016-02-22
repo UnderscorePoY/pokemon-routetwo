@@ -3,7 +3,7 @@ public class Constants {
 		return s.toUpperCase().replaceAll("\\W", "");
 	}
 
-	static final String endl = System.getProperty("line.separator");
+	static final String endl = System.lineSeparator();
 	static final int numPokes = 251;
 
 	// used to initialize all species

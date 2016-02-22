@@ -16,33 +16,41 @@ public class DamageCalculator {
 		if (rangeNum > MAX_RANGE) {
 			rangeNum = MAX_RANGE;
 		}
-
-		if (attack.getPower() <= 0) {
+		Move _attack = attack;
+		if (_attack.getPower() <= 0) {
 			// TODO: special cases
 			return 0;
+		}
+		if(_attack.getName().equalsIgnoreCase("Hidden Power")) {
+			_attack.setType(getHP_Type(attacker));
+			_attack.setPower(getHP_Power(attacker));
 		}
 		// stat modifiers
 		int aa_orig = attacker.getTrueAtk();
 		int atk_atk = atkMod.modAtk(attacker);
 		int dd_orig = defender.getTrueDef();
 		int def_def = defMod.modDef(defender);
-		int as_orig = attacker.getTrueSpcAtk();
+        if(_attack.getName().equalsIgnoreCase("Explosion") || _attack.getName().equalsIgnoreCase("Selfdestruct")) {
+        	dd_orig /= 2;
+        	def_def /= 2;
+        }
+        int as_orig = attacker.getTrueSpcAtk();
 		int atk_spc = atkMod.modSpcAtk(attacker);
 		int ds_orig = defender.getTrueSpcDef();
 		int dsa_orig_bug = defender.getTrueSpcAtk();
 		int atk_spc_orig_bug = defMod.modSpcAtk(defender);
 		int def_spc = defMod.modSpcDef(defender, atk_spc_orig_bug);
 
-		boolean STAB = attack.getType() == attacker.getSpecies().getType1()
-				|| attack.getType() == attacker.getSpecies().getType2();
-		double effectiveMult = Type.effectiveness(attack.getType(), defender
+		boolean STAB = _attack.getType() == attacker.getSpecies().getType1()
+				|| _attack.getType() == attacker.getSpecies().getType2();
+		double effectiveMult = Type.effectiveness(_attack.getType(), defender
 				.getSpecies().getType1(), defender.getSpecies().getType2());
 		if (effectiveMult == 0) {
 			return 0;
 		}
 
 		int effective_atk = 0, effective_def = 0;
-		if (Type.isPhysicalType(attack.getType())) {
+		if (Type.isPhysicalType(_attack.getType())) {
 			effective_atk = crit ? ((atkMod.getAtkStage() >= 0) ? atk_atk
 					: aa_orig) : atk_atk;
 			effective_def = crit ? ((defMod.getDefStage() <= 0) ? def_def
@@ -61,20 +69,20 @@ public class DamageCalculator {
 		// int damage = ((Math.min((int) ((attacker.getLevel() * 0.4) + 2)
 		// * (effective_atk) * attack.getPower() / 50 / (effective_def)
 		// * (crit ? 2 : 1), 997) + 2));
-		int damage = (attacker.getLevel() * 2 / 5 + 2) * attack.getPower()
+		int damage = (attacker.getLevel() * 2 / 5 + 2) * _attack.getPower()
 				* effective_atk;
 		damage = damage / effective_def / 50;
-		if (Constants.pinkBow && attack.getType() == Type.NORMAL) {
+		if (Constants.pinkBow && _attack.getType() == Type.NORMAL) {
 			damage = damage * 110 / 100;
 		}
-		if (Constants.charcoal && attack.getType() == Type.FIRE) {
+		if (Constants.charcoal && _attack.getType() == Type.FIRE) {
 			damage = damage * 110 / 100;
 		}
 		if (crit) {
 			damage *= 2;
 		}
 		damage = Math.min(damage, 997) + 2;
-		if (attacker.isTypeBoosted(attack.getType())) {
+		if (attacker.isTypeBoosted(_attack.getType())) {
 			int typeboost = Math.max(damage * 1 / 8, 1);
 			damage += typeboost;
 		}
@@ -87,6 +95,23 @@ public class DamageCalculator {
 		return Math.max(damage, 1);
 	}
 
+	private static Type getHP_Type(Pokemon attacker) {
+		IVs ivs = attacker.getIVs();
+		int atkDV = ivs.getAtkIV();
+		int defDV = ivs.getDefIV();
+		int hpType = 4*(atkDV%4) + (defDV%4);
+		return Type.values()[hpType+1];
+	}
+	
+	private static int getHP_Power(Pokemon attacker) {
+		IVs ivs = attacker.getIVs();
+		int atkDV = ivs.getAtkIV();
+		int defDV = ivs.getDefIV();
+		int spdDV = ivs.getSpdIV();
+		int spcDV = ivs.getSpcIV();		
+		return 31+5*(spcDV+2*spdDV+4*defDV+8*atkDV)+(spcDV%4)/2;
+	}
+	
 	public static int minDamage(Move attack, Pokemon attacker,
 			Pokemon defender, StatModifier atkMod, StatModifier defMod,
 			int extra_multiplier) {
@@ -124,10 +149,10 @@ public class DamageCalculator {
 		StatModifier mod2 = options.getMod2();
 
 		sb.append(p1.levelName() + " vs " + p2.levelName());
-		// TODO: Don't show exp for tower pokes (minor thing since exp isn't added anyway)
-//		if(!Constants.battleTower) {
+		// Don't show exp for tower pokes (minor thing since exp isn't added anyway)
+		if(!p2.isTowerPoke()) {
 			sb.append("          >>> EXP GIVEN: " + p2.expGiven(options.getParticipants()));
-//		}
+		}
 		sb.append(endl);
 		// sb.append(String.format("EXP to next level: %d EXP gained: %d",
 		// p1.expToNextLevel(), p2.expGiven()) + endl);
@@ -144,7 +169,7 @@ public class DamageCalculator {
 
 		sb.append(endl);
 
-		if(options.getVerbose() == BattleOptions.EVERYTHING) {
+		if(options.getVerbose() == BattleOptions.EVERYTHING || options.getVerbose() == BattleOptions.ALL) {
 			for(Move move : p1.getMoveset())
 	    	{
 				if (move.getIndexNum() == 205 || move.getIndexNum() == 210) {
@@ -363,7 +388,12 @@ public class DamageCalculator {
 		StatModifier mod1 = options.getMod1();
 		StatModifier mod2 = options.getMod2();
 
-		sb.append(p1.levelName() + " vs " + p2.levelName() + endl);
+		sb.append(p1.levelName() + " vs " + p2.levelName());
+		// Don't show exp for tower pokes (minor thing since exp isn't added anyway)
+		if(!p2.isTowerPoke()) {
+			sb.append("          >>> EXP GIVEN: " + p2.expGiven(options.getParticipants()));
+		}
+		sb.append(endl);
 		// sb.append(String.format("EXP to next level: %d EXP gained: %d",
 		// p1.expToNextLevel(), p2.expGiven()) + endl);
 		sb.append(String.format("%s (%s) ", p1.pokeName(), p1.statsStr()));

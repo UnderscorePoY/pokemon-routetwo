@@ -2,6 +2,11 @@
 public class BattleOptions {
     private int participants = 1;
     private Integer[] sxps = null;
+    private Integer[] xatks = null;
+    private Integer[] xdefs = null;
+    private Integer[] xspds = null;
+    private Integer[] xspcs = null;
+    private Integer[] ydefs = null;
     private boolean printSRsOnLvl = false;
     private boolean printSRsBoostOnLvl = false;
     private StatModifier mod1;
@@ -44,7 +49,57 @@ public class BattleOptions {
     	return sxps;
     }
 
-    public boolean isPrintSRsOnLvl() {
+    public void setXatks(Integer[] xatks) {
+    	int len = xatks.length;
+    	this.xatks = new Integer[len];
+    	System.arraycopy(xatks, 0, this.xatks, 0, len);    	
+    }
+    
+    public Integer[] getXatks() {
+    	return xatks;
+    }
+    
+    public void setXdefs(Integer[] xdefs) {
+    	int len = xdefs.length;
+    	this.xdefs = new Integer[len];
+    	System.arraycopy(xdefs, 0, this.xdefs, 0, len);    	
+    }
+    
+    public Integer[] getXdefs() {
+    	return xdefs;
+    }
+    
+    public void setXspds(Integer[] xspds) {
+    	int len = xspds.length;
+    	this.xspds = new Integer[len];
+    	System.arraycopy(xspds, 0, this.xspds, 0, len);    	
+    }
+    
+    public Integer[] getXspds() {
+    	return xspds;
+    }
+    
+    public void setXspcs(Integer[] xspcs) {
+    	int len = xspcs.length;
+    	this.xspcs = new Integer[len];
+    	System.arraycopy(xspcs, 0, this.xspcs, 0, len);    	
+    }
+    
+    public Integer[] getXspcs() {
+    	return xspcs;
+    }
+    
+    public void setYdefs(Integer[] ydefs) {
+    	int len = ydefs.length;
+    	this.ydefs = new Integer[len];
+    	System.arraycopy(ydefs, 0, this.ydefs, 0, len);    	
+    }
+    
+    public Integer[] getYdefs() {
+    	return ydefs;
+    }
+    
+   public boolean isPrintSRsOnLvl() {
         return printSRsOnLvl;
     }
 

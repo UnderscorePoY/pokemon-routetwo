@@ -2,7 +2,6 @@
 ranges
 L2 PIDGEY 15 15 15 15 -v 3
 
-//ranges
 0x39A92 -lvranges -xatk -1 -ydef -1 -v 3 // chikorita rival
 
 // routes 30/31
@@ -23,6 +22,7 @@ lm WATERGUN
 //union cave
 //DANIEL -ydef -1 -v 3
 RUSSELL -lvranges -v 3
+//BILL -lvranges -v 3
 //lm WATERGUN
 RAY -lvranges -v 3
 
@@ -55,12 +55,12 @@ um LEER
 
 // goldenrod gym
 CARRIE -lvranges -xatk 0 -v 3 
-WHITNEY -xspd 1 -lvranges -v 3
+WHITNEY -lvranges -v 3
 
 lm BITE
 um FURYCUTTER
 
-// early underground
+// underground
 DONALD -xatk 0 -lvranges -v 3
 TERU -lvranges -v 3
 
@@ -69,9 +69,11 @@ TERU -lvranges -v 3
 ranges 
 GREG -lvranges -v 3 
 
+//PING -lvranges -v 3 
+
 // Kimono Girls
-SAYO -lvranges -v 3    // ESPEON
 NAOKO -lvranges -v 3   // FLAREON
+SAYO -lvranges -v 3    // ESPEON
 ZUKI -lvranges -v 3    // UMBREON
 KUNI -lvranges -v 3    // VAPOREON
 MIKI -lvranges -v 3    // JOLTEON
@@ -80,10 +82,10 @@ lm SURF
 um SCRATCH
 
 // mortys gym
-PING -lvranges -v 3 
+PING -lvranges -v 3
 JEFFREY -lvranges -v 3 
 MARTHA -lvranges -v 3
-MORTY -v 3 -xspd 1 -xspc 1
+MORTY -v 3 -xspds 0/1/1/1 -xspcs 0/1/1/1
 
 //Post-Morty Poliwag
 //L24 POLIWAG 9 8 0 8 -v 3
@@ -94,20 +96,20 @@ PRESTON -v 3
 CONNIE -v 3 
 //ERNEST -v 3
 
-rarecandy
+rc
 evolve FERALIGATR
 
 //route 41
 lm STRENGTH
 um WATERGUN
-//KAYLEE -v 3
+//KAYLEE -lvranges -v 3
 
 // cianwood
-YOSHI -v 3 
-LAO -v 3 
-NOB -v 3 
-LUNG -v 3 
-CHUCK -xatk 1 -xdef -1 -v 3
+YOSHI -lvranges -v 3 
+LAO -lvranges -v 3 
+NOB -lvranges -v 3 
+LUNG -lvranges -v 3 
+CHUCK -lvranges -xatk 2 -xdef -1 -v 3
 
 //BENJAMIN -v 3
 
@@ -137,10 +139,11 @@ PRYCE -lvranges -v 3
 //ERNEST -v 3
 
 // jasmine
-JASMINE -lvrangesb -v 3 
+JASMINE -lvranges -v 3 
 
 // radio tower 1
 0x3A4CA -v 3 // raticates
+//lm SLASH
 0x3A4F6 -v 3 // zubats
 0x3A4D6 -v 3 // grimer grimer muk
 0x3A502 -v 3 // koffing grimer zubat rattata
@@ -150,7 +153,8 @@ um HEADBUTT
 //calcium
 //calcium
 RICH -v 3 
-0x3B00F -lvrangesb -xspc 1 -v 3 // executive with koffings & weezing
+0x3B00F -lvranges -xspcs 0/1/1/1/1/1 -v 3 // executive with koffings & weezing
+//um SLASH
 
 // underground
 0x39B16 -xspc 1 -v 3 // rival 4
@@ -164,6 +168,7 @@ DUNCAN -v 3
 0x3A568 -v 3 // grimer, weezing
 0x3A5DE -v 3 // koffingx2
 
+returnpower 87 // L43
 lm RETURN
 um BITE
 
@@ -178,12 +183,15 @@ VANCE -v 3
 // blackthorn city
 pinkbowflag
 PAUL -v 3 
+returnpower 90
 FRAN -v 3 
 CODY -v 3 
 LOLA -v 3 
+returnpower 91
 CLAIR -v 3
 
 // road to e4
+returnpower 94
 BLAKE -v 3 
 RICHARD -v 3 
 
@@ -195,23 +203,30 @@ BETH -v 3
 0x39B7C -xspc 1 -v 3  // rival 5
 
 // e4
+returnpower 95 // L50
 WILL -lvranges -v 3 -xspc 1
 KOGA -v 3 -xspc 1
+returnpower 96 // L51
 BRUNO -v 3 -lvranges -xatk 2
+returnpower 98 // L52
 KAREN -v 3 -xspc 1
-LANCE -lvrangesb -v 3 
+returnpower 99 // L53
+LANCE -lvranges -v 3 
 
 // ssaqua
 STANLY -v 3 
 
 // rock tunnel
+returnpower 100 // L54
 JIM -v 3
 
 // erika
 JO&ZOE -v 3
+returnpower 101 // L55
 TANYA -v 3
 JULIA -v 3
-ERIKA -lvrangesb -xatk 1 -v 3
+returnpower 102
+ERIKA -lvranges -xatks 0/0/1/1 -v 3
 
 // sabrina
 //REBECCA -v 3
@@ -227,7 +242,7 @@ SHANNON -v 3
 PAT -v 3
 
 // misty
-MISTY -v 3 -xatk 1
+MISTY -v 3 -xatks 0/1/1/1
 
 // surge
 GREGORY -v 3
@@ -238,13 +253,13 @@ JERRY -v 3
 BROCK -v 3
 
 // blaine
-BLAINE -lvrangesb -v 3
+BLAINE -lvranges -v 3
 
 // janine
-JANINE -lvrangesb -v 3
+JANINE -lvranges -v 3
 
 // blue
-BLUE -xatk 2 -xspd 0 -lvrangesb -v 3
+BLUE -xatks 2/3/3/3/3/3 -xspd 0 -lvranges -v 3
 
 // red
 RED -xatk 2 -xspd 1 -lvranges -v 3

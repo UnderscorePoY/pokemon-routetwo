@@ -151,18 +151,54 @@ public class RouteParser {
 			return GameAction.eatCarbos;
 		}
 		
+        else if(firstToken.equalsIgnoreCase("zephyrbadge")) {
+            return GameAction.getZephyrBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("hivebadge")) {
+            return GameAction.getHiveBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("plainbadge")) {
+            return GameAction.getPlainBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("fogbadge")) {
+            return GameAction.getFogBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("stormbadge")) {
+            return GameAction.getStormBadge;
+        }		
+        else if(firstToken.equalsIgnoreCase("mineralbadge")) {
+            return GameAction.getMineralBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("glacierbadge")) {
+            return GameAction.getGlacierBadge;
+        }
+        else if(firstToken.equalsIgnoreCase("risingbadge")) {
+            return GameAction.getRisingBadge;
+        }		
         else if(firstToken.equalsIgnoreCase("boulderbadge")) {
             return GameAction.getBoulderBadge;
-        }
-        else if(firstToken.equalsIgnoreCase("soulbadge")) {
-            return GameAction.getSoulBadge;
-        }
+        }		
+        else if(firstToken.equalsIgnoreCase("cascadebadge")) {
+            return GameAction.getCascadeBadge;
+        }		
         else if(firstToken.equalsIgnoreCase("thunderbadge")) {
             return GameAction.getThunderBadge;
-        }
+        }		
+        else if(firstToken.equalsIgnoreCase("rainbowbadge")) {
+            return GameAction.getRainbowBadge;
+        }		
+        else if(firstToken.equalsIgnoreCase("soulbadge")) {
+            return GameAction.getSoulBadge;
+        }		
+        else if(firstToken.equalsIgnoreCase("marshbadge")) {
+            return GameAction.getMarshBadge;
+        }		
         else if(firstToken.equalsIgnoreCase("volcanobadge")) {
             return GameAction.getVolcanoBadge;
-        }
+        }		
+        else if(firstToken.equalsIgnoreCase("earthbadge")) {
+            return GameAction.getEarthBadge;
+        }		
         else if(firstToken.equalsIgnoreCase("battletowerflag")) {
         	Constants.battleTower = true;
         	return GameAction.battleTowerFlag;
@@ -198,7 +234,7 @@ public class RouteParser {
 		} else if (!firstToken.trim().isEmpty()) {
 			Battleable b = null;
 			// attempt to parse as trainer name
-			if(Constants.battleTower == false) {
+			if(!Constants.battleTower) {
 				b = Trainer.getTrainer(firstToken.toUpperCase());
 			} else {
 				b = Trainer.getTowerPoke(firstToken.toUpperCase());
@@ -216,7 +252,7 @@ public class RouteParser {
 	}
 
 	enum NextFlag {
-		ANY_FLAG, XITEMS, YITEMS, XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, VERBOSE, SXP, SXPS, BBS,
+		ANY_FLAG, XITEMS, YITEMS, XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, VERBOSE, SXP, SXPS, XATKS, XDEFS, XSPDS, XSPCS, YDEFS, BBS,
 	}
 
 	private static GameAction addFlagsToBattleable(Battleable b,
@@ -307,6 +343,26 @@ public class RouteParser {
 				}
 				else if (s.equalsIgnoreCase("-sxps")) {
 					nf = NextFlag.SXPS;
+					continue;
+				}
+				else if (s.equalsIgnoreCase("-xatks")) {
+					nf = NextFlag.XATKS;
+					continue;
+				}
+				else if (s.equalsIgnoreCase("-xdefs")) {
+					nf = NextFlag.XDEFS;
+					continue;
+				}
+				else if (s.equalsIgnoreCase("-xspds")) {
+					nf = NextFlag.XSPDS;
+					continue;
+				}
+				else if (s.equalsIgnoreCase("-xspcs")) {
+					nf = NextFlag.XSPCS;
+					continue;
+				}
+				else if (s.equalsIgnoreCase("-ydefs")) {
+					nf = NextFlag.YDEFS;
 					continue;
 				}
 				// print stat ranges if level
@@ -424,6 +480,56 @@ public class RouteParser {
 					sxps[i] = Integer.parseInt(nums[i]);
 				}
 				options.setSxps(sxps);
+				nf = NextFlag.ANY_FLAG;
+				continue;
+			}
+			else if(nf == NextFlag.XATKS) {
+				String[] nums = s.split("/");
+				Integer[] xatks = new Integer[nums.length];
+				for(int i=0; i<nums.length; i++) {
+					xatks[i] = Integer.parseInt(nums[i]);
+				}
+				options.setXatks(xatks);
+				nf = NextFlag.ANY_FLAG;
+				continue;
+			}
+			else if(nf == NextFlag.XDEFS) {
+				String[] nums = s.split("/");
+				Integer[] xdefs = new Integer[nums.length];
+				for(int i=0; i<nums.length; i++) {
+					xdefs[i] = Integer.parseInt(nums[i]);
+				}
+				options.setXdefs(xdefs);
+				nf = NextFlag.ANY_FLAG;
+				continue;
+			}
+			else if(nf == NextFlag.XSPDS) {
+				String[] nums = s.split("/");
+				Integer[] xspds = new Integer[nums.length];
+				for(int i=0; i<nums.length; i++) {
+					xspds[i] = Integer.parseInt(nums[i]);
+				}
+				options.setXspds(xspds);
+				nf = NextFlag.ANY_FLAG;
+				continue;
+			}
+			else if(nf == NextFlag.XSPCS) {
+				String[] nums = s.split("/");
+				Integer[] xspcs = new Integer[nums.length];
+				for(int i=0; i<nums.length; i++) {
+					xspcs[i] = Integer.parseInt(nums[i]);
+				}
+				options.setXspcs(xspcs);
+				nf = NextFlag.ANY_FLAG;
+				continue;
+			}
+			else if(nf == NextFlag.YDEFS) {
+				String[] nums = s.split("/");
+				Integer[] ydefs = new Integer[nums.length];
+				for(int i=0; i<nums.length; i++) {
+					ydefs[i] = Integer.parseInt(nums[i]);
+				}
+				options.setYdefs(ydefs);
 				nf = NextFlag.ANY_FLAG;
 				continue;
 			}

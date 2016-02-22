@@ -16,6 +16,7 @@ public class Pokemon implements Battleable {
 	private int totalExp;
 	private Moveset moves;
 	private boolean wild;
+	private boolean battleTower = false;
 	private boolean atkBadge = false;
 	private boolean defBadge = false;
 	private boolean spdBadge = false;
@@ -71,6 +72,7 @@ public class Pokemon implements Battleable {
 		setExpForLevel();
 	}
 	
+	// Battle Tower poke
 	public Pokemon(Species s, int newLevel, Moveset moves, IVs ivs, int hp, int atk, int def, int spe, int spA, int spD) {
 		species = s;
 		level = newLevel;
@@ -82,6 +84,7 @@ public class Pokemon implements Battleable {
 		this.spcDef = spD;
 		this.spd = spe;
 		this.moves = moves;
+		this.battleTower = true;
 		setExpForLevel();
 	}
 
@@ -153,6 +156,9 @@ public class Pokemon implements Battleable {
 		totalExp = ExpCurve.lowestExpForLevel(species.getCurve(), level);
 	}
 
+	public IVs getIVs() {
+		return ivs;
+	}
 	// TODO: EV setter
 
 	public int getHP() {
@@ -231,6 +237,10 @@ public class Pokemon implements Battleable {
 
 	public void setWild(boolean isWild) {
 		this.wild = isWild;
+	}
+	
+	public boolean isTowerPoke() {
+		return battleTower;
 	}
 
 	public int getTotalExp() {

@@ -90,6 +90,8 @@ public class Battle extends GameAction {
 	}
 
 	private void doBattle(Pokemon p) {
+		int lastLvl = p.getLevel();
+
 		// TODO: automatically determine whether or not to print
 		if (opponent instanceof Pokemon) {
 			if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.EVERYTHING)
@@ -98,25 +100,70 @@ public class Battle extends GameAction {
 				printShortBattle(p, (Pokemon) opponent);
 
 			// TODO: Fix this hack
-			if(!Constants.battleTower || ((Pokemon) opponent).getLevel() != 50) {
+			if(!((Pokemon) opponent).isTowerPoke()) {
 				opponent.battle(p, options);
-				Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
-                    p.expToNextLevel(), p.expForLevel()));
+				if (p.getLevel() > lastLvl) {
+					lastLvl = p.getLevel();
+					if (options.isPrintSRsOnLvl()) {
+						Main.appendln(p.statRanges(false));
+					}
+					if (options.isPrintSRsBoostOnLvl()) {
+						Main.appendln(p.statRanges(true));
+					}
+				}
+				if(getVerbose() == BattleOptions.EVERYTHING) {
+					Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
+	                    p.expToNextLevel(), p.expForLevel()));
+				}
 			}
 		} else { // is a Trainer
 			Trainer t = (Trainer) opponent;
 			if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.SOME || getVerbose() == BattleOptions.EVERYTHING)
 				Main.appendln(t.toString());
-			int lastLvl = p.getLevel();
 			int sxpIdx = 0;
 			int sxp = 1;
 			Integer[] sxps = options.getSxps();
+			Integer[] xatks = options.getXatks();
+			Integer[] xdefs = options.getXdefs();
+			Integer[] xspds = options.getXspds();
+			Integer[] xspcs = options.getXspcs();
+			Integer[] ydefs = options.getYdefs();
 			for (Pokemon opps : t) {
 				if(sxps != null) {
 					sxp = sxps[sxpIdx];
 					if(sxp != 0) {
 						options.setParticipants(sxp);
 					}
+				}
+				if(xatks != null) {
+					int xatk = xatks[sxpIdx];
+					StatModifier mod1 = options.getMod1();
+					mod1.setAtkStage(xatk);
+					options.setMod1(mod1);
+				}
+				if(xdefs != null) {
+					int xdef = xdefs[sxpIdx];
+					StatModifier mod1 = options.getMod1();
+					mod1.setDefStage(xdef);
+					options.setMod1(mod1);
+				}
+				if(xspds != null) {
+					int xspd = xspds[sxpIdx];
+					StatModifier mod1 = options.getMod1();
+					mod1.setSpdStage(xspd);
+					options.setMod1(mod1);
+				}
+				if(xspcs != null) {
+					int xspc = xspcs[sxpIdx];
+					StatModifier mod1 = options.getMod1();
+					mod1.setSpcAtkStage(xspc);
+					options.setMod1(mod1);
+				}
+				if(ydefs != null) {
+					int ydef = ydefs[sxpIdx];
+					StatModifier mod2 = options.getMod2();
+					mod2.setDefStage(ydef);
+					options.setMod2(mod2);
 				}
 				if(sxp != 0) {
 					if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.EVERYTHING)

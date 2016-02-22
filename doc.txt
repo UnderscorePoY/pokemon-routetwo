@@ -70,6 +70,8 @@ If you want to indicate that this is a trainer's pokemon (which may let you avoi
              `L3 RATTATA -trainer //-trainer is the same as -t`
 If you have a knack for symmetry, you can also explicitly identify a wild encounter with a -w or -wild flag.
     Example: `L3 RATTATA -w //same as not having the -w flag`.
+You can also add DVs for atk/def/spd/spc.
+    Example: `L3 RATTATA 9 8 8 8 `
 
 WARNING: Do not put a space in between L and your level number, and do not put a space in a pokemon name. (I'm looking at you, Mr. Mime.)
 WARNING: be sure not to use the -t or -w flags on offsets. That would be bad.
@@ -101,31 +103,42 @@ Listed below are these flags, and example use cases. Unless otherwise indicated,
   NOTE: YOU MUST USE AN ARGUMENT EVEN IF YOU ONLY USE 1
   Example: `0x3A3BB -xspd 2 //wtf stop using agility`
   
+-xatks, -xdefs, -xspds, -xspcs, -ydefs:
+  These do the same as the singular versions, but can be applied to each of a trainer's pokemon.
+  Example: `ERIKA -xatks 0/0/1/1`
+  
 -xacc:
   -xacc: Gives you an x accuracy. NOTE: THIS DOES NOT TAKE AN ARGUMENT.
   Example: `0x3A4BB -xspd 1 -xacc //the elite four sure is easy`
 
 -v, -verbose:
   -v <option>: Gives a printout of this battle, whose level of detail depends on <option>. NONE gives no printout. SOME gives your stats/damage ranges (and the opponent's stats/movesets). ALL gives your stats/damage ranges as well as the opponent's.
-  [If you want to be quick about it, you can use 0, 1, 2, in place of NONE, SOME, and ALL, respectively. This is not guaranteed to be supported in later versions, however.]
+  [If you want to be quick about it, you can use 0, 1, 2, 3 in place of NONE, SOME, ALL, EVERYTHING respectively. This is not guaranteed to be supported in later versions, however.]
   Example: `0x3A4BB -xspd 1 -xacc -v ALL //tell me everything!`
   
 -sxp:
   -sxp <num>: Gives your pokemon exp this battle as if you split the exp between <num> pokemon. (Short for "split xp")
   Example: `0x3A4BB -sxp 2`
   
+-sxps:
+  -sxp <num>/<num>/.../<num>: Splits pokemon exp for each of a trainer's pokemon
+  
 -lvranges:
-  -lvrages: Prints out your stat ranges whenever you level up during this battle. Applies on trainers only.
+  -lvrages: Prints out your stat ranges whenever you level up during this battle.
 
 -lvrangesb:
-  -lvragesb: Prints out your stat ranges, with badge boosts, whenever you level up during this battle. Applies on trainers only.
-  
--bbs:
-  -bbs a/b/c/d: Applies additional badge boosts to atk, def, spd, spc, (at amounts a,b,c,d). Only use this if you know what it means.
+  -lvragesb: Prints out your stat ranges, with badge boosts, whenever you level up during this battle.
   
 -5.3 Your Pokemon-
 Unfortunately, you will have to keep bookkeeping on your pokemon, including when it evolves and learns/unlearn moves. RouteTwo supports a moveset of more than 4 moves, if you want to test many moves at a time.
 
+battletowerflag:
+  battletowerflag: Sets mode to battle tower; i.e. removes all badge boosts
+  
+pinkbowflag, charcoalflag:
+  pinkbowflag:  Gives your pokemon the Pink Bow as a held item.
+  charcoalflag: Gives your pokemon Charcoal as a held item.
+  
 e, evolve:
   e <species>: Evolves your pokemon into the specified species.
   Example: `evolve FERALIGATR`
@@ -139,6 +152,14 @@ um, unlearnmove:
   um <move>: Removes the specified move to your pokemon's moveset. Does nothing if the move isn't in your moveset.
   Example: `unlearnmove LEER`
   NOTE: DO NOT PUT ANY SPACES IN YOUR MOVE NAME
+  
+returnpower:
+  returnpower <power>: Sets the power of Return
+  Example: `returnpower 86`
+  
+<badgename>
+  <badgename>: Manual way to give your pokemon a particular badge if it didn't participate in the gym leader battle.
+  Example: `zephyrbadge`
 
 -5.4 Eating Things-
 All of the commands below go into their own line. Unfortunately, you CANNOT specify a number after it to indicate you eat that many. They should be self-explanatory.

@@ -36,7 +36,12 @@ public class Main {
         else
             Settings.isGS = true;
         
-        Initialization.init();
+        if(ini.get("files").containsKey("trainerFile")) {
+        	Initialization.init(ini.get("files", "trainerFile"));
+        }
+        else {
+        	Initialization.init(null);
+        }
         
         IVs ivs = new IVs(atkIV,defIV,spdIV,spcIV);
         Pokemon p = null;

@@ -81,16 +81,17 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 				String name = parts[0];
 				Species s = Species.getSpecies(Integer.parseInt(parts[1]));
 				int level = Integer.parseInt(parts[2]);
-				int hp = Integer.parseInt(parts[3]);
-				int atk = Integer.parseInt(parts[4]);
-				int def = Integer.parseInt(parts[5]);
-				int spe = Integer.parseInt(parts[6]);
-				int spA = Integer.parseInt(parts[7]);
-				int spD = Integer.parseInt(parts[8]);
-				int move1 = Integer.parseInt(parts[9]);
-				int move2 = Integer.parseInt(parts[10]);
-				int move3 = Integer.parseInt(parts[11]);
-				int move4 = Integer.parseInt(parts[12]);
+				IVs ivs = new IVs(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), Integer.parseInt(parts[6]));
+				int hp = Integer.parseInt(parts[7]);
+				int atk = Integer.parseInt(parts[8]);
+				int def = Integer.parseInt(parts[9]);
+				int spe = Integer.parseInt(parts[10]);
+				int spA = Integer.parseInt(parts[11]);
+				int spD = Integer.parseInt(parts[12]);
+				int move1 = Integer.parseInt(parts[13]);
+				int move2 = Integer.parseInt(parts[14]);
+				int move3 = Integer.parseInt(parts[15]);
+				int move4 = Integer.parseInt(parts[16]);
 				Moveset moveset = new Moveset();
 				moveset.addMove(move1);
 				moveset.addMove(move2);
@@ -109,15 +110,20 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 	}
 	
 	// must be called before any other calls are made
-	public static void initTrainers() {
+	public static void initTrainers(String trainerFile) {
 		allTrainers = new HashMap<Integer, Trainer>();
 		trainersByName = new HashMap<String, Trainer>();
 
 		List<Trainer> trainerList = null;
-		if (Settings.isGS)
-			trainerList = getData("trainer_data_gs.txt");
-		else
-			trainerList = getData("trainer_data_c.txt");
+		if(trainerFile == null) {
+			if (Settings.isGS)
+				trainerList = getData("trainer_data_gs.txt");
+			else
+				trainerList = getData("trainer_data_c.txt");
+		}
+		else {
+			trainerList = getData(trainerFile);
+		}
 
 		for (Trainer t : trainerList) {
 			allTrainers.put(new Integer(t.offset), t);
