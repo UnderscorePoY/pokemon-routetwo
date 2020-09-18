@@ -29,6 +29,7 @@ public class Main {
         int defIV = ini.get("poke", "defIV", int.class);
         int spdIV = ini.get("poke", "spdIV", int.class);
         int spcIV = ini.get("poke", "spcIV", int.class);
+
         //set game
         String gameName = ini.get("game", "game");
         if(gameName.equalsIgnoreCase("crystal"))
@@ -47,6 +48,12 @@ public class Main {
         Pokemon p = null;
         try {
             p = new Pokemon(PokemonNames.getSpeciesFromName(species),level,ivs,false);
+            if(ini.get("poke").containsKey("boostedExp")) {
+                boolean boostedExp = ini.get("poke", "boostedExp", boolean.class);
+                if(boostedExp) {
+                	p.setBoostedExp();
+                }
+            }
         } catch(NullPointerException e) {
             appendln("Error in your config file. Perhaps you have an incorrect pokemon species name?");
             FileWriter fw = new FileWriter(ini.get("files", "outputFile"));

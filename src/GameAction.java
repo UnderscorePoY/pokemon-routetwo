@@ -29,6 +29,10 @@ public abstract class GameAction {
     	void performAction(Pokemon p) { Constants.charcoal = !Constants.charcoal; }
     };
     
+    public static final GameAction magnetFlag = new GameAction() {
+    	void performAction(Pokemon p) { Constants.magnet = !Constants.magnet; }
+    };
+    
     public static final GameAction battleTowerFlag = new GameAction() {
     	void performAction(Pokemon p) {
     		p.setAtkBadge(false);

@@ -21,6 +21,7 @@ public class Pokemon implements Battleable {
 	private boolean defBadge = false;
 	private boolean spdBadge = false;
 	private boolean spcBadge = false;
+	private boolean boostedExp = false;
 	private boolean[] elementalBadgeBoosts = new boolean[17];
 
 	// defaults to wild pokemon
@@ -88,6 +89,10 @@ public class Pokemon implements Battleable {
 		setExpForLevel();
 	}
 
+	public void setBoostedExp() {
+		boostedExp = true;
+	}
+	
 	// TODO constructor which accepts EVs
 	public void setZeroEVs() {
     	ev_hp = ev_hp_used = 0;
@@ -330,7 +335,7 @@ public class Pokemon implements Battleable {
 
 	// gain num exp
 	private void gainExp(int num) {
-		totalExp += num;
+		totalExp += num * 3 / (boostedExp ? 2 : 3);
 		// update lvl if necessary
 		while (expToNextLevel() <= 0 && level < 100) {
 			level++;

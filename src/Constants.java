@@ -535,6 +535,7 @@ public class Constants {
 	
 	static boolean pinkBow = false;
 	static boolean charcoal = false;
+	static boolean magnet = false;
 	public static boolean battleTower = false;
 	
 	static public boolean givesSpDefBadgeBoost(int spA) {

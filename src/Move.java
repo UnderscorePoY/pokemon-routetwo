@@ -98,6 +98,9 @@ public class Move {
     public void setType(Type type) {
     	this.type = type;
     }
+    public void setName(String name) {
+    	this.name = name;
+    }
     
     //TODO: consider checking more
     public boolean isEqual(Object o) {

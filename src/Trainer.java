@@ -97,7 +97,7 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 				moveset.addMove(move2);
 				moveset.addMove(move3);
 				moveset.addMove(move4);
-				p = new Pokemon(s, level, moveset, new IVs(0,0,0,0), hp, atk, def, spe, spA, spD);
+				p = new Pokemon(s, level, moveset, ivs, hp, atk, def, spe, spA, spD);
 				towerPokes.put(name, p);
 			}
 		} catch (FileNotFoundException e) {

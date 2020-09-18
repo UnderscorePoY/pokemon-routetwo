@@ -21,9 +21,13 @@ public class DamageCalculator {
 			// TODO: special cases
 			return 0;
 		}
-		if(_attack.getName().equalsIgnoreCase("Hidden Power")) {
-			_attack.setType(getHP_Type(attacker));
-			_attack.setPower(getHP_Power(attacker));
+		if(_attack.getName().startsWith("Hidden Power")) {
+			Type type = getHP_Type(attacker);
+			int power = getHP_Power(attacker);
+			_attack.setType(type);
+			_attack.setPower(power);
+			_attack.setName("Hidden Power [" + type.name() + " " + power + "]");
+			//System.out.println(_attack.getName());
 		}
 		// stat modifiers
 		int aa_orig = attacker.getTrueAtk();
@@ -78,6 +82,9 @@ public class DamageCalculator {
 		if (Constants.charcoal && _attack.getType() == Type.FIRE) {
 			damage = damage * 110 / 100;
 		}
+		if (Constants.magnet && _attack.getType() == Type.ELECTRIC) {
+			damage = damage * 110 / 100;
+		}
 		if (crit) {
 			damage *= 2;
 		}
@@ -100,16 +107,25 @@ public class DamageCalculator {
 		int atkDV = ivs.getAtkIV();
 		int defDV = ivs.getDefIV();
 		int hpType = 4*(atkDV%4) + (defDV%4);
-		return Type.values()[hpType+1];
+		if(hpType==15) {
+			hpType += 1;
+		}
+		if(hpType==7) {
+			hpType = 15;
+		}
+		if(hpType<7) {
+			hpType += 1;
+		}
+		return Type.values()[hpType];
 	}
 	
 	private static int getHP_Power(Pokemon attacker) {
 		IVs ivs = attacker.getIVs();
-		int atkDV = ivs.getAtkIV();
-		int defDV = ivs.getDefIV();
-		int spdDV = ivs.getSpdIV();
-		int spcDV = ivs.getSpcIV();		
-		return 31+5*(spcDV+2*spdDV+4*defDV+8*atkDV)+(spcDV%4)/2;
+		int atkDV = (ivs.getAtkIV() >>> 3) << 3;
+		int defDV = (ivs.getDefIV() >>> 3) << 2;
+		int spdDV = (ivs.getSpdIV() >>> 3) << 1;
+		int spcDV = (ivs.getSpcIV() >>> 3) << 0;
+		return 31+(5*(spcDV+spdDV+defDV+atkDV)+(ivs.getSpcIV()%4))/2;
 	}
 	
 	public static int minDamage(Move attack, Pokemon attacker,

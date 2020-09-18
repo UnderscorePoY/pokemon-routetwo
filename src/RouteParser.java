@@ -213,6 +213,9 @@ public class RouteParser {
 		else if (firstToken.equalsIgnoreCase("charcoalflag")) {
 			return GameAction.charcoalFlag;
 		}
+		else if (firstToken.equalsIgnoreCase("magnetflag")) {
+			return GameAction.magnetFlag;
+		}
 
 		// printing commands
 		else if (firstToken.equalsIgnoreCase("stats")) {
