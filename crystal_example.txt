@@ -1,7 +1,7 @@
 // to be used with crystal & toto
 ranges
 
-0x39AEF // chikorita rival
+0x39AEF -lvranges -v 3 // chikorita rival
 
 ranges
 

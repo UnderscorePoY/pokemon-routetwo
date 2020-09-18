@@ -1,6 +1,7 @@
 bin/
-*out.txt
 *.jar
+outputs/
+local_routes/
 build/
 *.class
 .DS_Store

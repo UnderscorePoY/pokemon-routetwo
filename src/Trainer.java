@@ -72,7 +72,7 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 	public static void initTowerPokes() {
 		BufferedReader in;
 		try {
-			in = new BufferedReader(new InputStreamReader(System.class
+			in = new BufferedReader(new InputStreamReader(Trainer.class
 					.getResource("/resources/battle_tower.txt").openStream()));
 			Pokemon p = null;
 			while (in.ready()) {
@@ -126,7 +126,7 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 		}
 
 		for (Trainer t : trainerList) {
-			allTrainers.put(new Integer(t.offset), t);
+			allTrainers.put(t.offset, t);
 			if (t.name.equals("GRUNT") == false
 					&& t.name.equals("EXECUTIVE") == false
 					&& t.name.equals("?") == false
@@ -136,12 +136,12 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 		}
 	}
 
-	// reads trainer_data_(blue|yellow).txt to get trainer data
+	// reads trainer_data_(gs|c).txt to get trainer data
 	private static List<Trainer> getData(String filename) {
 		ArrayList<Trainer> trainers = new ArrayList<Trainer>();
 		BufferedReader in;
 		try {
-			in = new BufferedReader(new InputStreamReader(System.class
+			in = new BufferedReader(new InputStreamReader(Trainer.class
 					.getResource("/resources/" + filename).openStream()));
 
 			String currentClassName = "";

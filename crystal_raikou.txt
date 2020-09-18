@@ -1,0 +1,183 @@
+zephyrbadge
+hivebadge
+plainbadge
+
+magnetflag
+
+um LEER
+um ROAR
+
+// kimonos
+SAYO -lvranges -v 3// espeon
+NAOKO -lvranges -v 3// flareon
+ZUKI -lvranges -v 3// umbreon
+KUNI -ydef 0 -lvranges -v 3// vaporeon
+MIKI -lvranges -v 3// jolteon
+
+// gym 4
+PING -lvranges -v 3 // ping (5 gastlies)
+JEFFREY -lvranges -v 3 // jeffrey (highlvl haunter)
+
+lm SPARK
+
+MARTHA -lvranges -v 3 // martha (gastly, haunter, gastly)
+MORTY -lvranges -v 3 // morty
+
+//DANA -lvranges -v 3 //spinner
+//OLIVIA -lvranges -v 3 //spinner
+RUTH -lvranges -v 3// ruth (pikachu)
+
+ALFRED -lvranges -v 3// alfred
+PRESTON -lvranges -v 3// preston
+CONNIE -lvranges -v 3// connie
+//ERNEST -lvranges -v 3 //spinner
+
+lm STRENGTH
+
+//KAYLEE -lvranges -v 3 //spinner
+
+// gym 5
+YOSHI -lvranges -v 3 // yoshi
+LAO -lvranges -v 3 // lao
+//evolve FERALIGATR
+NOB -lvranges -v 3 // nob
+LUNG -lvranges -v 3 // lung
+//rc
+CHUCK -lvranges -v 3 // chuck
+
+//BENJAMIN -v 3 //spinner
+
+L30 GYARADOS 14 10 10 10 -lvranges -v 3
+
+// rocket base
+0x3A71F -lvranges -v 3// first alert grunt
+0x3A72B -lvranges -v 3// second alert grunt
+0x39DBB -lvranges -v 3// scientist @ switch
+0x3A713 -lvranges -v 3// near electrode room, 2 venonats
+0x3BA38 -lvranges -v 3// first password girl
+0x3A787 -lvranges -v 3// second password guy
+//0x3A705 -lvranges -v 3  //spinner
+0x3B2F0 -lvranges -v 3// murkrow room executive
+//0x3A705 -lvranges -v 3  //spinner
+0x3B65D -lvranges -v 3// lance executive
+
+//rc
+lm HIDDENPOWER
+L23 ELECTRODE 15 15 15 15 -v 3
+L23 ELECTRODE 0 0 0 0 -v 3
+L23 ELECTRODE 9 8 8 8 -v 3
+
+um QUICKATTACK
+
+// gym 6
+PRYCE -lvranges -v 3
+
+//ERNEST -lvranges -v 3 //spinner
+
+// gym 7
+JASMINE -lvranges -v 3
+
+// radio tower
+0x3A641 -lvranges -v 3 // raticate, raticate
+0x3BA12 -lvranges -v 3 // arbok
+0x3A66D -lvranges -v 3 // zubat, zubat
+0x3A64D -lvranges -v 3 // grimer, grimer, muk
+0x3A679 -lvranges -v 3 // koffing, grimer, zubat, rattata
+MARC -lvranges -v 3 // marc: 3xmagnemite
+RICH -lvranges -v 3 // rich: porygon
+0x3B2C0 -lvranges -v 3 // rocket executive: 5x koffing, 1x weezing
+
+DONALD -lvranges -v 3// scrub donald
+TERU -lvranges -v 3// scrub teru
+
+// underground
+0x39B73 -lvranges -v 3 // rival
+0x3A6C9 -lvranges -v 3 // switch grunt 1 (rattata)
+0x3A6AD -lvranges -v 3 // switch grunt 2 (muk, koffing, rattata)
+0x3A761 -lvranges -v 3 // switch grunt 3 (koffing, muk)
+EDDIE -lvranges -v 3 // eddie
+DUNCAN -lvranges -v 3 // duncan
+0x3BA1C -lvranges -v 3 // door grunt (glooms)
+0x3A6D3 -lvranges -v 3 // warehouse grunt 1 (raticate, golbat)
+0x3A6DF -lvranges -v 3 // warehouse grunt 2 (grimer, weezing)
+0x3A755 -lvranges -v 3 // warehouse grunt 3 (koffingx2)
+
+// radio tower 2
+0x3A693 -lvranges -v 3 // card key door guard (raticate, koffing)
+0x3A739 -lvranges -v 3 // golbat executive
+0x3B63F -lvranges -v 3 // female executive
+0x3B290 -lvranges -v 3 // big boss
+
+// gym 8
+PAUL -lvranges -v 3 // paul
+FRAN -lvranges -v 3 // fran
+CODY -lvranges -v 3 // cody
+LOLA -lvranges -v 3 // lola
+0x39ACF -lvranges -v 3 // clair
+
+// pre-e4
+DARIN -lvranges -v 3 // darin (dragons den)
+
+//JOYCE -lvranges -v 3
+BETH -lvranges -v 3 // beth (just before VR)
+0x39BD9 -lvranges -v 3 // scrub rival
+
+// e4
+WILL -lvranges -v 3 // will
+KOGA -xspc 1 -lvranges -v 3 // koga
+BRUNO -xspc 2 -lvranges -v 3 // bruno
+KAREN -xspc 2 -lvranges -v 3 // karen
+LANCE -lvranges -v 3 // lance
+
+// kanto
+STANLY -lvranges -v 3 // stanley (on ship)
+
+DEAN -lvranges -v 3 // camper dean
+//HEIDI -lvranges -v 3
+
+// nugget bridge
+DUDLEY -lvranges -v 3 // dudley
+ELLEN -lvranges -v 3 // ellen
+JOE -lvranges -v 3 // joe
+LAURA -lvranges -v 3 // laura
+LLOYD -lvranges -v 3 // lloyd
+SHANNON -lvranges -v 3 // shannon
+PAT -lvranges -v 3 // pat
+
+// misty gym
+MISTY -lvranges -v 3 // Misty
+
+//HEIDI -lvranges -v 3
+//TOM -lvranges -v 3
+
+// vermillion gym
+GREGORY -lvranges -v 3 // gregory
+LT.SURGE -xspc 1 -lvranges -v 3 // surge
+
+// final stretch
+BLAINE -xspc 1 -lvranges -v 3 // blaine
+
+// janine road/gym
+JANINE -lvranges -v 3 // Janine
+
+// erika gym
+JO&ZOE -lvranges -v 3 // Jo&Zoe (victreebel first)
+TANYA -lvranges -v 3 // Tanya
+JULIA -lvranges -v 3 // Julia
+ERIKA -lvranges -v 3 // Erika
+
+lm CRUNCH
+
+BLUE -xspc 2 -lvranges -v 3 // blue
+
+um THUNDERSHOCK
+
+// pewter gym
+JERRY -lvranges -v 3 // jerry
+BROCK -lvranges -v 3 // brock
+
+// saffron gym
+//REBECCA -lvranges -v 3
+SABRINA -lvranges -v 3 // sabrina
+
+RED -xspc 6 -lvranges -v 3 // red
