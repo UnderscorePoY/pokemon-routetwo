@@ -1,4 +1,3 @@
-
 public class BattleOptions {
     private int participants = 1;
     private Integer[] sxps = null;
@@ -41,63 +40,63 @@ public class BattleOptions {
     }
     
     public void setSxps(Integer[] sxps) {
-    	int len = sxps.length;
-    	this.sxps = new Integer[len];
-    	System.arraycopy(sxps, 0, this.sxps, 0, len);
+        int len = sxps.length;
+        this.sxps = new Integer[len];
+        System.arraycopy(sxps, 0, this.sxps, 0, len);
     }
     
     public Integer[] getSxps() {
-    	return sxps;
+        return sxps;
     }
 
     public void setXatks(Integer[] xatks) {
-    	int len = xatks.length;
-    	this.xatks = new Integer[len];
-    	System.arraycopy(xatks, 0, this.xatks, 0, len);    	
+        int len = xatks.length;
+        this.xatks = new Integer[len];
+        System.arraycopy(xatks, 0, this.xatks, 0, len);
     }
     
     public Integer[] getXatks() {
-    	return xatks;
+        return xatks;
     }
     
     public void setXdefs(Integer[] xdefs) {
-    	int len = xdefs.length;
-    	this.xdefs = new Integer[len];
-    	System.arraycopy(xdefs, 0, this.xdefs, 0, len);    	
+        int len = xdefs.length;
+        this.xdefs = new Integer[len];
+        System.arraycopy(xdefs, 0, this.xdefs, 0, len);
     }
     
     public Integer[] getXdefs() {
-    	return xdefs;
+        return xdefs;
     }
     
     public void setXspds(Integer[] xspds) {
-    	int len = xspds.length;
-    	this.xspds = new Integer[len];
-    	System.arraycopy(xspds, 0, this.xspds, 0, len);    	
+        int len = xspds.length;
+        this.xspds = new Integer[len];
+        System.arraycopy(xspds, 0, this.xspds, 0, len);
     }
     
     public Integer[] getXspds() {
-    	return xspds;
+        return xspds;
     }
     
     public void setXspcs(Integer[] xspcs) {
-    	int len = xspcs.length;
-    	this.xspcs = new Integer[len];
-    	System.arraycopy(xspcs, 0, this.xspcs, 0, len);    	
+        int len = xspcs.length;
+        this.xspcs = new Integer[len];
+        System.arraycopy(xspcs, 0, this.xspcs, 0, len);
     }
     
     public Integer[] getXspcs() {
-    	return xspcs;
+        return xspcs;
     }
     
     public void setYdefs(Integer[] ydefs) {
-    	int len = ydefs.length;
-    	this.ydefs = new Integer[len];
-    	System.arraycopy(ydefs, 0, this.ydefs, 0, len);    	
+        int len = ydefs.length;
+        this.ydefs = new Integer[len];
+        System.arraycopy(ydefs, 0, this.ydefs, 0, len);
     }
     
     public Integer[] getYdefs() {
-    	return ydefs;
+        return ydefs;
     }
 
     public void setOrder(Integer[] order) {

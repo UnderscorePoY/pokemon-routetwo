@@ -1,4 +1,3 @@
-
 public enum ExpCurve {
     SLOW, MEDIUM_SLOW, MEDIUM, FAST, NONE;
     

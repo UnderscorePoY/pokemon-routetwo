@@ -36,10 +36,10 @@ public class Main {
             Settings.isGS = true;
         
         if(ini.get("files").containsKey("trainerFile")) {
-        	Initialization.init(ini.get("files", "trainerFile"));
+            Initialization.init(ini.get("files", "trainerFile"));
         }
         else {
-        	Initialization.init(null);
+            Initialization.init(null);
         }
         
         IVs ivs = new IVs(atkIV,defIV,spdIV,spcIV);
@@ -49,7 +49,7 @@ public class Main {
             if(ini.get("poke").containsKey("boostedExp")) {
                 boolean boostedExp = ini.get("poke", "boostedExp", boolean.class);
                 if(boostedExp) {
-                	p.setBoostedExp();
+                    p.setBoostedExp();
                 }
             }
         } catch(NullPointerException e) {

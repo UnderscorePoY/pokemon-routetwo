@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 //represents a sequence of moves and levels which a species learns moves at
-public class Learnset{
+public class Learnset {
     private LevelMove[] levelMoves;
     
     private static final Learnset[] allLearnsetsGS;
@@ -44,10 +44,10 @@ public class Learnset{
     }
     
     private static Learnset[] getData(String filename) {
-    	BufferedReader in;
+        BufferedReader in;
         try {
             in = new BufferedReader(new InputStreamReader(Learnset.class
-					.getResource("/resources/" + filename).openStream()));
+                    .getResource("/resources/" + filename).openStream()));
             String text = in.readLine(); 
             int n = Integer.parseInt(text);
             Learnset[] output = new Learnset[n+1];

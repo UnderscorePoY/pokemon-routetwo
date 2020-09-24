@@ -1,4 +1,3 @@
-
 public class IVs {
     private int atk;
     private int def;
