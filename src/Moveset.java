@@ -22,7 +22,7 @@ public class Moveset implements Iterable<Move>{
     public static Moveset defaultMoveset(Species species, int level, boolean isGS){
         ArrayList<Move> distinctMoves = new ArrayList<Move>();
         HashSet<Move> movesSet = new HashSet<Move>();
-        Learnset l = Learnset.getLearnset(species.getPokedexNum(), isGS);
+        Learnset l = Learnset.getLearnset(species.getDexNum(), isGS);
         if (l == null) {
             return new Moveset();
         }

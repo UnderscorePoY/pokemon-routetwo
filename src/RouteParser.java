@@ -87,7 +87,7 @@ public class RouteParser {
             {
             	ivs = new IVs(15,15,15,15);
             }
-            Pokemon b = new Pokemon(PokemonNames.getSpeciesFromName(species),lvl,ivs,true); //default to wild pokemon
+            Pokemon b = new Pokemon(Species.valueOf(species),lvl,ivs,true); //default to wild pokemon
             if (b.getSpecies() == null) {
                 Main.appendln("ERROR ON LINE " + lineNum + ": bad pokemon name");
                 return null;

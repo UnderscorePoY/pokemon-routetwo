@@ -189,7 +189,7 @@ class UnlearnMove extends GameAction {
 class Evolve extends GameAction {
     private Species target;
     Evolve(Species s) { target = s; }
-    Evolve(String s) { target = PokemonNames.getSpeciesFromName(s); }
+    Evolve(String s) { target = Species.valueOf(s); }
     @Override
     void performAction(Pokemon p) {
         p.evolve(target);

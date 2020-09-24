@@ -79,7 +79,7 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 				String text = in.readLine();
 				String[] parts = text.split(" ");
 				String name = parts[0];
-				Species s = Species.getSpecies(Integer.parseInt(parts[1]));
+				Species s = Species.values()[Integer.parseInt(parts[1]) - 1];
 				int level = Integer.parseInt(parts[2]);
 				IVs ivs = new IVs(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), Integer.parseInt(parts[6]));
 				int hp = Integer.parseInt(parts[7]);
@@ -177,7 +177,7 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 						int move2 = Integer.parseInt(parts[pokoffset + 4]);
 						int move3 = Integer.parseInt(parts[pokoffset + 5]);
 						int move4 = Integer.parseInt(parts[pokoffset + 6]);
-						Species s = Species.getSpecies(number);
+						Species s = Species.values()[number - 1];
 						Moveset m = new Moveset();
 						if (move1 != 0)
 							m.addMove(move1);

@@ -5,3 +5,6 @@ local_routes/
 build/
 *.class
 .DS_Store
+*.eml
+*.iml
+.idea/

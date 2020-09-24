@@ -239,11 +239,11 @@ class Encounter extends Battle {
 	}
 
 	Encounter(String s, int lvl) {
-		this(PokemonNames.getSpeciesFromName(s), lvl, new BattleOptions());
+		this(Species.valueOf(s), lvl, new BattleOptions());
 	}
 
 	Encounter(String s, int lvl, BattleOptions options) {
-		this(PokemonNames.getSpeciesFromName(s), lvl, options);
+		this(Species.valueOf(s), lvl, options);
 	}
 }
 
@@ -253,10 +253,10 @@ class TrainerPoke extends Battle {
 	}
 
 	TrainerPoke(String s, int lvl) {
-		this(PokemonNames.getSpeciesFromName(s), lvl, new BattleOptions());
+		this(Species.valueOf(s), lvl, new BattleOptions());
 	}
 
 	TrainerPoke(String s, int lvl, BattleOptions options) {
-		this(PokemonNames.getSpeciesFromName(s), lvl, options);
+		this(Species.valueOf(s), lvl, options);
 	}
 }

@@ -45,7 +45,7 @@ public class Main {
         IVs ivs = new IVs(atkIV,defIV,spdIV,spcIV);
         Pokemon p = null;
         try {
-            p = new Pokemon(PokemonNames.getSpeciesFromName(species),level,ivs,false);
+            p = new Pokemon(Species.valueOf(species.toUpperCase()),level,ivs,false);
             if(ini.get("poke").containsKey("boostedExp")) {
                 boolean boostedExp = ini.get("poke", "boostedExp", boolean.class);
                 if(boostedExp) {
