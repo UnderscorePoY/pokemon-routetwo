@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
 //represents a battle, with planned statmods
 public class Battle extends GameAction {
 	private Battleable opponent;
@@ -128,7 +131,20 @@ public class Battle extends GameAction {
 			Integer[] xspds = options.getXspds();
 			Integer[] xspcs = options.getXspcs();
 			Integer[] ydefs = options.getYdefs();
-			for (Pokemon opps : t) {
+			Integer[] order = options.getOrder();
+			Iterable<Pokemon> trainerPokes = null;
+			if(order == null) {
+				trainerPokes = t;
+			} else {
+				ArrayList<Pokemon> origPokes = new ArrayList<>();
+				t.forEach(origPokes::add);
+				ArrayList<Pokemon> modPokes = new ArrayList<>();
+				for(int i=0; i<order.length; i++) {
+					modPokes.add(origPokes.get(order[i]-1));
+				}
+				trainerPokes = modPokes;
+			}
+			for (Pokemon opps : trainerPokes) {
 				if(sxps != null) {
 					sxp = sxps[sxpIdx];
 					if(sxp != 0) {

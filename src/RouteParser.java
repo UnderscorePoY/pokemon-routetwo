@@ -255,7 +255,7 @@ public class RouteParser {
 	}
 
 	enum NextFlag {
-		ANY_FLAG, XITEMS, YITEMS, XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, VERBOSE, SXP, SXPS, XATKS, XDEFS, XSPDS, XSPCS, YDEFS, BBS,
+		ANY_FLAG, XITEMS, YITEMS, XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, VERBOSE, SXP, SXPS, XATKS, XDEFS, XSPDS, XSPCS, YDEFS, ORDER, BBS,
 	}
 
 	private static GameAction addFlagsToBattleable(Battleable b,
@@ -366,6 +366,10 @@ public class RouteParser {
 				}
 				else if (s.equalsIgnoreCase("-ydefs")) {
 					nf = NextFlag.YDEFS;
+					continue;
+				}
+				else if (s.equalsIgnoreCase("-order")) {
+					nf = NextFlag.ORDER;
 					continue;
 				}
 				// print stat ranges if level
@@ -533,6 +537,16 @@ public class RouteParser {
 					ydefs[i] = Integer.parseInt(nums[i]);
 				}
 				options.setYdefs(ydefs);
+				nf = NextFlag.ANY_FLAG;
+				continue;
+			}
+			else if(nf == NextFlag.ORDER) {
+				String[] nums = s.split("/");
+				Integer[] order = new Integer[nums.length];
+				for(int i=0; i<nums.length; i++) {
+					order[i] = Integer.parseInt(nums[i]);
+				}
+				options.setOrder(order);
 				nf = NextFlag.ANY_FLAG;
 				continue;
 			}

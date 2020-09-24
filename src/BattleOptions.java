@@ -7,6 +7,7 @@ public class BattleOptions {
     private Integer[] xspds = null;
     private Integer[] xspcs = null;
     private Integer[] ydefs = null;
+    private Integer[] order = null;
     private boolean printSRsOnLvl = false;
     private boolean printSRsBoostOnLvl = false;
     private StatModifier mod1;
@@ -98,8 +99,16 @@ public class BattleOptions {
     public Integer[] getYdefs() {
     	return ydefs;
     }
-    
-   public boolean isPrintSRsOnLvl() {
+
+    public void setOrder(Integer[] order) {
+        int len = order.length;
+        this.order = new Integer[len];
+        System.arraycopy(order, 0, this.order, 0, len);
+    }
+
+    public Integer[] getOrder() { return order; }
+
+    public boolean isPrintSRsOnLvl() {
         return printSRsOnLvl;
     }
 

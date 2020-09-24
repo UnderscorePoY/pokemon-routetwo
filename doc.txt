@@ -106,6 +106,10 @@ Listed below are these flags, and example use cases. Unless otherwise indicated,
 -xatks, -xdefs, -xspds, -xspcs, -ydefs:
   These do the same as the singular versions, but can be applied to each of a trainer's pokemon.
   Example: `ERIKA -xatks 0/0/1/1`
+
+-order:
+  Changes the order that a trainer's pokemon are sent out. Useful for different routes since the AI will account for type matchups, and since the send-out order is random in a few cases
+  Example: `RED -order 1/4/2/3/6/5` // sends out Red's 1st poke (Pikachu), then his 4th poke (Venusaur), then his 2nd poke (Espeon), etc.
   
 -xacc:
   -xacc: Gives you an x accuracy. NOTE: THIS DOES NOT TAKE AN ARGUMENT.
