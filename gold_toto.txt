@@ -43,7 +43,7 @@ lm FURYCUTTER
 um RAGE
 
 // azalea rival
-0x39AA4 -lvranges -v 3 
+0x39AA4 -lvranges -v 3 -order 1/3/2
 
 lm HEADBUTT
 um LEER
@@ -57,7 +57,7 @@ um FURYCUTTER
 
 // underground
 DONALD -lvranges -v 3
-TERU -lvranges -v 3
+TERU -lvranges -v 3 -order 1/3/4/2
 
 // route 37
 GREG -lvranges -v 3 
@@ -142,12 +142,12 @@ RICH -lvranges -v 3
 0x3B00F -lvranges -xspcs 0/1/1/1/1/1 -v 3 // executive with koffings & weezing
 
 // underground
-0x39B16 -xspc 1 -lvranges -v 3 // rival 4
+0x39B16 -xspc 1 -lvranges -v 3 -order 1/2/5/3/4 // rival 4
 0x3A552 -lvranges -v 3 // single rattata
 0x3A536 -lvranges -v 3 // muk, koffing, rattata
 0x3A5EA -lvranges -v 3 // koffing, muk
 EDDIE -lvranges -v 3 
-DUNCAN -lvranges -v 3 
+DUNCAN -lvranges -v 3 -order 1/3/2
 0x3B655 -lvranges -v 3 // glooms
 0x3A55C -lvranges -v 3 // raticate, golbat
 0x3A568 -lvranges -v 3 // grimer, weezing
@@ -177,7 +177,7 @@ returnpower 90
 CLAIR -lvranges -v 3
 
 // road to e4
-BLAKE -lvranges -v 3 
+BLAKE -lvranges -v 3 -order 1/3/2
 returnpower 91
 RICHARD -lvranges -v 3 
 
@@ -187,19 +187,19 @@ GAVEN -lvranges -v 3
 returnpower 92
 JAKE -lvranges -v 3 
 BETH -lvranges -v 3 
-0x39B7C -xspc 1 -lvranges -v 3  // rival 5
+0x39B7C -xspc 1 -lvranges -v 3 -order 1/3/6/2/4/5 // rival 5
 
 // e4
 returnpower 94 // L50
-WILL -lvranges -v 3 -xspc 1
+WILL -lvranges -v 3 -xspc 1 -order 1/3/2/4/5
 returnpower 95
 KOGA -lvranges -v 3 -xspcs 0/1/1/1/1
 returnpower 96 // L51
-BRUNO -lvranges -v 3 -xatk 2
+BRUNO -lvranges -v 3 -xatk 2 -order 1/3/2/5/4
 returnpower 97 // L52
 KAREN -lvranges -v 3 -xspc 1
 returnpower 98 // L53
-LANCE -lvranges -v 3 
+LANCE -lvranges -v 3 -order 1/2/3/6/4/5
 
 // ssaqua
 returnpower 99
@@ -235,7 +235,7 @@ MISTY -lvranges -v 3 -xatks 0/1/1/1
 
 // surge
 GREGORY -lvranges -v 3
-LT.SURGE -lvranges -v 3
+LT.SURGE -lvranges -v 3 -order 1/3/5/2/4
 
 // brock
 JERRY -lvranges -v 3
@@ -245,10 +245,10 @@ BROCK -lvranges -v 3
 BLAINE -lvranges -v 3
 
 // janine
-JANINE -lvranges -v 3
+JANINE -lvranges -v 3 -order 1/4/2/3/5
 
 // blue
-BLUE -lvranges -v 3 -xatk 2 -xspd 0
+BLUE -lvranges -v 3 -xatk 2 -xspd 0 -order 1/5/2/4/6/3
 
 // red
-RED -lvranges -v 3 -xatk 2 -xspd 1
+RED -lvranges -v 3 -xatk 2 -xspd 1 -order 1/4/2/3/6/5

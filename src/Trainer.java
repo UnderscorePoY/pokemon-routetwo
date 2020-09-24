@@ -2,10 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 //a trainer has a class name and some pokemon, corresponding to some location in memory
 public class Trainer implements Battleable, Iterable<Pokemon> {
@@ -13,6 +10,10 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
     private ArrayList<Pokemon> pokes;
     private int offset;
     private IVs dvs;
+
+    public void changePokes(Collection<Pokemon> pokes) {
+        this.pokes = new ArrayList<>(pokes);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -35,9 +36,9 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
         return pokes.iterator();
     }
 
+    @Override
     public String toString() {
-        return String.format("%s %s (0x%X: %s)", className, name, offset,
-                allPokes());
+        return String.format("%s %s (0x%X: %s)", className, name, offset, allPokes());
     }
 
     public String allPokes() {

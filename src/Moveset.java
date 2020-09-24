@@ -69,7 +69,7 @@ public class Moveset implements Iterable<Move>{
     }
     
     public void addMove(int i) {
-        addMove(Move.values()[i - 1]);
+        addMove(Move.values()[i]);
     }
     
     public boolean delMove(Move m) {

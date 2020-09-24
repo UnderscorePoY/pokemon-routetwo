@@ -121,8 +121,6 @@ public class Battle extends GameAction {
             }
         } else { // is a Trainer
             Trainer t = (Trainer) opponent;
-            if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.SOME || getVerbose() == BattleOptions.EVERYTHING)
-                Main.appendln(t.toString());
             int sxpIdx = 0;
             int sxp = 1;
             Integer[] sxps = options.getSxps();
@@ -143,6 +141,10 @@ public class Battle extends GameAction {
                     modPokes.add(origPokes.get(order[i]-1));
                 }
                 trainerPokes = modPokes;
+                t.changePokes(modPokes);
+            }
+            if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.SOME || getVerbose() == BattleOptions.EVERYTHING) {
+                Main.appendln(t.toString());
             }
             for (Pokemon opps : trainerPokes) {
                 if(sxps != null) {

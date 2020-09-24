@@ -1,4 +1,5 @@
 public enum Move {
+    NO_MOVE("-", 0, null, 0, null, 0, 0, 0),
     POUND("Pound", 1, MoveEffect.NORMAL_HIT, 40, Type.NORMAL, 100, 35, 0),
     KARATECHOP("Karate Chop", 2, MoveEffect.NORMAL_HIT, 50, Type.FIGHTING, 100, 25, 0),
     DOUBLESLAP("DoubleSlap", 3, MoveEffect.MULTI_HIT, 15, Type.NORMAL, 85, 10, 0),
