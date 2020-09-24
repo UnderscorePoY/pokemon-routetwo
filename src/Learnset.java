@@ -60,7 +60,7 @@ public class Learnset{
                 lms = new LevelMove[k];
                 for(int j = 0; j < k; j++) {
                     int lvl = Integer.parseInt(moves[2*j]);
-                    Move move = Move.getMove(Integer.parseInt(moves[2*j + 1]));
+                    Move move = Move.values()[Integer.parseInt(moves[2*j + 1]) - 1];
                     lms[j] = new LevelMove(lvl, move);
                 }
                 l = new Learnset(lms);

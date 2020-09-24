@@ -65,11 +65,11 @@ public class Moveset implements Iterable<Move>{
     }
     
     public void addMove(String s) {
-        addMove(Move.getMoveByName(s));
+        addMove(Move.valueOf(s));
     }
     
     public void addMove(int i) {
-        addMove(Move.getMove(i));
+        addMove(Move.values()[i - 1]);
     }
     
     public boolean delMove(Move m) {
@@ -77,7 +77,7 @@ public class Moveset implements Iterable<Move>{
     }
     
     public void delMove(String s) {
-        delMove(Move.getMoveByName(s));
+        delMove(Move.valueOf(s));
     }
     
 }

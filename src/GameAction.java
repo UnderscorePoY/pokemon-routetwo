@@ -164,13 +164,12 @@ class ChangeReturnPower extends GameAction {
 	private int power;
 	ChangeReturnPower(int newPower) { power = newPower; }
 	@Override
-	void performAction(Pokemon p) { Constants.base_powers[216] = power; }
+	void performAction(Pokemon p) { Move.RETURN.setPower(power); }
 }
 
 class LearnMove extends GameAction {
     private Move move;
-    LearnMove(Move m) { move = m; }
-    LearnMove(String s) { move = Move.getMoveByName(s); }
+    LearnMove(String s) { move = Move.valueOf(s); }
     public Move getMove() { return move; }
     @Override
     void performAction(Pokemon p) { p.getMoveset().addMove(move); }
@@ -179,8 +178,7 @@ class LearnMove extends GameAction {
 
 class UnlearnMove extends GameAction {
     private Move move;
-    UnlearnMove(Move m) { move = m; }
-    UnlearnMove(String s) { move = Move.getMoveByName(s); }
+    UnlearnMove(String s) { move = Move.valueOf(s); }
     public Move getMove() { return move; }
     @Override
     void performAction(Pokemon p) { p.getMoveset().delMove(move); }
@@ -188,7 +186,6 @@ class UnlearnMove extends GameAction {
 
 class Evolve extends GameAction {
     private Species target;
-    Evolve(Species s) { target = s; }
     Evolve(String s) { target = Species.valueOf(s); }
     @Override
     void performAction(Pokemon p) {
