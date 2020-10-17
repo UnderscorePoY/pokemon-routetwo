@@ -236,7 +236,7 @@ public enum Move {
     MORNINGSUN("Morning Sun", 234, MoveEffect.MORNING_SUN, 0, Type.NORMAL, 100, 5, 0),
     SYNTHESIS("Synthesis", 235, MoveEffect.SYNTHESIS, 0, Type.GRASS, 100, 5, 0),
     MOONLIGHT("Moonlight", 236, MoveEffect.MOONLIGHT, 0, Type.NORMAL, 100, 5, 0),
-    HIDDENPOWER("Hidden Power", 237, MoveEffect.HIDDEN_POWER, 1, Type.NORMAL, 100, 15, 0),
+    HIDDENPOWER("Hidden Power", 237, MoveEffect.HIDDEN_POWER, 0, Type.NORMAL, 100, 15, 0),
     CROSSCHOP("Cross Chop", 238, MoveEffect.NORMAL_HIT, 100, Type.FIGHTING, 80, 5, 0),
     TWISTER("Twister", 239, MoveEffect.TWISTER, 40, Type.DRAGON, 100, 20, 20),
     RAINDANCE("Rain Dance", 240, MoveEffect.RAIN_DANCE, 0, Type.WATER, 90, 5, 0),

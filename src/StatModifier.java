@@ -14,6 +14,8 @@ public class StatModifier {
     private int defBB = 0;
     private int spdBB = 0;
     private int spcBB = 0;
+    private boolean lightscreen = false;
+    private boolean reflect = false;
 
     public StatModifier() {}
 
@@ -108,6 +110,16 @@ public class StatModifier {
     public void setEvasionStage(int evasion) {
         this.evasion = bound(evasion);
     }
+    
+    public void setLightscreen(int lightscreen) {
+    	this.lightscreen = (lightscreen != 0);
+    }
+    public void setReflect(int reflect) {
+    	this.reflect = (reflect != 0);
+    }
+    public boolean isLightscreen() { return lightscreen; }
+    public boolean isReflect() { return reflect; }
+    
 
     public int getAtkStage() {
         return atk;
@@ -248,12 +260,14 @@ public class StatModifier {
     public String summary() {
         if (hasMods()) {
             if (hasBBs()) {
-                return String.format("+[%s/%s/%s/%s/%s]%s +<%s/%s/%s/%s>", atk,
-                        def, spd, spcAtk, spcDef, (usedxacc ? " +X ACC" : ""),
+                return String.format("+[%s/%s/%s/%s/%s]%s%s%s +<%s/%s/%s/%s>",
+                		atk, def, spd, spcAtk, spcDef, 
+                        (usedxacc ? " +X ACC" : ""), (isLightscreen() ? " +LIGHTSCREEN" : ""), (isReflect() ? " +REFLECT" : ""),
                         atkBB, defBB, spdBB, spcBB);
             } else {
-                return String.format("+[%s/%s/%s/%s/%s]%s", atk, def, spd,
-                        spcAtk, spcDef, (usedxacc ? " +X ACC" : ""));
+                return String.format("+[%s/%s/%s/%s/%s]%s%s%s", 
+                		atk, def, spd, spcAtk, spcDef, 
+                		(usedxacc ? " +X ACC" : ""), (isLightscreen() ? " +LIGHTSCREEN" : ""), (isReflect() ? " +REFLECT" : ""));
             }
         } else {
             if (hasBBs()) {
@@ -328,7 +342,7 @@ public class StatModifier {
 
     public boolean hasMods() {
         return atk != 0 || def != 0 || spcAtk != 0 || spcDef != 0 || spd != 0 || accuracy != 0
-                || evasion != 0 || usedxacc;
+                || evasion != 0 || usedxacc || isLightscreen() || isReflect();
     }
 
     public boolean hasBBs() {

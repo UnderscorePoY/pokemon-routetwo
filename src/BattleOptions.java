@@ -7,6 +7,10 @@ public class BattleOptions {
     private Integer[] xspcs = null;
     private Integer[] ydefs = null;
     private Integer[] order = null;
+    private Integer[] xlightscreen = null;
+    private Integer[] xreflect = null;
+    private Integer[] ylightscreen = null;
+    private Integer[] yreflect = null;
     private boolean printSRsOnLvl = false;
     private boolean printSRsBoostOnLvl = false;
     private StatModifier mod1;
@@ -106,6 +110,32 @@ public class BattleOptions {
     }
 
     public Integer[] getOrder() { return order; }
+
+    public void setXlightscreen(Integer[] lightscreen) { 
+    	int len = lightscreen.length;
+    	this.xlightscreen = new Integer[len];
+    	System.arraycopy(lightscreen, 0, this.xlightscreen, 0, len);
+    }
+    public void setYlightscreen(Integer[] lightscreen) {
+    	int len = lightscreen.length;
+    	this.ylightscreen = new Integer[len];
+    	System.arraycopy(lightscreen, 0, this.ylightscreen, 0, len);
+    }
+    public Integer[] getXlightscreen() { return xlightscreen; }
+    public Integer[] getYlightscreen() { return ylightscreen; }
+    
+    public void setXreflect(Integer[] reflect) {
+    	int len = reflect.length;
+    	this.xreflect = new Integer[len];
+    	System.arraycopy(reflect, 0, this.xreflect, 0, len);
+    }
+    public void setYreflect(Integer[] reflect) {
+    	int len = reflect.length;
+    	this.yreflect = new Integer[len];
+    	System.arraycopy(reflect, 0, this.yreflect, 0, len);
+    }
+    public Integer[] getXreflect() { return xreflect; }
+    public Integer[] getYreflect() { return yreflect; }
 
     public boolean isPrintSRsOnLvl() {
         return printSRsOnLvl;

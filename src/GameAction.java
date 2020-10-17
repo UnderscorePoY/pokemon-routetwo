@@ -1,6 +1,7 @@
 public abstract class GameAction {
     abstract void performAction(Pokemon p);
     
+    // candies & boosters
     public static final GameAction eatRareCandy = new GameAction() {
         void performAction(Pokemon p) { p.eatRareCandy(); }
     };
@@ -20,18 +21,75 @@ public abstract class GameAction {
         void performAction(Pokemon p) { p.eatCarbos(); }
     };
     
-    public static final GameAction pinkBowFlag = new GameAction() {
-        void performAction(Pokemon p) { Constants.pinkBow = true; }
+    // battle held items
+    public static final GameAction equipBlackBelt = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.BLACKBELT; }
+    };
+    public static final GameAction equipBlackGlasses = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.BLACKGLASSES; }
+    };
+    public static final GameAction equipCharcoal = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.CHARCOAL; }
+    };
+    public static final GameAction equipDragonScale = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.DRAGONSCALE; }
+    };
+    public static final GameAction equipHardStone = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.HARDSTONE; }
+    };
+    public static final GameAction equipMagnet = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.MAGNET; }
+    };
+    public static final GameAction equipMetalCoat = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.METALCOAT; }
+    };
+    public static final GameAction equipMiracleSeed = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.MIRACLESEED; }
+    };
+    public static final GameAction equipMysticWater = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.MYSTICWATER; }
+    };
+    public static final GameAction equipNeverMeltIce = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.NEVERMELTICE; }
+    };
+    public static final GameAction equipPinkBow = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.PINKBOW; }
+    };
+    public static final GameAction equipPoisonBarb = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.POISONBARB; }
+    };
+    public static final GameAction equipPolkadotBow = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.POLKADOTBOW; }
+    };
+    public static final GameAction equipSharpBeak = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.SHARPBEAK; }
+    };
+    public static final GameAction equipSilverPowder = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.SILVERPOWDER; }
+    };
+    public static final GameAction equipSoftSand = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.SOFTSAND; }
+    };
+    public static final GameAction equipSpellTag = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.SPELLTAG; }
+    };
+    public static final GameAction equipTwisterSpoon = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.TWISTEDSPOON; }
+    };
+    public static final GameAction equipLightBall = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.LIGHTBALL; }
+    };
+    public static final GameAction equipMetalPowder = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.METALPOWDER; }
+    };
+    public static final GameAction equipThickClub = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.THICKCLUB; }
+    };
+    public static final GameAction unequip = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = null; }
     };
     
-    public static final GameAction charcoalFlag = new GameAction() {
-        void performAction(Pokemon p) { Constants.charcoal = !Constants.charcoal; }
-    };
-    
-    public static final GameAction magnetFlag = new GameAction() {
-        void performAction(Pokemon p) { Constants.magnet = !Constants.magnet; }
-    };
-    
+    // battle tower
     public static final GameAction battleTowerFlag = new GameAction() {
         void performAction(Pokemon p) {
             p.setAtkBadge(false);

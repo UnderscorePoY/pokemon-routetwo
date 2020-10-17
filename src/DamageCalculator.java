@@ -8,7 +8,7 @@ public class DamageCalculator {
     // crit indicates if there is a crit or not
     private static int damage(Move attack, Pokemon attacker, Pokemon defender,
                               StatModifier atkMod, StatModifier defMod, int rangeNum,
-                              boolean crit, int extra_multiplier) {
+                              boolean crit, int extra_multiplier, boolean isPlayer) {
         if (rangeNum < MIN_RANGE) {
             rangeNum = MIN_RANGE;
         }
@@ -17,9 +17,21 @@ public class DamageCalculator {
         }
         Move modAttack = attack;
         if (modAttack.getPower() <= 0) {
-            // TODO: special cases
-            return 0;
+            // TODO: more special cases
+        	switch(modAttack) {
+        	case DRAGONRAGE: return 40;
+        	case SONICBOOM : return 20;
+        	case HIDDENPOWER :
+                Type type = getHP_Type(attacker);
+                int power = getHP_Power(attacker);
+                modAttack.setType(type);
+                modAttack.setPower(power);
+                modAttack.setName("Hidden Power [" + type.name() + " " + power + "]");
+                break;
+        	default: return 0;
+        	}
         }
+        /*
         if(modAttack == Move.HIDDENPOWER) {
             Type type = getHP_Type(attacker);
             int power = getHP_Power(attacker);
@@ -27,6 +39,7 @@ public class DamageCalculator {
             modAttack.setPower(power);
             modAttack.setName("Hidden Power [" + type.name() + " " + power + "]");
         }
+        */
         // stat modifiers
         int aa_orig = attacker.getTrueAtk();
         int atk_atk = atkMod.modAtk(attacker);
@@ -39,7 +52,7 @@ public class DamageCalculator {
         int as_orig = attacker.getTrueSpcAtk();
         int atk_spc = atkMod.modSpcAtk(attacker);
         int ds_orig = defender.getTrueSpcDef();
-        int dsa_orig_bug = defender.getTrueSpcAtk();
+        //int dsa_orig_bug = defender.getTrueSpcAtk(); ///TODO : when is it used and why is this not implemented ?
         int atk_spc_orig_bug = defMod.modSpcAtk(defender);
         int def_spc = defMod.modSpcDef(defender, atk_spc_orig_bug);
 
@@ -51,19 +64,38 @@ public class DamageCalculator {
             return 0;
         }
 
-        int effective_atk = 0, effective_def = 0;
+        int effective_atk = 0, effective_def = 0;        
+        boolean applyAtkModifiers = crit && (atkMod.getAtkStage() >= 0) || !crit;
+        boolean applyDefModifiers = crit && (defMod.getDefStage() <= 0) || !crit;
+        boolean applySpcAtkModifiers = crit && (atkMod.getSpcAtkStage() >= 0) || !crit;
+        boolean applySpcDefModifiers = crit && (defMod.getSpcDefStage() <= 0) || !crit;
+        
+        boolean isThickClub = isPlayer && Constants.battleHeldItem == BattleHeldItem.THICKCLUB 
+        		&& (attacker.getSpecies() == Species.CUBONE || attacker.getSpecies() == Species.MAROWAK);
+        boolean isLightBall = isPlayer && Constants.battleHeldItem == BattleHeldItem.LIGHTBALL && attacker.getSpecies() == Species.PIKACHU;
+        boolean isMetalPowder = isPlayer && Constants.battleHeldItem == BattleHeldItem.METALPOWDER && defender.getSpecies() == Species.DITTO;
+
         if (Type.isPhysicalType(modAttack.getType())) {
-            effective_atk = crit ? ((atkMod.getAtkStage() >= 0) ? atk_atk
+        	effective_atk = !applyAtkModifiers ? aa_orig : atk_atk * (isThickClub ? 2 : 1) ;
+        	effective_def = !applyDefModifiers ? dd_orig : (int)(def_def * (defMod.isReflect() ? 2 : 1) * (isMetalPowder ? 1.5 : 1));
+            /*
+        	effective_atk = crit ? ((atkMod.getAtkStage() >= 0) ? atk_atk
                     : aa_orig) : atk_atk;
             effective_def = crit ? ((defMod.getDefStage() <= 0) ? def_def
                     : dd_orig) : def_def;
+            */
 
         } else {
+        	effective_atk = !applySpcAtkModifiers ? as_orig : atk_spc * (isLightBall ? 2 : 1) ;
+        	effective_def = !applySpcDefModifiers ? ds_orig : (int)(def_spc * (defMod.isLightscreen() ? 2 : 1) * (isMetalPowder ? 1.5 : 1));
+        	/*
             effective_atk = crit ? ((atkMod.getSpcAtkStage() >= 0) ? atk_spc
                     : as_orig) : atk_spc;
             effective_def = crit ? ((defMod.getSpcDefStage() <= 0) ? def_spc
                     : ds_orig) : def_spc;
+            */
         }
+                
         if (effective_atk > 255 || effective_def > 255) {
             effective_atk = Math.max(1, effective_atk >> 2);
             effective_def = Math.max(1, effective_def >> 2);
@@ -74,13 +106,7 @@ public class DamageCalculator {
         int damage = (attacker.getLevel() * 2 / 5 + 2) * modAttack.getPower()
                 * effective_atk;
         damage = damage / effective_def / 50;
-        if (Constants.pinkBow && modAttack.getType() == Type.NORMAL) {
-            damage = damage * 110 / 100;
-        }
-        if (Constants.charcoal && modAttack.getType() == Type.FIRE) {
-            damage = damage * 110 / 100;
-        }
-        if (Constants.magnet && modAttack.getType() == Type.ELECTRIC) {
+        if (isPlayer && Constants.battleHeldItem != null && modAttack.getType() == Constants.battleHeldItem.type) {
             damage = damage * 110 / 100;
         }
         if (crit) {
@@ -128,30 +154,30 @@ public class DamageCalculator {
 
     public static int minDamage(Move attack, Pokemon attacker,
                                 Pokemon defender, StatModifier atkMod, StatModifier defMod,
-                                int extra_multiplier) {
+                                int extra_multiplier, boolean isPlayer) {
         return damage(attack, attacker, defender, atkMod, defMod, MIN_RANGE,
-                false, extra_multiplier);
+                false, extra_multiplier, isPlayer);
     }
 
     public static int maxDamage(Move attack, Pokemon attacker,
                                 Pokemon defender, StatModifier atkMod, StatModifier defMod,
-                                int extra_multiplier) {
+                                int extra_multiplier, boolean isPlayer) {
         return damage(attack, attacker, defender, atkMod, defMod, MAX_RANGE,
-                false, extra_multiplier);
+                false, extra_multiplier, isPlayer);
     }
 
     public static int minCritDamage(Move attack, Pokemon attacker,
                                     Pokemon defender, StatModifier atkMod, StatModifier defMod,
-                                    int extra_multiplier) {
+                                    int extra_multiplier, boolean isPlayer) {
         return damage(attack, attacker, defender, atkMod, defMod, MIN_RANGE,
-                true, extra_multiplier);
+                true, extra_multiplier, isPlayer);
     }
 
     public static int maxCritDamage(Move attack, Pokemon attacker,
                                     Pokemon defender, StatModifier atkMod, StatModifier defMod,
-                                    int extra_multiplier) {
+                                    int extra_multiplier, boolean isPlayer) {
         return damage(attack, attacker, defender, atkMod, defMod, MAX_RANGE,
-                true, extra_multiplier);
+                true, extra_multiplier, isPlayer);
     }
 
     // printout of move damages between the two pokemon
@@ -179,7 +205,7 @@ public class DamageCalculator {
             sb.append(endl);
         }
 
-        sb.append(summary_help(p1, p2, mod1, mod2));
+        sb.append(summary_help(p1, p2, mod1, mod2, Constants.isPlayer));
 
         sb.append(endl);
 
@@ -187,21 +213,21 @@ public class DamageCalculator {
             for(Move move : p1.getMoveset()) {
                 if (move == Move.ROLLOUT || move == Move.FURYCUTTER) {
                     for (int i = 1; i <= 5; i++) {
-                        damage_help(sb, move, p1, p2, mod1, mod2, i);
+                        damage_help(sb, move, p1, p2, mod1, mod2, i, Constants.isPlayer);
                     }
                 } else if (move == Move.RAGE) {
                     for (int i = 1; i <= 8; i++) {
-                        damage_help(sb, move, p1, p2, mod1, mod2, i);
+                        damage_help(sb, move, p1, p2, mod1, mod2, i, Constants.isPlayer);
                     }
                 } else if(move == Move.MAGNITUDE) {
                     for (int i=4; i<=10; i++) {
                         if(i==10) { i++; }
                         move.setPower(i*20-70);
-                        damage_help(sb, move, p1, p2, mod1, mod2, 1);
+                        damage_help(sb, move, p1, p2, mod1, mod2, 1, Constants.isPlayer);
                         move.setPower(1);
                     }
                 } else {
-                    damage_help(sb, move, p1, p2, mod1, mod2, 1);
+                    damage_help(sb, move, p1, p2, mod1, mod2, 1, Constants.isPlayer);
                 }
             }
 
@@ -214,42 +240,42 @@ public class DamageCalculator {
                         + endl);
             }
         }
-        sb.append(summary_help(p2, p1, mod2, mod1));
+        sb.append(summary_help(p2, p1, mod2, mod1, Constants.isEnemy));
 
         if(options.getVerbose() == BattleOptions.EVERYTHING) {
             sb.append(endl);
             for(Move move : p2.getMoveset()) {
                 if (move == Move.ROLLOUT || move == Move.FURYCUTTER) {
                     for (int i = 1; i <= 5; i++) {
-                        damage_help(sb, move, p2, p1, mod2, mod1, i);
+                        damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
                     }
                 } else if (move == Move.RAGE) {
                     for (int i = 1; i <= 8; i++) {
-                        damage_help(sb, move, p2, p1, mod2, mod1, i);
+                        damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
                     }
                 } else if(move == Move.MAGNITUDE) {
                     for (int i=4; i<=10; i++) {
                         if(i==10) { i++; }
                         move.setPower(i*20-70);
-                        damage_help(sb, move, p2, p1, mod2, mod1, 1);
+                        damage_help(sb, move, p2, p1, mod2, mod1, 1, Constants.isEnemy);
                         move.setPower(1);
                     }
                 } else {
-                    damage_help(sb, move, p2, p1, mod2, mod1, 1);
+                    damage_help(sb, move, p2, p1, mod2, mod1, 1, Constants.isEnemy);
                 }
             }
         }
         return sb.toString();
     }
 
-    private static void damage_help(StringBuilder sb, Move move, Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, int _extra_modifier) {
+    private static void damage_help(StringBuilder sb, Move move, Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, int _extra_modifier, boolean isPlayer) {
         int extra_modifier = (move == Move.FURYCUTTER || move == Move.ROLLOUT) ? 1 << (_extra_modifier - 1) : _extra_modifier;
         String endl = Constants.endl;
-        int minDmg = Math.min(p2.getHP(), minDamage(move, p1, p2, mod1, mod2, extra_modifier));
+        int minDmg = Math.min(p2.getHP(), minDamage(move, p1, p2, mod1, mod2, extra_modifier, Constants.isPlayer));
         if(minDmg > 0) {
-            int minCritDmg = Math.min(p2.getHP(), minCritDamage(move, p1, p2, mod1, mod2, extra_modifier));
-            TreeMap<Integer,Double> dmgMap = detailedDamage(move, p1, p2, mod1, mod2, false, extra_modifier);
-            TreeMap<Integer,Double> critMap = detailedDamage(move, p1, p2, mod1, mod2, true, extra_modifier);
+            int minCritDmg = Math.min(p2.getHP(), minCritDamage(move, p1, p2, mod1, mod2, extra_modifier, Constants.isPlayer));
+            TreeMap<Integer,Double> dmgMap = detailedDamage(move, p1, p2, mod1, mod2, false, extra_modifier, isPlayer);
+            TreeMap<Integer,Double> critMap = detailedDamage(move, p1, p2, mod1, mod2, true, extra_modifier, isPlayer);
             if(move == Move.RAGE || move == Move.FURYCUTTER || move == Move.ROLLOUT) {
                 sb.append(move.getBoostedName(_extra_modifier));
             } else {
@@ -298,7 +324,7 @@ public class DamageCalculator {
         
     // String summary of all of p1's moves used on p2
     // (would be faster if i didn't return intermediate strings)
-    private static String summary_help(Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2) {
+    private static String summary_help(Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer) {
         StringBuilder sb = new StringBuilder();
         String endl = Constants.endl;
 
@@ -307,21 +333,21 @@ public class DamageCalculator {
         for (Move m : p1.getMoveset()) {
             if (m == Move.ROLLOUT || m == Move.FURYCUTTER) {
                 for (int i = 1; i <= 5; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i);
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
                 }
             } else if (m == Move.RAGE) {
                 for (int i = 1; i <= 8; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i);
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
                 }
             } else if(m == Move.MAGNITUDE) {
                 for (int i=4; i<=10; i++) {
                     if(i==10) { i++; }
                     m.setPower(i*20-70);
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1);
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer);
                     m.setPower(1);
                 }
             } else {
-                printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1);
+                printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer);
             }
         }
         return sb.toString();
@@ -329,7 +355,7 @@ public class DamageCalculator {
 
     public static void printMoveDamage(StringBuilder sb, Move m, Pokemon p1,
                                        Pokemon p2, StatModifier mod1, StatModifier mod2, String endl,
-                                       int enemyHP, int _extra_multiplier) {
+                                       int enemyHP, int _extra_multiplier, boolean isPlayer) {
         int extra_multiplier =
                 (m == Move.FURYCUTTER || m == Move.ROLLOUT) ? 1 << (_extra_multiplier - 1) : _extra_multiplier;
         if(m == Move.RAGE || m == Move.FURYCUTTER || m == Move.ROLLOUT) {
@@ -340,8 +366,8 @@ public class DamageCalculator {
         sb.append("\t");
         // calculate damage of this move, and its percentages on opposing
         // pokemon
-        int minDmg = minDamage(m, p1, p2, mod1, mod2, extra_multiplier);
-        int maxDmg = maxDamage(m, p1, p2, mod1, mod2, extra_multiplier);
+        int minDmg = minDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer);
+        int maxDmg = maxDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer);
 
         // don't spam if the move doesn't do damage
         // TODO: better test of damaging move, to be done when fixes are made
@@ -355,8 +381,8 @@ public class DamageCalculator {
                 maxPct));
         sb.append("%\t(crit: ");
         // do it again, for crits
-        int critMinDmg = minCritDamage(m, p1, p2, mod1, mod2, extra_multiplier);
-        int critMaxDmg = maxCritDamage(m, p1, p2, mod1, mod2, extra_multiplier);
+        int critMinDmg = minCritDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer);
+        int critMaxDmg = maxCritDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer);
 
         double critMinPct = 100.0 * critMinDmg / enemyHP;
         double critMaxPct = 100.0 * critMaxDmg / enemyHP;
@@ -368,21 +394,21 @@ public class DamageCalculator {
         // test if noncrits can kill in 1shot
         if (maxDmg >= oppHP && minDmg < oppHP) {
             double oneShotPct = oneShotPercentage(m, p1, p2, mod1, mod2, false,
-                    extra_multiplier);
+                    extra_multiplier, isPlayer);
             sb.append(String.format("\t(One shot prob.: %.02f%%)", oneShotPct)
                     + endl);
         }
         // test if crits can kill in 1shot
         if (critMaxDmg >= oppHP && critMinDmg < oppHP) {
             double oneShotPct = oneShotPercentage(m, p1, p2, mod1, mod2, true,
-                    extra_multiplier);
+                    extra_multiplier, isPlayer);
             sb.append(String.format("\t(Crit one shot prob.: %.02f%%)",
                     oneShotPct) + endl);
         }
     }
 
     // used for the less verbose option
-    public static String shortSummary(Pokemon p1, Pokemon p2, BattleOptions options) {
+    public static String shortSummary(Pokemon p1, Pokemon p2, BattleOptions options, boolean isPlayer) {
         StringBuilder sb = new StringBuilder();
         String endl = Constants.endl;
 
@@ -406,7 +432,7 @@ public class DamageCalculator {
             sb.append(endl);
         }
 
-        sb.append(summary_help(p1, p2, mod1, mod2) + endl);
+        sb.append(summary_help(p1, p2, mod1, mod2, isPlayer) + endl);
         if (mod2.hasMods()) {
             sb.append(String.format("%s (%s) %s -> (%s): ", p2.pokeName(),
                     p2.statsStr(), mod2.summary(), mod2.modStatsStr(p2)));
@@ -420,11 +446,11 @@ public class DamageCalculator {
 
     private static double oneShotPercentage(Move attack, Pokemon attacker,
                                             Pokemon defender, StatModifier atkMod, StatModifier defMod,
-                                            boolean crit, int extra_multiplier) {
+                                            boolean crit, int extra_multiplier, boolean isPlayer) {
         // iterate until damage is big enough
         int rangeNum = MIN_RANGE;
         while (damage(attack, attacker, defender, atkMod, defMod, rangeNum,
-                crit, extra_multiplier) < defender.getHP()) {
+                crit, extra_multiplier, isPlayer) < defender.getHP()) {
             rangeNum++;
         }
         return 100.0 * (MAX_RANGE - rangeNum + 1) / (MAX_RANGE - MIN_RANGE + 1);
@@ -432,10 +458,10 @@ public class DamageCalculator {
 
     private static TreeMap<Integer,Double> detailedDamage(Move attack, Pokemon attacker, Pokemon defender,
                                                           StatModifier atkMod, StatModifier defMod, boolean crit,
-                                                          int extra_multiplier) {
+                                                          int extra_multiplier, boolean isPlayer) {
         TreeMap<Integer,Double> dmgMap = new TreeMap<Integer,Double>();
         for(int i=MIN_RANGE; i<=MAX_RANGE; i++) {
-            int dmg = Math.min(defender.getHP(), damage(attack, attacker, defender, atkMod, defMod, i, crit, extra_multiplier));
+            int dmg = Math.min(defender.getHP(), damage(attack, attacker, defender, atkMod, defMod, i, crit, extra_multiplier, isPlayer));
             if(dmgMap.containsKey(dmg)) {
                 dmgMap.put(dmg,100.0/((double)(MAX_RANGE-MIN_RANGE+1))+dmgMap.get(dmg));
             } else {

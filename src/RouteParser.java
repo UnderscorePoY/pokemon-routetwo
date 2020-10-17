@@ -207,14 +207,71 @@ public class RouteParser {
             int newPower = Integer.parseInt(tokens[1]);
             return new ChangeReturnPower(newPower);
         }		
-        else if (firstToken.equalsIgnoreCase("pinkbowflag")) {
-            return GameAction.pinkBowFlag;
+        else if (firstToken.equalsIgnoreCase("blackBelt")) {
+            return GameAction.equipBlackBelt;
         }
-        else if (firstToken.equalsIgnoreCase("charcoalflag")) {
-            return GameAction.charcoalFlag;
+        else if (firstToken.equalsIgnoreCase("blackGlasses")) {
+            return GameAction.equipBlackGlasses;
         }
-        else if (firstToken.equalsIgnoreCase("magnetflag")) {
-            return GameAction.magnetFlag;
+        else if (firstToken.equalsIgnoreCase("charcoal")) {
+            return GameAction.equipCharcoal;
+        }
+        else if (firstToken.equalsIgnoreCase("dragonScale")) {
+            return GameAction.equipDragonScale;
+        }
+        else if (firstToken.equalsIgnoreCase("hardStone")) {
+            return GameAction.equipHardStone;
+        }
+        else if (firstToken.equalsIgnoreCase("magnet")) {
+            return GameAction.equipMagnet;
+        }
+        else if (firstToken.equalsIgnoreCase("metalcoat")) {
+            return GameAction.equipMetalCoat;
+        }
+        else if (firstToken.equalsIgnoreCase("miracleSeed")) {
+            return GameAction.equipMiracleSeed;
+        }
+        else if (firstToken.equalsIgnoreCase("mysticWater")) {
+            return GameAction.equipMysticWater;
+        }
+        else if (firstToken.equalsIgnoreCase("neverMeltIce")) {
+            return GameAction.equipNeverMeltIce;
+        }
+        else if (firstToken.equalsIgnoreCase("pinkBow")) {
+            return GameAction.equipPinkBow;
+        }
+        else if (firstToken.equalsIgnoreCase("poisonBarb")) {
+            return GameAction.equipPoisonBarb;
+        }
+        else if (firstToken.equalsIgnoreCase("polkadotBow")) {
+            return GameAction.equipPolkadotBow;
+        }
+        else if (firstToken.equalsIgnoreCase("sharpBeak")) {
+            return GameAction.equipSharpBeak;
+        }
+        else if (firstToken.equalsIgnoreCase("silverPowder")) {
+            return GameAction.equipSilverPowder;
+        }
+        else if (firstToken.equalsIgnoreCase("softSand")) {
+            return GameAction.equipSoftSand;
+        }
+        else if (firstToken.equalsIgnoreCase("spellTag")) {
+            return GameAction.equipSpellTag;
+        }
+        else if (firstToken.equalsIgnoreCase("twistedSpoon")) {
+            return GameAction.equipTwisterSpoon;
+        }
+        else if (firstToken.equalsIgnoreCase("lightBall")) {
+            return GameAction.equipLightBall;
+        }
+        else if (firstToken.equalsIgnoreCase("metalPowder")) {
+            return GameAction.equipMetalPowder;
+        }
+        else if (firstToken.equalsIgnoreCase("thickClub")) {
+            return GameAction.equipThickClub;
+        }
+        else if (firstToken.equalsIgnoreCase("unequip")) {
+            return GameAction.unequip;
         }
 
         // printing commands
@@ -255,7 +312,12 @@ public class RouteParser {
     }
 
     enum NextFlag {
-        ANY_FLAG, XITEMS, YITEMS, XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, VERBOSE, SXP, SXPS, XATKS, XDEFS, XSPDS, XSPCS, YDEFS, ORDER, BBS,
+        ANY_FLAG, XITEMS, YITEMS, 
+        XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, 
+        VERBOSE, SXP, SXPS, 
+        XATKS, XDEFS, XSPDS, XSPCS, YDEFS, 
+        ORDER, BBS,
+        XREFLECT, YREFLECT, XLIGHTSCREEN, YLIGHTSCREEN
     }
 
     private static GameAction addFlagsToBattleable(Battleable b,
@@ -385,6 +447,23 @@ public class RouteParser {
                 // badge boosts
                 else if (s.equalsIgnoreCase("-bbs")) {
                     nf = NextFlag.BBS;
+                    continue;
+                }
+                // screens
+                else if (s.equalsIgnoreCase("-xreflect")) {
+                    nf = NextFlag.XREFLECT;
+                    continue;
+                }
+                else if (s.equalsIgnoreCase("-yreflect")) {
+                    nf = NextFlag.YREFLECT;
+                    continue;
+                }
+                else if (s.equalsIgnoreCase("-xlightscreen")) {
+                    nf = NextFlag.XLIGHTSCREEN;
+                    continue;
+                }
+                else if (s.equalsIgnoreCase("-ylightscreen")) {
+                    nf = NextFlag.YLIGHTSCREEN;
                     continue;
                 }
             }
@@ -564,6 +643,35 @@ public class RouteParser {
                 options.getMod1().setBadgeBoosts(atkBB, defBB, spdBB, spcBB);
                 nf = NextFlag.ANY_FLAG;
                 continue;
+            }
+            //screens
+            else if (nf == NextFlag.XLIGHTSCREEN || nf == NextFlag.YLIGHTSCREEN) {
+            	String[] nums = s.split("/");
+                Integer[] lightscreen = new Integer[nums.length];
+                for(int i=0; i<nums.length; i++) {
+                    lightscreen[i] = Integer.parseInt(nums[i]);
+                }
+                if (nf == NextFlag.XLIGHTSCREEN)
+                	options.setXlightscreen(lightscreen);
+                else if (nf == NextFlag.YLIGHTSCREEN)
+                	options.setYlightscreen(lightscreen);
+                
+            	nf = NextFlag.ANY_FLAG;
+            	continue;
+            }
+            else if (nf == NextFlag.XREFLECT || nf == NextFlag.YREFLECT) {
+            	String[] nums = s.split("/");
+                Integer[] reflect = new Integer[nums.length];
+                for(int i=0; i<nums.length; i++) {
+                    reflect[i] = Integer.parseInt(nums[i]);
+                }
+                if (nf == NextFlag.XREFLECT)
+                	options.setXreflect(reflect);
+                else if (nf == NextFlag.YREFLECT)
+                	options.setYreflect(reflect);
+                
+            	nf = NextFlag.ANY_FLAG;
+            	continue;
             }
         }
         if (nf != NextFlag.ANY_FLAG) {

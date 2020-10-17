@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 
 //represents a battle, with planned statmods
 public class Battle extends GameAction {
@@ -130,6 +129,10 @@ public class Battle extends GameAction {
             Integer[] xspcs = options.getXspcs();
             Integer[] ydefs = options.getYdefs();
             Integer[] order = options.getOrder();
+            Integer[] xlightscreen = options.getXlightscreen();
+            Integer[] ylightscreen = options.getYlightscreen();
+            Integer[] xreflect = options.getXreflect();
+            Integer[] yreflect = options.getYreflect();
             Iterable<Pokemon> trainerPokes = null;
             if(order == null) {
                 trainerPokes = t;
@@ -182,6 +185,30 @@ public class Battle extends GameAction {
                     StatModifier mod2 = options.getMod2();
                     mod2.setDefStage(ydef);
                     options.setMod2(mod2);
+                }
+                if(xlightscreen != null) {
+                	int xlight = xlightscreen[sxpIdx];
+                	StatModifier mod1 = options.getMod1();
+                	mod1.setLightscreen(xlight);
+                	options.setMod1(mod1);
+                }
+                if(ylightscreen != null) {
+                	int ylight = ylightscreen[sxpIdx];
+                	StatModifier mod2 = options.getMod2();
+                	mod2.setLightscreen(ylight);
+                	options.setMod2(mod2);
+                }
+                if(xreflect != null) {
+                	int xref = xreflect[sxpIdx];
+                	StatModifier mod1 = options.getMod1();
+                	mod1.setReflect(xref);
+                	options.setMod1(mod1);
+                }
+                if(yreflect != null) {
+                	int yref = yreflect[sxpIdx];
+                	StatModifier mod2 = options.getMod2();
+                	mod2.setReflect(yref);
+                	options.setMod2(mod2);
                 }
                 if(sxp != 0) {
                     if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.EVERYTHING)
@@ -247,7 +274,7 @@ public class Battle extends GameAction {
 
     // does not actually do the battle, just prints short summary
     public void printShortBattle(Pokemon us, Pokemon them) {
-        Main.appendln(DamageCalculator.shortSummary(us, them, options));
+        Main.appendln(DamageCalculator.shortSummary(us, them, options, Constants.isPlayer));
     }
 }
 

@@ -2,12 +2,12 @@ public class Constants {
     static final String hashName(String s) {
         return s.toUpperCase().replaceAll("\\W", "");
     }
-
     static final String endl = System.lineSeparator();
 
-    static boolean pinkBow = false;
-    static boolean charcoal = false;
-    static boolean magnet = false;
+    static final boolean isPlayer = true;
+    static final boolean isEnemy = false;
+    
+    static BattleHeldItem battleHeldItem = null;
     public static boolean battleTower = false;
 
     static public boolean givesSpDefBadgeBoost(int spA) {
