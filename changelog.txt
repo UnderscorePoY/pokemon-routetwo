@@ -1,5 +1,15 @@
 Changelog:
 
+2020-10-18 :
+- added all type-boosting items
+- added all species-boosting items (Light Ball, etc.)
+- added Dragon Rage & Sonicboom properly
+- fixed Struggle
+
+(...)
+time warp
+(...)
+
 v 1.00-beta:
 
 - first release, derived from RouteOne 1.04

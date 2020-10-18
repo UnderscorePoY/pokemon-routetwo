@@ -132,16 +132,27 @@ Listed below are these flags, and example use cases. Unless otherwise indicated,
 
 -lvrangesb:
   -lvragesb: Prints out your stat ranges, with badge boosts, whenever you level up during this battle.
+
+-xlightscreen, -ylightscreen:
+  sets up Light Screen for x=the player, y=the opponent
+  Example: `JASMINE -xlightscreen 1/1/1 -v 2 //We need Lightscreen to survive Magnemites`
   
+-xreflect, -yreflect:
+  sets up Reflect for x=the player, y=the opponent
+  Example: `SABRINA -xatk 1 -yreflect 0/1/1 -v 2 //Mr. Mime using Reflect, not again!`
+
 -5.3 Your Pokemon-
 Unfortunately, you will have to keep bookkeeping on your pokemon, including when it evolves and learns/unlearn moves. RouteTwo supports a moveset of more than 4 moves, if you want to test many moves at a time.
 
 battletowerflag:
   battletowerflag: Sets mode to battle tower; i.e. removes all badge boosts
   
-pinkbowflag, charcoalflag:
-  pinkbowflag:  Gives your pokemon the Pink Bow as a held item.
-  charcoalflag: Gives your pokemon Charcoal as a held item.
+pinkbow, charcoal, magnet, hardstone (etc.):
+  equips the corresponding type-boosting item
+  Note: works with `thickclub`, `metalpowder`, `lightball` too.
+  
+unequip:
+  unequips any previously equipped item
   
 e, evolve:
   e <species>: Evolves your pokemon into the specified species.
