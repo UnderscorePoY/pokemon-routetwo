@@ -164,7 +164,7 @@ public enum Move {
     SUPERFANG("Super Fang", 162, MoveEffect.SUPER_FANG, 1, Type.NORMAL, 90, 10, 0),
     SLASH("Slash", 163, MoveEffect.NORMAL_HIT, 70, Type.NORMAL, 100, 20, 0),
     SUBSTITUTE("Substitute", 164, MoveEffect.SUBSTITUTE, 0, Type.NORMAL, 100, 10, 0),
-    STRUGGLE("Struggle", 165, MoveEffect.RECOIL_HIT, 50, Type.NORMAL, 100, 1, 0),
+    STRUGGLE("Struggle", 165, MoveEffect.RECOIL_HIT, 50, Type.NONE, 100, 1, 0),
     SKETCH("Sketch", 166, MoveEffect.SKETCH, 0, Type.NORMAL, 100, 1, 0),
     TRIPLEKICK("Triple Kick", 167, MoveEffect.TRIPLE_KICK, 10, Type.FIGHTING, 90, 10, 0),
     THIEF("Thief", 168, MoveEffect.THIEF, 40, Type.DARK, 100, 10, 100),

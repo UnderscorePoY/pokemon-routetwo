@@ -16,11 +16,13 @@ public class DamageCalculator {
             rangeNum = MAX_RANGE;
         }
         Move modAttack = attack;
+        
+        if (modAttack.getEffect() == MoveEffect.STATIC_DAMAGE) {
+        	return modAttack.getPower();
+        }
         if (modAttack.getPower() <= 0) {
             // TODO: more special cases
         	switch(modAttack) {
-        	case DRAGONRAGE: return 40;
-        	case SONICBOOM : return 20;
         	case HIDDENPOWER :
                 Type type = getHP_Type(attacker);
                 int power = getHP_Power(attacker);
