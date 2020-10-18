@@ -1,5 +1,4 @@
 bin/
-*.jar
 outputs/
 local_routes/
 build/
