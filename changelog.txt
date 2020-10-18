@@ -5,6 +5,7 @@ Changelog:
 - added all species-boosting items (Light Ball, etc.)
 - added Dragon Rage & Sonicboom properly
 - fixed Struggle
+- implemented Light Screen & Reflect as battle flags
 
 (...)
 time warp
