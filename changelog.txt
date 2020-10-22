@@ -1,5 +1,9 @@
 Changelog:
 
+2020-10-22 :
+- fixed Struggle
+- copied n-shot calculation logic from RouteOne
+
 2020-10-18 :
 - added all type-boosting items
 - added all species-boosting items (Light Ball, etc.)

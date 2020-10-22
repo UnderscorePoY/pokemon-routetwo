@@ -33,15 +33,7 @@ public class DamageCalculator {
         	default: return 0;
         	}
         }
-        /*
-        if(modAttack == Move.HIDDENPOWER) {
-            Type type = getHP_Type(attacker);
-            int power = getHP_Power(attacker);
-            modAttack.setType(type);
-            modAttack.setPower(power);
-            modAttack.setName("Hidden Power [" + type.name() + " " + power + "]");
-        }
-        */
+
         // stat modifiers
         int aa_orig = attacker.getTrueAtk();
         int atk_atk = atkMod.modAtk(attacker);
@@ -58,8 +50,9 @@ public class DamageCalculator {
         int atk_spc_orig_bug = defMod.modSpcAtk(defender);
         int def_spc = defMod.modSpcDef(defender, atk_spc_orig_bug);
 
-        boolean STAB = modAttack.getType() == attacker.getSpecies().getType1()
-                || modAttack.getType() == attacker.getSpecies().getType2();
+        boolean STAB = modAttack.getType() != Type.NONE &&
+        		(modAttack.getType() == attacker.getSpecies().getType1()
+                || modAttack.getType() == attacker.getSpecies().getType2());
         double effectiveMult = Type.effectiveness(modAttack.getType(), defender
                 .getSpecies().getType1(), defender.getSpecies().getType2());
         if (effectiveMult == 0) {
@@ -80,22 +73,9 @@ public class DamageCalculator {
         if (Type.isPhysicalType(modAttack.getType())) {
         	effective_atk = !applyAtkModifiers ? aa_orig : atk_atk * (isThickClub ? 2 : 1) ;
         	effective_def = !applyDefModifiers ? dd_orig : (int)(def_def * (defMod.isReflect() ? 2 : 1) * (isMetalPowder ? 1.5 : 1));
-            /*
-        	effective_atk = crit ? ((atkMod.getAtkStage() >= 0) ? atk_atk
-                    : aa_orig) : atk_atk;
-            effective_def = crit ? ((defMod.getDefStage() <= 0) ? def_def
-                    : dd_orig) : def_def;
-            */
-
         } else {
         	effective_atk = !applySpcAtkModifiers ? as_orig : atk_spc * (isLightBall ? 2 : 1) ;
         	effective_def = !applySpcDefModifiers ? ds_orig : (int)(def_spc * (defMod.isLightscreen() ? 2 : 1) * (isMetalPowder ? 1.5 : 1));
-        	/*
-            effective_atk = crit ? ((atkMod.getSpcAtkStage() >= 0) ? atk_spc
-                    : as_orig) : atk_spc;
-            effective_def = crit ? ((defMod.getSpcDefStage() <= 0) ? def_spc
-                    : ds_orig) : def_spc;
-            */
         }
                 
         if (effective_atk > 255 || effective_def > 255) {
@@ -393,6 +373,144 @@ public class DamageCalculator {
         sb.append("%)" + endl);
 
         int oppHP = p2.getHP();
+        
+     // normal rolls
+        sb.append("\tNormal rolls: ");
+        int lastDam = -1;
+        int lastDamCount = -1;
+        for (int i = MIN_RANGE; i <= MAX_RANGE; i++) {
+            int dam = damage(m, p1, p2, mod1, mod2, i, false, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+            if (dam > oppHP) {
+                dam = oppHP;
+            }
+            if (dam != lastDam) {
+                if (lastDamCount != -1) {
+                    sb.append(lastDam + "x" + lastDamCount + ", ");
+                }
+                lastDam = dam;
+                lastDamCount = 1;
+            } else {
+                lastDamCount++;
+            }
+        }
+        sb.append(lastDam + "x" + lastDamCount + endl);
+
+        // crit rolls
+        sb.append("\tCrit rolls: ");
+        lastDam = -1;
+        lastDamCount = -1;
+        for (int i = MIN_RANGE; i <= MAX_RANGE; i++) {
+            int dam = damage(m, p1, p2, mod1, mod2, i, true, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+            if (dam > oppHP) {
+                dam = oppHP;
+            }
+            if (dam != lastDam) {
+                if (lastDamCount != -1) {
+                    sb.append(lastDam + "x" + lastDamCount + ", ");
+                }
+                lastDam = dam;
+                lastDamCount = 1;
+            } else {
+                lastDamCount++;
+            }
+        }
+        sb.append(lastDam + "x" + lastDamCount + endl);
+
+        int realminDmg = Math.min(minDmg, critMinDmg);
+        int realmaxDmg = Math.max(maxDmg, critMaxDmg);
+
+        if (Settings.includeCrits) {
+
+            double critChance = 1 / 16.0;
+            if (m == Move.AEROBLAST  || 
+            	m == Move.CRABHAMMER ||
+            	m == Move.CROSSCHOP  ||
+            	m == Move.KARATECHOP ||
+            	m == Move.RAZORLEAF  ||
+            	m == Move.RAZORWIND  ||
+            	m == Move.SLASH ){
+                critChance *= 4;
+            }
+
+            for (int hits = 1; hits <= 8; hits++) {
+                if (realminDmg * hits < oppHP && realmaxDmg * hits >= oppHP) {
+                    double totalKillPct = 0;
+                    for (int crits = 0; crits <= hits; crits++) {
+                        double nShotPct = nShotPercentage(m, p1, p2, mod1, mod2, hits - crits, crits, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+                        totalKillPct += nShotPct * choose(hits, crits) * Math.pow(critChance, crits)
+                                * Math.pow(1 - critChance, hits - crits);
+                    }
+                    if (totalKillPct >= 0.1 && totalKillPct <= 99.999) {
+                        sb.append(String.format("\t(Overall %d-hit Kill%%: %.04f%%)", hits, totalKillPct) + endl);
+                    }
+                }
+            }
+        } else {
+
+            // test if noncrits can kill in 1shot
+            if (maxDmg >= oppHP && minDmg < oppHP) {
+                double oneShotPct = oneShotPercentage(m, p1, p2, mod1, mod2, false, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+                sb.append(String.format("\t(One shot prob.: %.02f%%)", oneShotPct) + endl);
+            }
+            // test if crits can kill in 1shot
+            if (critMaxDmg >= oppHP && critMinDmg < oppHP) {
+                double oneShotPct = oneShotPercentage(m, p1, p2, mod1, mod2, true, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+                sb.append(String.format("\t(Crit one shot prob.: %.02f%%)", oneShotPct) + endl);
+            }
+
+            // n-shot
+            int minDmgWork = minDmg;
+            int maxDmgWork = maxDmg;
+            int hits = 1;
+            while (minDmgWork < oppHP && hits < 5) {
+                hits++;
+                minDmgWork += minDmg;
+                maxDmgWork += maxDmg;
+                if (maxDmgWork >= oppHP && minDmgWork < oppHP) {
+                    System.out.println("working out a " + hits + "-shot");
+                    double nShotPct = nShotPercentage(m, p1, p2, mod1, mod2, hits, 0, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+                    sb.append(String.format("\t(%d shot prob.: %.04f%%)", hits, nShotPct) + endl);
+                }
+            }
+
+            // n-crit-shot
+            minDmgWork = critMinDmg;
+            maxDmgWork = critMaxDmg;
+            hits = 1;
+            while (minDmgWork < oppHP && hits < 5) {
+                hits++;
+                minDmgWork += critMinDmg;
+                maxDmgWork += critMaxDmg;
+                if (maxDmgWork >= oppHP && minDmgWork < oppHP) {
+                    System.out.println("working out a " + hits + "-crit-shot");
+                    double nShotPct = nShotPercentage(m, p1, p2, mod1, mod2, 0, hits, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+                    sb.append(String.format("\t(%d crits death prob.: %.04f%%)", hits, nShotPct) + endl); 
+                }
+            }
+
+            // mixed a-noncrit and b-crit shot
+            for (int non = 1; non <= 5 && realminDmg * (non + 1) < oppHP; non++) {
+                for (int crit = 1; non + crit <= 5 && realminDmg * (non + crit) < oppHP; crit++) {
+                    int sumMin = critMinDmg * crit + minDmg * non;
+                    int sumMax = critMaxDmg * crit + maxDmg * non;
+                    if (sumMin < oppHP && sumMax >= oppHP) {
+                        System.out.printf("working out %d non-crits + %d crits\n", non, crit);
+                        double nShotPct = nShotPercentage(m, p1, p2, mod1, mod2, non, crit, extra_multiplier, isPlayer); /// TODO : Rage, Rollout etc.
+                        sb.append(String.format("\t(%d non-crit%s + %d crit%s death prob.: %.04f%%)", non,
+                                non > 1 ? "s" : "", crit, crit > 1 ? "s" : "", nShotPct)
+                                + endl);
+                    }
+                }
+            }
+        }
+
+        // guaranteed n-shot
+        if (Settings.showGuarantees) {
+            int guarantee = (int) Math.ceil(((double) oppHP) / realminDmg);
+            sb.append(String.format("\t(guaranteed %d-shot)", guarantee) + endl);
+        }
+        
+        /*
         // test if noncrits can kill in 1shot
         if (maxDmg >= oppHP && minDmg < oppHP) {
             double oneShotPct = oneShotPercentage(m, p1, p2, mod1, mod2, false,
@@ -407,6 +525,17 @@ public class DamageCalculator {
             sb.append(String.format("\t(Crit one shot prob.: %.02f%%)",
                     oneShotPct) + endl);
         }
+        */
+    }
+    
+    public static long choose(long total, long choose) {
+        if (total < choose)
+            return 0;
+        if (choose == 0 || choose == total)
+            return 1;
+        if (choose == 1 || choose == total - 1)
+            return total;
+        return choose(total - 1, choose - 1) + choose(total - 1, choose);
     }
 
     // used for the less verbose option
@@ -471,5 +600,71 @@ public class DamageCalculator {
             }
         }
         return dmgMap;
+    }
+    
+    private static double nShotPercentage(Move attack, Pokemon attacker, Pokemon defender, StatModifier atkMod,
+            StatModifier defMod, int numHitsNonCrit, int numHitsCrit, int extra_multiplier, boolean isPlayer) {
+        int rawHitDamageNC = damage(attack, attacker, defender, atkMod, defMod, MAX_RANGE, false, extra_multiplier, isPlayer);  /// TODO : Rage, Rollout etc.
+        int minDamageNC = rawHitDamageNC * MIN_RANGE / 255;
+        int[] probsNC = new int[rawHitDamageNC - minDamageNC + 1];
+        for (int i = MIN_RANGE; i <= MAX_RANGE; i++) {
+            int dmg = rawHitDamageNC * i / 255;
+            probsNC[dmg - minDamageNC]++;
+        }
+        int rawHitDamageCR = damage(attack, attacker, defender, atkMod, defMod, MAX_RANGE, true, extra_multiplier, isPlayer);  /// TODO : Rage, Rollout etc.
+        int minDamageCR = rawHitDamageCR * MIN_RANGE / 255;
+        int[] probsCR = new int[rawHitDamageCR - minDamageCR + 1];
+        for (int i = MIN_RANGE; i <= MAX_RANGE; i++) {
+            int dmg = rawHitDamageCR * i / 255;
+            probsCR[dmg - minDamageCR]++;
+        }
+        double chances = 0;
+        int rawHP = defender.getHP();
+        if (numHitsNonCrit > 0) {
+            for (int i = minDamageNC; i <= rawHitDamageNC; i++) {
+                chances += nShotPctInner(minDamageNC, rawHitDamageNC, minDamageCR, rawHitDamageCR, rawHP, 0, i,
+                        numHitsNonCrit, numHitsCrit, probsNC, probsCR);
+            }
+        } else {
+            for (int i = minDamageCR; i <= rawHitDamageCR; i++) {
+                chances += nShotPctInner(minDamageNC, rawHitDamageNC, minDamageCR, rawHitDamageCR, rawHP, 0, i,
+                        numHitsNonCrit, numHitsCrit, probsNC, probsCR);
+            }
+        }
+        return 100.0 * chances / Math.pow(MAX_RANGE - MIN_RANGE + 1, numHitsNonCrit + numHitsCrit);
+    }
+
+    private static double nShotPctInner(int minDamageNC, int maxDamageNC, int minDamageCR, int maxDamageCR, int hp,
+            int stackedDmg, int rolledDamage, int hitsLeftNonCrit, int hitsLeftCrit, int[] probsNC, int[] probsCR) {
+        boolean wasCritical = false;
+        if (hitsLeftNonCrit > 0) {
+            hitsLeftNonCrit--;
+        } else {
+            hitsLeftCrit--;
+            wasCritical = true;
+        }
+        stackedDmg += rolledDamage;
+        if (stackedDmg >= hp || (stackedDmg + hitsLeftNonCrit * minDamageNC + hitsLeftCrit * minDamageCR) >= hp) {
+            return Math.pow(MAX_RANGE - MIN_RANGE + 1, hitsLeftNonCrit + hitsLeftCrit)
+                    * (wasCritical ? probsCR[rolledDamage - minDamageCR] : probsNC[rolledDamage - minDamageNC]);
+        } else if (hitsLeftNonCrit == 0 && hitsLeftCrit == 0) {
+            return 0;
+        } else if (stackedDmg + hitsLeftNonCrit * maxDamageNC + hitsLeftCrit * maxDamageCR < hp) {
+            return 0;
+        } else {
+            double chances = 0;
+            if (hitsLeftNonCrit > 0) {
+                for (int i = minDamageNC; i <= maxDamageNC; i++) {
+                    chances += nShotPctInner(minDamageNC, maxDamageNC, minDamageCR, maxDamageCR, hp, stackedDmg, i,
+                            hitsLeftNonCrit, hitsLeftCrit, probsNC, probsCR);
+                }
+            } else {
+                for (int i = minDamageCR; i <= maxDamageCR; i++) {
+                    chances += nShotPctInner(minDamageNC, maxDamageNC, minDamageCR, maxDamageCR, hp, stackedDmg, i,
+                            hitsLeftNonCrit, hitsLeftCrit, probsNC, probsCR);
+                }
+            }
+            return chances * (wasCritical ? probsCR[rolledDamage - minDamageCR] : probsNC[rolledDamage - minDamageNC]);
+        }
     }
 }

@@ -84,7 +84,7 @@ public enum Type {
 
     public static boolean isPhysicalType(Type t) {
         return (typeIndex(t) >= typeIndex(Type.NORMAL) && typeIndex(t) <= typeIndex(Type.GHOST))
-                || t == Type.STEEL;
+                || t == Type.STEEL || t == Type.NONE;
     }
 
 }

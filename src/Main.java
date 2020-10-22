@@ -42,6 +42,11 @@ public class Main {
             Initialization.init(null);
         }
         
+        if(ini.get("util").containsKey("includeCrits"))
+        	Settings.includeCrits = ini.get("poke", "includeCrits", boolean.class);
+        if(ini.get("util").containsKey("showGuarantees"))
+        	Settings.showGuarantees = ini.get("poke", "showGuarantees", boolean.class);
+        
         IVs ivs = new IVs(atkIV,defIV,spdIV,spcIV);
         Pokemon p = null;
         try {
