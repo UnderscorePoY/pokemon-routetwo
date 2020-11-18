@@ -11,8 +11,11 @@ public class Constants {
     public static boolean battleTower = false;
 
     static public boolean givesSpDefBadgeBoost(int spA) {
-        int aVal = (spA - 999)/256;
-        return (aVal % 2) == 0;
+        if(spA >=  0 && spA <= 205
+        || spA >=433 && spA <= 660)
+        	return false;
+        			
+        return true;
     }
 
 }

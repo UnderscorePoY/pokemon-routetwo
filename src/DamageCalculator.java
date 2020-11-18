@@ -88,6 +88,7 @@ public class DamageCalculator {
         int damage = (attacker.getLevel() * 2 / 5 + 2) * modAttack.getPower()
                 * effective_atk;
         damage = damage / effective_def / 50;
+        // Held items
         if (isPlayer && Constants.battleHeldItem != null && modAttack.getType() == Constants.battleHeldItem.type) {
             damage = damage * 110 / 100;
         }
@@ -95,10 +96,33 @@ public class DamageCalculator {
             damage *= 2;
         }
         damage = Math.min(damage, 997) + 2;
+        
+        // Weather
+        switch(atkMod.getWeather()) {
+        case RAIN :
+        	if(modAttack == Move.SOLARBEAM || modAttack.getType() == Type.FIRE) {
+        		damage /= 2;
+        	} else if (modAttack.getType() == Type.WATER) {
+        		damage = damage * 3 / 2;
+        	}
+        	break;
+        case SUN :
+        	if(modAttack.getType() == Type.WATER) {
+        		damage /= 2;
+        	} else if (modAttack.getType() == Type.FIRE) {
+        		damage = damage * 3 / 2;
+        	}
+        	break;
+        default :
+        	break;
+        }
+        	
+        // Type boosts
         if (attacker.isTypeBoosted(modAttack.getType())) {
             int typeboost = Math.max(damage * 1 / 8, 1);
             damage += typeboost;
         }
+        // STAB
         if (STAB) {
             damage = damage * 3 / 2;
         }
@@ -342,9 +366,29 @@ public class DamageCalculator {
                 (m == Move.FURYCUTTER || m == Move.ROLLOUT) ? 1 << (_extra_multiplier - 1) : _extra_multiplier;
         if(m == Move.RAGE || m == Move.FURYCUTTER || m == Move.ROLLOUT) {
             sb.append(m.getBoostedName(_extra_multiplier));
+        } else if (mod1.getWeather() != Weather.NONE) {
+	        switch(mod1.getWeather()) {
+	        case RAIN :
+	        	if(m == Move.SOLARBEAM || m.getType() == Type.FIRE) {
+	        		sb.append(m.getName()+" -RAIN");
+	        	} else if (m.getType() == Type.WATER) {
+	        		sb.append(m.getName()+" +RAIN");
+	        	}
+	        	break;
+	        case SUN :
+	        	if(m.getType() == Type.WATER) {
+	        		sb.append(m.getName()+" -SUN");
+	        	} else if (m.getType() == Type.FIRE) {
+	        		sb.append(m.getName()+" +SUN");
+	        	}
+	        	break;
+	        default :
+	        	break;
+	        } 
         } else {
-            sb.append(m.getName());
+        	sb.append(m.getName());
         }
+        
         sb.append("\t");
         // calculate damage of this move, and its percentages on opposing
         // pokemon

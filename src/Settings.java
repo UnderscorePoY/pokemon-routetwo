@@ -3,4 +3,6 @@ public class Settings {
     public static boolean isGS = true;
     public static boolean includeCrits = false;
     public static boolean showGuarantees = false;
+    public static boolean hasAmuletCoin = false;
+    public static int money = 3000;
 }

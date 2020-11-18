@@ -193,7 +193,29 @@ public abstract class GameAction {
         }
     };
     
+    public static final GameAction setAmuletCoin = new GameAction() {
+        void performAction(Pokemon p) {
+        	Settings.hasAmuletCoin = true;
+        }
+    };
+    public static final GameAction unsetAmuletCoin = new GameAction() {
+        void performAction(Pokemon p) {
+        	Settings.hasAmuletCoin = false;
+        }
+    };
+    
+    public static final GameAction addMoney = new GameAction() {
+    	void performAction(Pokemon p) {
+    		
+    	}
+    };
+    
     //not really a game action, but it's a nice hack?
+    public static final GameAction printMoney = new GameAction() {
+        void performAction(Pokemon p) { 
+            Main.appendln(String.format("MONEY: %,d", Settings.money));
+        }
+    };
     public static final GameAction printAllStats = new GameAction() {
         void performAction(Pokemon p) { 
             Main.appendln(p.statsWithBoost());
@@ -219,7 +241,9 @@ public abstract class GameAction {
 
 class ChangeReturnPower extends GameAction {
     private int power;
-    ChangeReturnPower(int newPower) { power = newPower; }
+    private int MIN_RETURN_POWER = 1;
+    private int MAX_RETURN_POWER = 102;
+    ChangeReturnPower(int newPower) { power = Math.min(MAX_RETURN_POWER, Math.max(MIN_RETURN_POWER, newPower)); }
     @Override
     void performAction(Pokemon p) { Move.RETURN.setPower(power); }
 }
@@ -248,4 +272,13 @@ class Evolve extends GameAction {
     void performAction(Pokemon p) {
         p.evolve(target);
         p.calculateStats();}
+}
+
+class AddMoney extends GameAction {
+	private int money;
+	AddMoney(int m) {money = m;}
+	@Override
+	void performAction(Pokemon p) {
+		Settings.money += money;
+	}
 }

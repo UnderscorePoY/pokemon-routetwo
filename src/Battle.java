@@ -120,6 +120,8 @@ public class Battle extends GameAction {
             }
         } else { // is a Trainer
             Trainer t = (Trainer) opponent;
+            Settings.money += t.getReward();
+            
             int sxpIdx = 0;
             int sxp = 1;
             Integer[] sxps = options.getSxps();
@@ -127,12 +129,15 @@ public class Battle extends GameAction {
             Integer[] xdefs = options.getXdefs();
             Integer[] xspds = options.getXspds();
             Integer[] xspcs = options.getXspcs();
+            Integer[] xspdefs = options.getXspdefs();
             Integer[] ydefs = options.getYdefs();
+            Integer[] yspdefs = options.getYspdefs();
             Integer[] order = options.getOrder();
             Integer[] xlightscreen = options.getXlightscreen();
             Integer[] ylightscreen = options.getYlightscreen();
             Integer[] xreflect = options.getXreflect();
             Integer[] yreflect = options.getYreflect();
+            Weather[] weathers = options.getWeathers();
             Iterable<Pokemon> trainerPokes = null;
             if(order == null) {
                 trainerPokes = t;
@@ -180,10 +185,22 @@ public class Battle extends GameAction {
                     mod1.setSpcAtkStage(xspc);
                     options.setMod1(mod1);
                 }
+                if(xspdefs != null) {
+                    int xspdef = xspdefs[sxpIdx];
+                    StatModifier mod1 = options.getMod1();
+                    mod1.setSpcAtkStage(xspdef);
+                    options.setMod1(mod1);
+                }
                 if(ydefs != null) {
                     int ydef = ydefs[sxpIdx];
                     StatModifier mod2 = options.getMod2();
                     mod2.setDefStage(ydef);
+                    options.setMod2(mod2);
+                }
+                if(yspdefs != null) {
+                    int yspdef = yspdefs[sxpIdx];
+                    StatModifier mod2 = options.getMod2();
+                    mod2.setSpcDefStage(yspdef);
                     options.setMod2(mod2);
                 }
                 if(xlightscreen != null) {
@@ -210,14 +227,29 @@ public class Battle extends GameAction {
                 	mod2.setReflect(yref);
                 	options.setMod2(mod2);
                 }
+                if(weathers != null) {
+                    Weather weather = weathers[sxpIdx];
+                    StatModifier mod1 = options.getMod1();
+                    StatModifier mod2 = options.getMod2(); 
+                    mod1.setWeather(weather);
+                    mod2.setWeather(weather);
+                    options.setMod1(mod1);
+                    options.setMod2(mod2);
+                }
                 if(sxp != 0) {
                     if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.EVERYTHING)
                         printBattle(p, (Pokemon) opps);
                     else if (getVerbose() == BattleOptions.SOME)
                         printShortBattle(p, (Pokemon) opps);
                     if (getVerbose() != BattleOptions.NONE) {
-                        if (options.getMod1().modSpdWithIV(p, 0) <= options.getMod2().modSpd(opps)
-                                && options.getMod1().modSpdWithIV(p, 15) >= options.getMod2().modSpd(opps)) {
+                    	int meMinSpeed = options.getMod1().modSpdWithIV(p, 0);
+                    	int meMaxSpeed = options.getMod1().modSpdWithIV(p, 15);
+                    	int oppSpeed = options.getMod2().modSpd(opps);
+                    	
+                    	if(meMaxSpeed < oppSpeed)
+                    		Main.appendln("(always slower)");
+                    	
+                    	else if (meMinSpeed <= oppSpeed && meMaxSpeed >= oppSpeed) {
                             int tieDV = 16, outspeedDV = 16;
                             int oppSpd = options.getMod2().modSpd(opps);
                             for (int sDV = 0; sDV < 16; sDV++) {

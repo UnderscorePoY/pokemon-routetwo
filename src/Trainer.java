@@ -10,7 +10,15 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
     private ArrayList<Pokemon> pokes;
     private int offset;
     private IVs dvs;
+    private int reward;
 
+    public int getReward() {
+    	int reward = this.reward;
+    	if(Settings.hasAmuletCoin)
+    		reward *= 2;
+    	return reward;
+    }
+    
     public void changePokes(Collection<Pokemon> pokes) {
         this.pokes = new ArrayList<>(pokes);
     }
@@ -38,7 +46,7 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
 
     @Override
     public String toString() {
-        return String.format("%s %s (0x%X: %s)", className, name, offset, allPokes());
+        return String.format("%s %s (0x%X: %s) $%,d", className, name, offset, allPokes(), getReward());
     }
 
     public String allPokes() {
@@ -148,6 +156,7 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
             String currentClassName = "";
             IVs currentIVs = new IVs();
             Trainer t;
+            int baseReward = 0;
             while (in.ready()) {
                 String text = in.readLine();
                 // names are formatted as [NAME]
@@ -155,6 +164,9 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
                     // TODO: error checking is for noobs
                     currentClassName = text.substring(1, text.length() - 1);
                     continue;
+                } else if (text.startsWith("$")) {
+                	baseReward = Integer.parseInt(text.substring(1, text.length()));
+                	continue;
                 } else if (text.startsWith("0x")) { // line is a 0x(pointer):
                                                     // list of pokes
                     String[] parts = text.split(" "); // this should be length
@@ -191,6 +203,8 @@ public class Trainer implements Battleable, Iterable<Pokemon> {
                         Pokemon pk = new Pokemon(s, level, m, currentIVs, false);
                         t.pokes.add(pk);
                     }
+                    
+                    t.reward = baseReward * t.pokes.get(pokecount-1).getLevel();
                     trainers.add(t);
                 } else {
                     // new set of DVs

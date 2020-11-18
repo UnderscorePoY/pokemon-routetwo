@@ -1,5 +1,5 @@
 public enum ExpCurve {
-    SLOW, MEDIUM_SLOW, MEDIUM, FAST, NONE;
+    SLOW, MEDIUM_SLOW, MEDIUM_FAST, FAST, NONE;
     
     public static int expToNextLevel(ExpCurve curve, int currLevel, int totalExp) {
         if (curve == NONE)
@@ -21,7 +21,7 @@ public enum ExpCurve {
         case MEDIUM_SLOW:
             exp = 6*n*n*n/5 - 15*n*n + 100*n - 140;
             break;
-        case MEDIUM:
+        case MEDIUM_FAST:
             exp = n*n*n;
             break;
         case FAST:

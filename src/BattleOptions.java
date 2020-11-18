@@ -5,12 +5,15 @@ public class BattleOptions {
     private Integer[] xdefs = null;
     private Integer[] xspds = null;
     private Integer[] xspcs = null;
+    private Integer[] xspdefs = null;
     private Integer[] ydefs = null;
+    private Integer[] yspdefs = null;
     private Integer[] order = null;
     private Integer[] xlightscreen = null;
     private Integer[] xreflect = null;
     private Integer[] ylightscreen = null;
     private Integer[] yreflect = null;
+    private Weather[] weathers = null;
     private boolean printSRsOnLvl = false;
     private boolean printSRsBoostOnLvl = false;
     private StatModifier mod1;
@@ -93,6 +96,16 @@ public class BattleOptions {
         return xspcs;
     }
     
+	public void setXspdefs(Integer[] xspdefs) {
+		int len = xspdefs.length;
+        this.xspdefs = new Integer[len];
+        System.arraycopy(xspdefs, 0, this.xspdefs, 0, len);
+	}
+	
+	public Integer[] getXspdefs() {
+		return xspdefs;
+	}
+    
     public void setYdefs(Integer[] ydefs) {
         int len = ydefs.length;
         this.ydefs = new Integer[len];
@@ -102,6 +115,16 @@ public class BattleOptions {
     public Integer[] getYdefs() {
         return ydefs;
     }
+    
+    public void setYspdefs(Integer[] yspdefs) {
+		int len = yspdefs.length;
+        this.yspdefs = new Integer[len];
+        System.arraycopy(yspdefs, 0, this.yspdefs, 0, len);
+	}
+	
+	public Integer[] getYspdefs() {
+		return yspdefs;
+	}
 
     public void setOrder(Integer[] order) {
         int len = order.length;
@@ -168,5 +191,16 @@ public class BattleOptions {
     public void setVerbose(int verbose) {
         this.verbose = verbose;
     }
-    
+
+	public void setWeathers(Weather w) {
+		this.weathers = Weather.getUniqueArray(w);
+	}
+	
+	public void setWeathers(Weather[] ws) {
+		this.weathers = ws;
+	}
+	
+	public Weather[] getWeathers() {
+		return weathers;
+	}
 }

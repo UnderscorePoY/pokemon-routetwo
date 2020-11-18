@@ -93,7 +93,7 @@ public enum Move {
     DIG("Dig", 91, MoveEffect.FLY, 60, Type.GROUND, 100, 10, 0),
     TOXIC("Toxic", 92, MoveEffect.TOXIC, 0, Type.POISON, 85, 10, 0),
     CONFUSION("Confusion", 93, MoveEffect.CONFUSE_HIT, 50, Type.PSYCHIC, 100, 25, 10),
-    PSYCHICM("Psychic", 94, MoveEffect.SP_DEF_DOWN_HIT, 90, Type.PSYCHIC, 100, 10, 10),
+    PSYCHIC("Psychic", 94, MoveEffect.SP_DEF_DOWN_HIT, 90, Type.PSYCHIC, 100, 10, 10),
     HYPNOSIS("Hypnosis", 95, MoveEffect.SLEEP, 0, Type.PSYCHIC, 60, 20, 0),
     MEDITATE("Meditate", 96, MoveEffect.ATTACK_UP, 0, Type.PSYCHIC, 100, 40, 0),
     AGILITY("Agility", 97, MoveEffect.SPEED_UP_2, 0, Type.PSYCHIC, 100, 30, 0),

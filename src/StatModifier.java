@@ -16,6 +16,7 @@ public class StatModifier {
     private int spcBB = 0;
     private boolean lightscreen = false;
     private boolean reflect = false;
+    private Weather weather = Weather.NONE;
 
     public StatModifier() {}
 
@@ -353,5 +354,13 @@ public class StatModifier {
         return String.format("%s/%s/%s/%s/%s/%s", p.getHP(), modAtk(p), modDef(p),
                 modSpd(p), modSpcAtk(p), modSpcDef(p, modSpcAtk(p)));
     }
+
+	public Weather getWeather() {
+		return weather;
+	}
+
+	public void setWeather(Weather weather) {
+		this.weather = weather;
+	}
 
 }

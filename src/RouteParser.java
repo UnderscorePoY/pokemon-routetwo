@@ -28,7 +28,7 @@ public class RouteParser {
                 try {
                     a = parseLine(line);
                 } catch (Exception e) {
-                    Main.appendln("Error in line " + lineNum);
+                    Main.appendln("Error in line " + lineNum + ": (no further information)");
                 }
                 if (a != null)
                     actions.add(a);
@@ -69,7 +69,7 @@ public class RouteParser {
         // L(num), to indicate pokemon
         else if (firstToken.matches("[Ll][0-9]+")) {
             if(n < 2) {
-                Main.appendln("ERROR ON LINE " + lineNum);
+                Main.appendln("ERROR ON LINE " + lineNum + ": wrong wild pokémon.");
                 return null;
             }
             int lvl = Integer.parseInt(firstToken.substring(1));
@@ -99,7 +99,7 @@ public class RouteParser {
         else if (firstToken.equalsIgnoreCase("e")
                 || firstToken.equalsIgnoreCase("evolve")) {
             if (n < 2) {
-                Main.appendln("ERROR ON LINE " + lineNum);
+                Main.appendln("ERROR ON LINE " + lineNum + ": missing evolve arguments.");
                 return null;
             }
             String species = tokens[1];
@@ -109,7 +109,7 @@ public class RouteParser {
         else if (firstToken.equalsIgnoreCase("lm")
                 || firstToken.equalsIgnoreCase("learnmove")) {
             if (n < 2) {
-                Main.appendln("ERROR ON LINE " + lineNum);
+                Main.appendln("ERROR ON LINE " + lineNum + ": missing learnmove arguments.");
                 return null;
             }
             String move = tokens[1];
@@ -124,7 +124,7 @@ public class RouteParser {
         else if (firstToken.equalsIgnoreCase("um")
                 || firstToken.equalsIgnoreCase("unlearnmove")) {
             if (n < 2) {
-                Main.appendln("ERROR ON LINE " + lineNum);
+                Main.appendln("ERROR ON LINE " + lineNum + ": missing unlearnmove arguments.");
                 return null;
             }
             String move = tokens[1];
@@ -135,6 +135,85 @@ public class RouteParser {
             }
             return l;
         }
+        
+        else if (firstToken.equalsIgnoreCase("addMoney")) {
+        	if (n < 2) {
+                Main.appendln("ERROR ON LINE " + lineNum + ": money missing");
+                return null;
+            }
+            try{
+            	int money = Integer.parseInt(tokens[1]);
+            	return new AddMoney(money);
+            } catch (Exception e) {
+            	Main.appendln("ERROR ON LINE " + lineNum + ": money needs to be an integer");
+                return null;
+            }
+        }
+        
+        else if (firstToken.equalsIgnoreCase("spendMoney")) {
+        	if (n < 2) {
+                Main.appendln("ERROR ON LINE " + lineNum + ": money missing");
+                return null;
+            }
+            try{
+            	int money = Integer.parseInt(tokens[1]);
+            	return new AddMoney(-money);
+            } catch (Exception e) {
+            	Main.appendln("ERROR ON LINE " + lineNum + ": money needs to be an integer");
+                return null;
+            }
+        }
+        
+        else if (firstToken.equalsIgnoreCase("buy")) {
+        	if (n < 2) {
+                Main.appendln("ERROR ON LINE " + lineNum + ": item missing");
+                return null;
+            }
+        	try {
+        		String itemName = tokens[1];
+        		Item item = Item.getItemByName(itemName);
+        		int quantity = 1;
+        		if (n > 2) {
+        			quantity = Integer.parseInt(tokens[2]);
+        			if (quantity < 1)
+        				throw new NumberFormatException();
+        		}
+        		
+        		int cost = item.getBuyPrice()*quantity;
+        		return new AddMoney(-cost);
+        	} catch(NumberFormatException nfe) {
+        		Main.appendln("ERROR ON LINE " + lineNum + ": quantity must be > 1");
+        	} catch (Exception e) {
+        		Main.appendln("ERROR ON LINE " + lineNum + ": unknown item name");
+                return null;
+        	}
+        }
+        
+        else if (firstToken.equalsIgnoreCase("sell")) {
+        	if (n < 2) {
+                Main.appendln("ERROR ON LINE " + lineNum + ": item missing");
+                return null;
+            }
+        	try {
+        		String itemName = tokens[1];
+        		Item item = Item.getItemByName(itemName);
+        		int quantity = 1;
+        		if (n > 2) {
+        			quantity = Integer.parseInt(tokens[2]);
+        			if (quantity < 1)
+        				throw new NumberFormatException();
+        		}
+        		
+        		int earn = item.getSellPrice()*quantity;
+        		return new AddMoney(earn);
+        	} catch(NumberFormatException nfe) {
+        		Main.appendln("ERROR ON LINE " + lineNum + ": quantity must be > 1");
+        	} catch (Exception e) {
+        		Main.appendln("ERROR ON LINE " + lineNum + ": unknown item name");
+                return null;
+        	}
+        }
+        
         // candies, etc
         else if (firstToken.equalsIgnoreCase("rc")
                 || firstToken.equalsIgnoreCase("rarecandy")) {
@@ -199,6 +278,7 @@ public class RouteParser {
         else if(firstToken.equalsIgnoreCase("earthbadge")) {
             return GameAction.getEarthBadge;
         }		
+        
         else if(firstToken.equalsIgnoreCase("battletowerflag")) {
             Constants.battleTower = true;
             return GameAction.battleTowerFlag;
@@ -273,8 +353,19 @@ public class RouteParser {
         else if (firstToken.equalsIgnoreCase("unequip")) {
             return GameAction.unequip;
         }
+        
+        else if(firstToken.equalsIgnoreCase("setAmuletCoin")) {
+        	return GameAction.setAmuletCoin;
+        }        
+        else if(firstToken.equalsIgnoreCase("unsetAmuletCoin")) {
+        	return GameAction.unsetAmuletCoin;
+        }
 
-        // printing commands
+
+        // printing commands        
+        else if(firstToken.equalsIgnoreCase("money")) {
+        	return GameAction.printMoney;
+        }
         else if (firstToken.equalsIgnoreCase("stats")) {
             if (n == 1) {
                 return GameAction.printAllStatsNoBoost;
@@ -313,11 +404,12 @@ public class RouteParser {
 
     enum NextFlag {
         ANY_FLAG, XITEMS, YITEMS, 
-        XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XACC, 
+        XATK, YATK, XDEF, YDEF, XSPD, YSPD, XSPC, YSPC, XSPDEF, YSPDEF, XACC, 
         VERBOSE, SXP, SXPS, 
-        XATKS, XDEFS, XSPDS, XSPCS, YDEFS, 
+        XATKS, XDEFS, XSPDS, XSPCS, XSPDEFS, YDEFS, YSPDEFS, 
         ORDER, BBS,
-        XREFLECT, YREFLECT, XLIGHTSCREEN, YLIGHTSCREEN
+        XREFLECT, YREFLECT, XLIGHTSCREEN, YLIGHTSCREEN,
+        WEATHER
     }
 
     private static GameAction addFlagsToBattleable(Battleable b,
@@ -331,7 +423,7 @@ public class RouteParser {
                 // set this pokemon to wild
                 if (s.equalsIgnoreCase("-w") || s.equalsIgnoreCase("-wild")) {
                     if (b instanceof Trainer) {
-                        Main.appendln("ERROR ON LINE " + lineNum);
+                        Main.appendln("ERROR ON LINE " + lineNum +": can't use -w or -wild on trainers.");
                         return null;
                         // can't use -wild or -trainer flag on trainers
                     }
@@ -343,7 +435,7 @@ public class RouteParser {
                 else if (s.equalsIgnoreCase("-t")
                         || s.equalsIgnoreCase("-trainer")) {
                     if (b instanceof Trainer) {
-                        Main.appendln("ERROR ON LINE " + lineNum);
+                        Main.appendln("ERROR ON LINE " + lineNum +": can't use -t or -trainer on trainers.");
                         return null;
                         // can't use -wild or -trainer flag on trainers
                     }
@@ -382,12 +474,18 @@ public class RouteParser {
                 } else if (s.equalsIgnoreCase("-yspd")) {
                     nf = NextFlag.YSPD;
                     continue;
-                } else if (s.equalsIgnoreCase("-xspc")) {
+                } else if (s.equalsIgnoreCase("-xspc") || s.equalsIgnoreCase("-xspcatk")) {
                     nf = NextFlag.XSPC;
                     continue;
-                } else if (s.equalsIgnoreCase("-yspc")) {
+                } else if (s.equalsIgnoreCase("-yspc") || s.equalsIgnoreCase("-yspcatk")) {
                     nf = NextFlag.YSPC;
                     continue;
+                } else if (s.equalsIgnoreCase("-xspcdef")){
+                	nf = NextFlag.XSPDEF;
+                	continue;
+                } else if (s.equalsIgnoreCase("-yspcdef")){
+                	nf = NextFlag.YSPDEF;
+                	continue;
                 }
                 // xacc
                 else if (s.equalsIgnoreCase("-xacc")) {
@@ -422,16 +520,23 @@ public class RouteParser {
                     nf = NextFlag.XSPDS;
                     continue;
                 }
-                else if (s.equalsIgnoreCase("-xspcs")) {
+                else if (s.equalsIgnoreCase("-xspcs") || s.equalsIgnoreCase("-xspcatks")) {
                     nf = NextFlag.XSPCS;
                     continue;
-                }
-                else if (s.equalsIgnoreCase("-ydefs")) {
+                } else if (s.equalsIgnoreCase("-xspcdefs")){
+                	nf = NextFlag.XSPDEFS;
+                	continue;
+                } else if (s.equalsIgnoreCase("-ydefs")) {
                     nf = NextFlag.YDEFS;
                     continue;
-                }
-                else if (s.equalsIgnoreCase("-order")) {
+                } else if (s.equalsIgnoreCase("-yspcdefs")){
+                	nf = NextFlag.YSPDEFS;
+                	continue;
+                } else if (s.equalsIgnoreCase("-order")) {
                     nf = NextFlag.ORDER;
+                    continue;
+                } else if (s.equalsIgnoreCase("-weather")) {
+                	nf = NextFlag.WEATHER;
                     continue;
                 }
                 // print stat ranges if level
@@ -471,7 +576,7 @@ public class RouteParser {
             else if (nf == NextFlag.XITEMS) {
                 String[] nums = s.split("/");
                 if (nums.length != 4 && nums.length != 5) {
-                    Main.appendln("ERROR ON LINE " + lineNum);
+                    Main.appendln("ERROR ON LINE " + lineNum +": -x or -xitems needs 4 arguments (5 if X Accuracy)");
                     return null;
                 }
                 options.getMod1().incrementAtkStage(Integer.parseInt(nums[0]));
@@ -491,7 +596,7 @@ public class RouteParser {
             else if (nf == NextFlag.YITEMS) {
                 String[] nums = s.split("/");
                 if (nums.length != 4 && nums.length != 5) {
-                    Main.appendln("ERROR ON LINE " + lineNum);
+                    Main.appendln("ERROR ON LINE " + lineNum +": -y or -yitems needs 4 arguments (5 if X Accuracy)");
                     return null;
                 }
                 options.getMod2().incrementAtkStage(Integer.parseInt(nums[0]));
@@ -536,6 +641,14 @@ public class RouteParser {
                 options.getMod2().incrementSpcAtkStage(Integer.parseInt(s));
                 nf = NextFlag.ANY_FLAG;
                 continue;
+            } else if (nf == NextFlag.XSPDEF) {
+            	options.getMod1().incrementSpcDefStage(Integer.parseInt(s));
+            	nf = NextFlag.ANY_FLAG;
+            	continue;
+            } else if (nf == NextFlag.YSPDEF) {
+            	options.getMod2().incrementSpcDefStage(Integer.parseInt(s));
+            	nf = NextFlag.ANY_FLAG;
+            	continue;
             }
             // verbose
             else if (nf == NextFlag.VERBOSE) {
@@ -608,8 +721,16 @@ public class RouteParser {
                 options.setXspcs(xspcs);
                 nf = NextFlag.ANY_FLAG;
                 continue;
-            }
-            else if(nf == NextFlag.YDEFS) {
+            } else if(nf == NextFlag.XSPDEFS) {
+                String[] nums = s.split("/");
+                Integer[] xspdefs = new Integer[nums.length];
+                for(int i=0; i<nums.length; i++) {
+                    xspdefs[i] = Integer.parseInt(nums[i]);
+                }
+                options.setXspdefs(xspdefs);
+                nf = NextFlag.ANY_FLAG;
+                continue;
+            } else if(nf == NextFlag.YDEFS) {
                 String[] nums = s.split("/");
                 Integer[] ydefs = new Integer[nums.length];
                 for(int i=0; i<nums.length; i++) {
@@ -618,7 +739,16 @@ public class RouteParser {
                 options.setYdefs(ydefs);
                 nf = NextFlag.ANY_FLAG;
                 continue;
-            }
+            } else if(nf == NextFlag.YSPDEFS) {
+                String[] nums = s.split("/");
+                Integer[] yspdefs = new Integer[nums.length];
+                for(int i=0; i<nums.length; i++) {
+                    yspdefs[i] = Integer.parseInt(nums[i]);
+                }
+                options.setYspdefs(yspdefs);
+                nf = NextFlag.ANY_FLAG;
+                continue;
+            } 
             else if(nf == NextFlag.ORDER) {
                 String[] nums = s.split("/");
                 Integer[] order = new Integer[nums.length];
@@ -633,7 +763,7 @@ public class RouteParser {
             else if (nf == NextFlag.BBS) {
                 String[] nums = s.split("/");
                 if (nums.length != 4) {
-                    Main.appendln("ERROR ON LINE " + lineNum);
+                    Main.appendln("ERROR ON LINE " + lineNum +": -bbs needs 4 arguments");
                     return null;
                 }
                 int atkBB = Integer.parseInt(nums[0]);
@@ -670,6 +800,26 @@ public class RouteParser {
                 else if (nf == NextFlag.YREFLECT)
                 	options.setYreflect(reflect);
                 
+            	nf = NextFlag.ANY_FLAG;
+            	continue;
+            } else if (nf == NextFlag.WEATHER) {
+            	String[] weatherStrArr = s.split("/");
+            	Weather w = Weather.NONE;
+            	Weather[] weathers = Weather.getEmptyArray();
+            	for (int i = 0; i < weatherStrArr.length; i++) {
+	            	w = Weather.getWeatherFromName(weatherStrArr[i]);
+	            	if(w == null) {
+	            		Main.appendln("ERROR ON LINE " + lineNum + ": received `"+s+"`. -weather must be RAIN, SUN, SANDSTORM or NONE/0 (or a list of these).");
+	            		nf = NextFlag.ANY_FLAG;
+	            		continue;
+	            	}
+	            	weathers[i] = w;
+            	}
+            	if(weatherStrArr.length == 1)
+            		options.setWeathers(w);
+            	else
+            		options.setWeathers(weathers);
+            	
             	nf = NextFlag.ANY_FLAG;
             	continue;
             }
