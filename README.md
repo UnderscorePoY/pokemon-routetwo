@@ -107,10 +107,11 @@ The options under `[util]` should generally be set to true, unless you really do
   `"//"` : Starts a comment. Either at the start of a line or at the end of instructions. Used as documentation for the reader/router.  
 
 #### 4.2. GENERIC OUTPUT
-##### 4.2.1. Money :
+
+##### 4.2.1. Money
   `"money"` : Displays the current Player money.  
   
-##### 4.2.2. Stats :
+##### 4.2.2. Stats
   `"ranges"` : Displays a table of the main Pokemon stats for all DV values.  
   `"stats"`  : Displays the main Pokemon stats as they are in the Pokemon menu.  
   
@@ -118,7 +119,8 @@ The options under `[util]` should generally be set to true, unless you really do
   `"-b"` : Add to account for stat badge boosts.  
 
 #### 4.3. PLAYER POKEMON UTILITY
-##### 4.3.1. Player Pokemon :
+
+##### 4.3.1. Player Pokemon
   `"evolve <SPECIES>"` : Changes your Pokemon to `SPECIES`.  
   alias: `"e"`           
 > Example : `evolve FERALIGATR`  
@@ -143,7 +145,7 @@ The options under `[util]` should generally be set to true, unless you really do
   `"returnPower <NUM>"` : Sets power NUM to Return. NUM will be capped between `0` and `102`.  
 > Example : `returnpower 100 // very happy`  
 
-##### 4.3.2. Battle items :
+##### 4.3.2. Battle items
   `"unequip"` : Unequips any held item.  
   
   These commands equip the desired **species-boosting** item.  
@@ -176,7 +178,7 @@ The options under `[util]` should generally be set to true, unless you really do
   `"twistedSpoon"` | Psychic  
 > (\* in Gen2, it's not the Dragon Fang due to a [coding error](https://github.com/pret/pokecrystal/blob/master/docs/bugs_and_glitches.md#dragon-scale-not-dragon-fang-boosts-dragon-type-moves))  
 
-##### 4.3.3. Player money :
+##### 4.3.3. Player money
   These commands only affect money, since there it is no inventory management.  
   `"buy <ITEM> [QUANTITY]"`  : Buys `ITEM` `QUANTITY` times. `ITEM` only in letters.  
   `"sell <ITEM> [QUANTITY]"` : Sells `ITEM` `QUANTITY` times.  
@@ -196,7 +198,7 @@ The options under `[util]` should generally be set to true, unless you really do
 > `unequip // unequips current held item`  
 > `setAmuletCoin // activates Amulet Coin, still no held item`  
       
-##### 4.3.4. Badges :
+##### 4.3.4. Badges
   These commands gives you the desired badge without fighting its Gym Leader.  
   This is useful when you route Pokemon you don't acquire/catch straight away.  
   Commands | Gym Leader | Stat boost | Type boost  
@@ -219,7 +221,7 @@ The options under `[util]` should generally be set to true, unless you really do
   `"earthbadge"`   | Blue    |    -       |    Ground  
 > (\* Gen 2 has a [Special Defense badge boost bug](https://github.com/pret/pokecrystal/blob/master/docs/bugs_and_glitches.md#glacier-badge-may-not-boost-special-defense-depending-on-the-value-of-special-attack))  
   
-##### 4.3.5. Battle Tower :
+##### 4.3.5. Battle Tower
   `"battletowerflag"` : Activates battle tower mode. You CAN'T deactivate it afterwards.  
 > Note : gets rid of badge boosts within battles  
   
@@ -228,7 +230,7 @@ The options under `[util]` should generally be set to true, unless you really do
   `"0x<NUM>"` : Triggers a trainer battle against the trainer with index `NUM`.  
   `"<NAME>"`  : Triggers a trainer battle against the trainer with name `NAME`.  
   
-##### 4.4.2. Wild encounters :
+##### 4.4.2. Wild encounters
   `"L<NUM> <SPECIES>"` : Triggers a wild battle against a level `NUM` `SPECIES` with perfect DVs.  
   
   *Wild encounters options :*  
@@ -242,11 +244,11 @@ The options under `[util]` should generally be set to true, unless you really do
   `"-wild"`     : Sets the wild encounter as wild. A wild encounter is wild by default, this option can be omitted.  
   alias: `"-w"`  
       
-##### 4.4.3. Battle options :
+##### 4.4.3. Battle options
   For all battle options, `x` refers to the player, `y` refers to the enemy.  
   Any option starting with `-x` can be written starting with `-y` to have the same effect on the enemy team.  
   
-###### 4.4.3.1. Stat boosts :
+###### 4.4.3.1. Stat boosts
   `"-xitems <ATK>/<DEF>/<SPD>/<SPC>[/ACC]"` : Sets `ATK` X Attacks, `DEF` X Defends, etc.  
   alias: `"-x"`  
 > Example : `RED -xitems 2/0/1/0 // sets 2 X Attacks & 1 X Speed`  
@@ -271,13 +273,13 @@ The options under `[util]` should generally be set to true, unless you really do
 
   `"-bbs <ATK>/<DEF>/<SPD>/<SPC>"` : Sets up manual badge boosts. Useless for Gen2.  
 
-###### 4.4.3.2. Experience :
+###### 4.4.3.2. Experience
   `"-sxp <NUM>"` : Divides all earned experience by `NUM`.  
   `"-sxps <FIRST>[/SECOND...]"` : Divides first enemy Pokemon experience by `FIRST`, the second by `SECOND`, etc.  
 > Note : Any missing value at the end of the list in the above formula defaults to `1`.  
 > Example : `CLAIR -sxps 1/2 // Doesn't change 1st Dragonair earned exp, divides 2nd Dragonair earned exp by 2, doesn't change remaining Pokemon earned exp.`  
 
-###### 4.4.3.3. Field : 
+###### 4.4.3.3. Field
   `"-weather <FIRST>[/SECOND...]"` : Sets the weather for the battle, or each enemy Pokemon. 
 > Arguments : within `NONE`/`RAIN`/`SUN`/`SANDSTORM` (`NONE` can be replaced by `0`).  
 > Example : `ERIKA -weather NONE/NONE/SUN/SUN // Victreebel uses Sunny Day`  
@@ -288,12 +290,12 @@ The options under `[util]` should generally be set to true, unless you really do
 > Note : Any missing value at the end of the list in the above formula defaults to `0`.
 > Example : `SABRINA -yreflect 1/1/1 // Espeon uses Reflect`  
 
-###### 4.4.3.4. Order : 
+###### 4.4.3.4. Order
   `"-order <FIRST>[/SECOND...]"` : Switches the enemy team order.
 > Note : Useful for good AI trainers who send stronger Pokemon first against yours.  
 > Example : `"BROCK -order 1/2/4/5/3 // Sends Graveler, Rhyhorn, Onix, Omastar, Kabutops. Initial order(desired order): Graveler(1), Rhyhorn(2), Omastar(4), Kabutops(5), Onix(3)`  
 
-###### 4.4.3.5. Output :
+###### 4.4.3.5. Output
   `"-lvranges"`  : Outputs player Pokemon stats when a level up occurs during a battle.  
   `"-lvrangesb"` : Outputs player Pokemon stats accounting for badge boosts when a level up occurs during a battle.  
 
