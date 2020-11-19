@@ -2,79 +2,79 @@
 (derived from entrpntr & Dabomstew's versions, derived from RouteOne by HRoll)
 
 ### -- TABLE OF CONTENTS --
-1. LATEST CHANGES
-2. CONFIG FILE
-3. PRELIMINARY NOTES FOR ROUTE FILES
-4. MAKING A ROUTE FILE
-   1. Comments
-   2. Generic display
-      1. Money
-	  2. Stats
-   3. Player Pokemon utility
-      1. Player Pokemon
-	  2. Battle items
-	  3. Player money
-	  4. Badges
-	  5. Battle Tower
-   4. Battles
-      1. Trainers
-	  2. Wild encounters
-	  3. Battle options
-5. KNOWN ISSUES
-6. TODOS
-7. CONTACT INFO AND ACKNOWLEDGEMENTS
-   1. Communities
-   2. Coders
+1. [LATEST CHANGES]
+2. [CONFIG FILE]
+3. [PRELIMINARY NOTES FOR ROUTE FILES]
+4. [MAKING A ROUTE FILE]
+   1. [Comments]
+   2. [Generic display]
+      1. [Money]
+	  2. [Stats]
+   3. [Player Pokemon utility]
+      1. [Player Pokemon]
+	  2. [Battle items]
+	  3. [Player money]
+	  4. [Badges]
+	  5. [Battle Tower]
+   4. [Battles]
+      1. [Trainers]
+	  2. [Wild encounters]
+	  3. [Battle options]
+5. [KNOWN ISSUES]
+6. [TODOS]
+7. [CONTACT INFO AND ACKNOWLEDGEMENTS]
+   1. [Communities]
+   2. [Coders]
 ### -- --
 
 
-#### -- 1. LATEST CHANGES --
+#### 1. LATEST CHANGES
 Syntax:
-\[YYYY/MM/DD\]
-**! Compatibility-breaking update.**
-- Usual update.
+`[YYYY/MM/DD]`  
+**► Compatibility-breaking update.**
+○ Usual update.
 
 
-\[2020/11/18\]
-**! Renamed move PSYCHICM into PSYCHIC.**
+`[2020/11/18]`
+**► Renamed move PSYCHICM into PSYCHIC.**
 
-- Updated Glacierbadge Special Defense bug.
-- Added item buying/selling mechanics with commands `buy`, `sell`.
-- Added weather handling in battles with option `-weather`.
-- Added Special Attacks aliases options `-xspatk`, `-xspatks` for respectively `-xspc`, `-xspcs`.
-- Added Special Defense boosts (for Amnesia, etc.) with options `-xspdef`, `yspdef`, `xspdefs`, `yspdefs`.
-- `returnpower` now bounds the value between `1` and `102`.
+○ Updated Glacierbadge Special Defense bug.
+○ Added item buying/selling mechanics with commands `buy`, `sell`.
+○ Added weather handling in battles with option `-weather`.
+○ Added Special Attacks aliases options `-xspatk`, `-xspatks` for respectively `-xspc`, `-xspcs`.
+○ Added Special Defense boosts (for Amnesia, etc.) with options `-xspdef`, `yspdef`, `xspdefs`, `yspdefs`.
+○ `returnpower` now bounds the value between `1` and `102`.
 
-- Added XML formatting file for Notepad++ route files in `xml/` .
-
-
-\[2020/11/08\]
-**! Changed held item syntax. `pinkbowflag`, `charcoalflag`, etc. are obsolete.**
-
-- Added primal money management with commands `money`, `addmoney`, `spendmoney`.
-- Added Amulet Coin handling with commands `setamuletcoin`, `unsetamuletcoin`.
+○ Added XML formatting file for Notepad++ route files in `xml/` .
 
 
+`[2020/11/08]`
+**► Changed held item syntax. `pinkbowflag`, `charcoalflag`, etc. are obsolete.**
 
-\[2020/10/22\]
-- Imported n-shot damage calculation from RouteOne.
-- Added config file flag `includeCrits` under `[util]`.
-
-- Fixed Struggle damage calculation.
+○ Added primal money management with commands `money`, `addmoney`, `spendmoney`.
+○ Added Amulet Coin handling with commands `setamuletcoin`, `unsetamuletcoin`.
 
 
-\[2020/10/18\]
-- Added held item removal with command `unequip`.
-- Added all species-specific stat-boosting items (listed below).
-- Added remaining type-boosting items (listed below).
-- Added Reflect handling in battles with options `-xreflect`, `-yreflect`.
-- Added Light Screen handling in battles with options `-xlightscreen`, `-ylightscreen`.
+
+`[2020/10/22\]`
+○ Imported n-shot damage calculation from RouteOne.
+○ Added config file flag `includeCrits` under `[util]`.
+
+○ Fixed Struggle damage calculation.
+
+
+`[2020/10/18\]`
+○ Added held item removal with command `unequip`.
+○ Added all species-specific stat-boosting items (listed below).
+○ Added remaining type-boosting items (listed below).
+○ Added Reflect handling in battles with options `-xreflect`, `-yreflect`.
+○ Added Light Screen handling in battles with options `-xlightscreen`, `-ylightscreen`.
 
 
 #### -- --
 
 
-#### -- 2. CONFIG FILE --
+#### 2. CONFIG FILE
 
 First, you should set the options in config.ini. Make sure the game option is set to `gold`, `silver` or `crystal`, and that you have set the right game.
 Then, set your starting pokemon's species, level, and IVs under `[poke]`.
@@ -86,7 +86,7 @@ The options under `[util]` should generally be set to true, unless you really do
 #### -- --
 
 
-#### -- 3. PRELIMINARY NOTES FOR ROUTE FILES --
+#### 3. PRELIMINARY NOTES FOR ROUTE FILES
 
 `"command"` : Every command will be put between quotation marks. You SHOULD NOT be writing these quotation marks in your routing files.
 `"alias"` : An alias refers to a shorter name for a given command.
@@ -100,7 +100,7 @@ The options under `[util]` should generally be set to true, unless you really do
 #### -- --
 
 
-#### -- 4. MAKING A ROUTE FILE --
+#### 4. MAKING A ROUTE FILE
 
 ##### 4.1 - COMMENTS
   `"//"` : Starts a comment. Either at the start of a line or at the end of instructions.
