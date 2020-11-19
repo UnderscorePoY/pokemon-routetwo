@@ -17,7 +17,7 @@
 	  4. [Badges](#434-badges)
 	  5. [Battle Tower](#435-battle-tower)
    4. [Battles](#44-battles)
-      1. [Trainers](#441-trainer)
+      1. [Trainers](#441-trainers)
 	  2. [Wild encounters](#442-wild-encounters)
 	  3. [Battle options](#443-battle-options)
 	     1. [Stat boosts](#4431-stat-boosts)
@@ -46,8 +46,8 @@
 ○ Updated Glacierbadge Special Defense bug.  
 ○ Added item buying/selling mechanics with commands `buy`, `sell`.  
 ○ Added weather handling in battles with option `-weather`.  
-○ Added Special Attacks aliases options `-xspatk`, `-xspatks` for respectively `-xspc`, `-xspcs`.  
-○ Added Special Defense boosts (for Amnesia, etc.) with options `-xspdef`, `yspdef`, `xspdefs`, `yspdefs`.  
+○ Added Special Attacks aliases options `-xspcatk`, `-xspcatks` for respectively `-xspc`, `-xspcs`.  
+○ Added Special Defense boosts (for Amnesia, etc.) with options `-xspcdef`, `yspcdef`, `xspcdefs`, `yspcdefs`.  
 ○ `returnpower` now bounds the value between `1` and `102`.  
 
 ○ Added XML formatting file for Notepad++ route files in `xml/` .  
@@ -149,15 +149,15 @@ The options under `[util]` should generally be set to true, unless you really do
   `"unequip"` : Unequips any held item.  
   
   These commands equip the desired **species-boosting** item.  
-  Commands    |      Species      |   Boosted stats       |       Multiplier  
-  ---- | ---- | ---- | ----
-  `"lightBall"`   | Pikachu       |  Special Attack        |     x2  
-  `"metalPowder"` | Ditto         | Defense & Special Defense | x1.5  
-  `"thickClub"`   | Cubone/Marowak | Attack                 |    x2  
+  Commands        | Species        | Boosted stats             | Multiplier  
+  --------------- | -------------- | ------------------------- | ----------
+  `"lightBall"`   | Pikachu        | Special Attack            | x2  
+  `"metalPowder"` | Ditto          | Defense & Special Defense | x1.5  
+  `"thickClub"`   | Cubone/Marowak | Attack                    | x2  
 
   These commands equip the desired **type-boosting** item.  
-  Commands         |  Boosted  
-  ---- | ----
+  Commands         | Boosted  
+  ---------------- | -------
   `"blackBelt"`    | Fighting  
   `"blackGlasses"` | Dark  
   `"charcoal"`     | Fire  
@@ -201,24 +201,24 @@ The options under `[util]` should generally be set to true, unless you really do
 ##### 4.3.4. Badges
   These commands gives you the desired badge without fighting its Gym Leader.  
   This is useful when you route Pokemon you don't acquire/catch straight away.  
-  Commands | Gym Leader | Stat boost | Type boost  
-  -------- | ---------- | ---------- | ----------
-  `"zephyrbadge"` | Falkner  |   Attack    |  Flying  
-  `"hivebadge"`    | Bugsy   |    -       |    Bug  
-  `"plainbadge"`   | Whitney  |   Speed   |    Normal  
-  `"fogbadge"`     | Morty   |    -        |   Ghost  
-  `"stormbadge"`   | Chuck   |    -        |   Fighting  
-  `"mineralbadge"` | Jasmine |    Defense   |  Steel  
-  `"glacierbadge"` | Pryce  |     Special\* |  Ice       
-  `"risingbadge"`  | Clair  |     -       |    Dragon  
-  `"boulderbadge"` | Brock  |     -       |    Rock  
-  `"cascadebadge"` | Misty   |    -       |    Water  
-  `"thunderbadge"` | Surge   |    -       |    Electric  
-  `"rainbowbadge"` | Erika   |    -       |    Grass  
-  `"soulbadge"`    | Janine  |    -       |    Poison  
-  `"marshbadge"`   | Sabrina |    -       |    Psychic  
-  `"volcanobadge"` | Blaine  |    -       |    Fire  
-  `"earthbadge"`   | Blue    |    -       |    Ground  
+  Commands         | Gym Leader | Stat boost | Type boost  
+  ---------------- | ---------- | ---------- | ----------
+  `"zephyrbadge"`  | Falkner    | Attack     | Flying  
+  `"hivebadge"`    | Bugsy      | -          | Bug  
+  `"plainbadge"`   | Whitney    | Speed      | Normal  
+  `"fogbadge"`     | Morty      | -          | Ghost  
+  `"stormbadge"`   | Chuck      | -          | Fighting  
+  `"mineralbadge"` | Jasmine    | Defense    | Steel  
+  `"glacierbadge"` | Pryce      | Special\*  | Ice       
+  `"risingbadge"`  | Clair      | -          | Dragon  
+  `"boulderbadge"` | Brock      | -          | Rock  
+  `"cascadebadge"` | Misty      | -          | Water  
+  `"thunderbadge"` | Surge      | -          | Electric  
+  `"rainbowbadge"` | Erika      | -          | Grass  
+  `"soulbadge"`    | Janine     | -          | Poison  
+  `"marshbadge"`   | Sabrina    | -          | Psychic  
+  `"volcanobadge"` | Blaine     | -          | Fire  
+  `"earthbadge"`   | Blue       | -          | Ground  
 > (\* Gen 2 has a [Special Defense badge boost bug](https://github.com/pret/pokecrystal/blob/master/docs/bugs_and_glitches.md#glacier-badge-may-not-boost-special-defense-depending-on-the-value-of-special-attack))  
   
 ##### 4.3.5. Battle Tower
@@ -256,18 +256,18 @@ The options under `[util]` should generally be set to true, unless you really do
   `"-xatk <NUM>"`   : Sets `NUM` X Attacks for the entire fight.  
   `"-xdef <NUM>"`   : Sets `NUM` X Defends for the entire fight.  
   `"-xspd <NUM>"`   : Sets `NUM` X Speeds for the entire fight.  
-  `"-xspatk <NUM>"` : Sets `NUM` X Specials for the entire fight. Only applies to Special Attack.    
+  `"-xspcatk <NUM>"` : Sets `NUM` X Specials for the entire fight. Only applies to Special Attack.    
   alias: `"-xspc"`    
-  `"-xspdef <NUM>"` : Boosts Special Defense `NUM` times. Useful for Amnesia, etc.  
+  `"-xspcdef <NUM>"` : Boosts Special Defense `NUM` times. Useful for Amnesia, etc.  
   `"-xacc"`         : Sets an X Accuracy.  
 > Example : `LANCE -xspd 1 -xspc 2 // sets 1 X Speed & 2 X Specials forthe entire fight`  
   
   `"-xatks <FIRST>[/SECOND...]"`   : Sets `FIRST` X Attacks for the 1st Pokemon, `SECOND` X Attacks for the 2nd, etc.  
   `"-xdefs <FIRST>[/SECOND...]"`   : Sets `FIRST` X Defends for the 1st Pokemon, `SECOND` X Defends for the 2nd, etc.  
   `"-xspds <FIRST>[/SECOND...]"`   : Sets `FIRST` X Speeds for the 1st Pokemon, `SECOND` X Speeds for the 2nd, etc.  
-  `"-xspatks <FIRST>[/SECOND...]"` : Sets `FIRST` X Specials for the 1st Pokemon, `SECOND` X Specials for the 2nd, etc. Only applies to Special Attack.  
+  `"-xspcatks <FIRST>[/SECOND...]"` : Sets `FIRST` X Specials for the 1st Pokemon, `SECOND` X Specials for the 2nd, etc. Only applies to Special Attack.  
   alias: `"-xspcs"`                    
-  `"-xspdefs <FIRST>[/SECOND...]"` : Applies `FIRST` Special Defense boosts for the 1st Pokemon, `SECOND` Special Defense boosts for the 2nd, etc.  
+  `"-xspcdefs <FIRST>[/SECOND...]"` : Applies `FIRST` Special Defense boosts for the 1st Pokemon, `SECOND` Special Defense boosts for the 2nd, etc.  
 > Note : Any missing value in the above syntaxes defaults to 0.  
 > Example : `MORTY -xspds 0/1/1/1 // Sets up an X Speed on second Pokemon`  
 
