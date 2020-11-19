@@ -1,7 +1,7 @@
 # RouteTwo
 (derived from entrpntr & Dabomstew's versions, derived from RouteOne by HRoll)
 
-### -- TABLE OF CONTENTS --
+### TABLE OF CONTENTS
 1. [LATEST CHANGES]
 2. [CONFIG FILE]
 3. [PRELIMINARY NOTES FOR ROUTE FILES]
@@ -25,19 +25,18 @@
 7. [CONTACT INFO AND ACKNOWLEDGEMENTS]
    1. [Communities]
    2. [Coders]
-### -- --
 
 
 #### 1. LATEST CHANGES
-Syntax:
-`[YYYY/MM/DD]`  
-**► Compatibility-breaking update.**  
+Syntax:  
+**`[YYYY/MM/DD]`**  
+► Compatibility-breaking update.  
 
 ○ Usual update.
 
 
-`[2020/11/18]`  
-**► Renamed move PSYCHICM into PSYCHIC.**  
+**`[2020/11/18]`**  
+► Renamed move PSYCHICM into PSYCHIC.  
 
 ○ Updated Glacierbadge Special Defense bug.  
 ○ Added item buying/selling mechanics with commands `buy`, `sell`.  
@@ -46,45 +45,40 @@ Syntax:
 ○ Added Special Defense boosts (for Amnesia, etc.) with options `-xspdef`, `yspdef`, `xspdefs`, `yspdefs`.  
 ○ `returnpower` now bounds the value between `1` and `102`.  
 
-○ Added XML formatting file for Notepad++ route files in `xml/` .
+○ Added XML formatting file for Notepad++ route files in `xml/` .  
 
 
-`[2020/11/08]`  
-**► Changed held item syntax. `pinkbowflag`, `charcoalflag`, etc. are obsolete.**  
+**`[2020/11/08]`**  
+► Changed held item syntax. `pinkbowflag`, `charcoalflag`, etc. are obsolete.  
 
 ○ Added primal money management with commands `money`, `addmoney`, `spendmoney`.  
-○ Added Amulet Coin handling with commands `setamuletcoin`, `unsetamuletcoin`.
+○ Added Amulet Coin handling with commands `setamuletcoin`, `unsetamuletcoin`.  
 
 
 
-`[2020/10/22\]`  
+**`[2020/10/22]`**  
 ○ Imported n-shot damage calculation from RouteOne.  
 ○ Added config file flag `includeCrits` under `[util]`.  
 
 ○ Fixed Struggle damage calculation.
 
 
-`[2020/10/18\]`
-○ Added held item removal with command `unequip`.
-○ Added all species-specific stat-boosting items (listed below).
-○ Added remaining type-boosting items (listed below).
-○ Added Reflect handling in battles with options `-xreflect`, `-yreflect`.
-○ Added Light Screen handling in battles with options `-xlightscreen`, `-ylightscreen`.
-
-
-#### -- --
+**`[2020/10/18]`**  
+○ Added held item removal with command `unequip`.  
+○ Added all species-specific stat-boosting items (listed below).  
+○ Added remaining type-boosting items (listed below).  
+○ Added Reflect handling in battles with options `-xreflect`, `-yreflect`.  
+○ Added Light Screen handling in battles with options `-xlightscreen`, `-ylightscreen`.  
 
 
 #### 2. CONFIG FILE
 
-First, you should set the options in config.ini. Make sure the game option is set to `gold`, `silver` or `crystal`, and that you have set the right game.
-Then, set your starting pokemon's species, level, and IVs under `[poke]`.
-Under `[files]`, you'll want to enter the file names of your desired input file and output file destination.
-The options under `[util]` should generally be set to true, unless you really don't want to know how many X items/rarecandies/stat boosting items you used.
+First, you should set the options in config.ini. Make sure the game option is set to `gold`, `silver` or `crystal`, and that you have set the right game.  
+Then, set your starting pokemon's species, level, and IVs under `[poke]`.  
+Under `[files]`, you'll want to enter the file names of your desired input file and output file destination.  
+The options under `[util]` should generally be set to true, unless you really don't want to know how many X items/rarecandies/stat boosting items you used.  
 
-\[More advanced: to use more than one config file, you can use the command line option `java -jar <RouteTwo filename> <config filename>`.\]
-
-#### -- --
+\[More advanced: to use more than one config file, you can use the command line option `java -jar <RouteTwo filename> <config filename>`.\]  
 
 
 #### 3. PRELIMINARY NOTES FOR ROUTE FILES
@@ -92,20 +86,18 @@ The options under `[util]` should generally be set to true, unless you really do
 `"command"` : Every command will be put between quotation marks. You SHOULD NOT be writing these quotation marks in your routing files.  
 `"alias"` : An alias refers to a shorter name for a given command.  
 `"CoMMAnd"` : Every command is case-incensitive. You can capitalize at will.  
-- The convention from the initial release is to keep commands lowercase, and names/moves/etc uppercase.  
-- You can disobey this convention at will.  
-- For readability purposes, the commands here will display some uppercase letters.   
+○ The convention from the initial release is to keep commands lowercase, and names/moves/etc uppercase.  
+○ You can disobey this convention at will.  
+○ For readability purposes, the commands here will display some uppercase letters.  
 `<ARGUMENT>` : When using angle brackets, it refers to a mandatory argument. You SHOULD NOT be writing these brackets in your routing files.  
-`\[ARGUMENT\]` : when using square brackets, it refers to an optional argument. You can omit it if you don't need it. You SHOULD NOT be writing these brackets in your routing files.  
-
-#### -- --
+`[ARGUMENT]` : when using square brackets, it refers to an optional argument. You can omit it if you don't need it. You SHOULD NOT be writing these brackets in your routing files.  
 
 
 #### 4. MAKING A ROUTE FILE
 
 ##### 4.1 - COMMENTS
   `"//"` : Starts a comment. Either at the start of a line or at the end of instructions.  
-           Used as documentation for the reader/router.  
+> Used as documentation for the reader/router.  
 
 ##### 4.2 - GENERIC DISPLAY
 ###### 4.2.1 - Money :
@@ -115,13 +107,14 @@ The options under `[util]` should generally be set to true, unless you really do
   `"ranges"` : Displays a table of the main Pokemon stats for all DV values.  
   `"stats"`  : Displays the main Pokemon stats as they are in the Pokemon menu.  
   
-  **Stats options :**
+  **Stats options :**  
   `"-b"` : Add to account for stat badge boosts.  
 
 ##### 4.3 - PLAYER POKEMON UTILITY
 ###### 4.3.1 - Player Pokemon :
   `"evolve <SPECIES>"` : Changes your Pokemon to `SPECIES`.  
-  alias: `"e"`           Example : `evolve FERALIGATR`  
+  alias: `"e"`           
+> Example : `evolve FERALIGATR`  
   
   `"learnMove <MOVE>"` : Learns move `MOVE`. `MOVE` is written with only letters (no spaces, no dashes, no underscores, etc.)  
   alias: `"lm"`          Example : `learnmove THUNDERBOLT`  
@@ -283,8 +276,6 @@ The options under `[util]` should generally be set to true, unless you really do
   alias: `"-v"`          Level should be NONE/SOME/ALL/EVERYTHING or 0/1/2/3.  
     NOTE : `-v 0` is equivalent to skipping output for the battle.  
 	
-#### -- --
-
 
 #### -- 5. KNOWN ISSUES --
 (from original RouteTwo)  
@@ -292,8 +283,6 @@ The options under `[util]` should generally be set to true, unless you really do
 ○ Some moves don't properly display damage or show falsified damage. This includes 1hit moves/fixed damage moves.  
 ○ Multi-hit moves only show the damage per 1 hit.  
 ○ This documentation was written without spell check. Kappa  
-
-#### -- --
 
 
 #### -- 6. TODOS --
@@ -304,8 +293,6 @@ The options under `[util]` should generally be set to true, unless you really do
 ○ Add ability to indicate that a battle's EXP is split between some number of pokemon.  
 ○ Add ability to preserve move slot orders.  
 ○ Add ability to print strings into output.  
-
-#### -- --
 
 
 #### -- 7. CONTACT INFO AND ACKNOWLEDGEMENTS --
