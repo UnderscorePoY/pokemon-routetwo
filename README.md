@@ -40,6 +40,10 @@
 ○ Usual update.
  
 
+**`[2020/11/28]`**  
+○ Fixed damage calculation for crits.  
+
+
 **`[2020/11/18]`**  
 ► Renamed move PSYCHICM into PSYCHIC.  
 
