@@ -42,6 +42,7 @@
 
 **`[2020/11/28]`**  
 ○ Fixed damage calculation for crits.  
+○ Added proper money yields for Gold/Silver.
 
 
 **`[2020/11/18]`**  
