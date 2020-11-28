@@ -60,10 +60,10 @@ public class DamageCalculator {
         }
 
         int effective_atk = 0, effective_def = 0;        
-        boolean applyAtkModifiers = crit && (atkMod.getAtkStage() >= 0) || !crit;
-        boolean applyDefModifiers = crit && (defMod.getDefStage() <= 0) || !crit;
-        boolean applySpcAtkModifiers = crit && (atkMod.getSpcAtkStage() >= 0) || !crit;
-        boolean applySpcDefModifiers = crit && (defMod.getSpcDefStage() <= 0) || !crit;
+        boolean applyAtkModifiers = !crit || crit && (defMod.getDefStage() < atkMod.getAtkStage());
+        boolean applyDefModifiers = applyAtkModifiers;
+        boolean applySpcAtkModifiers = !crit || crit && (defMod.getSpcDefStage() < atkMod.getSpcAtkStage());
+        boolean applySpcDefModifiers = applySpcAtkModifiers;
         
         boolean isThickClub = isPlayer && Constants.battleHeldItem == BattleHeldItem.THICKCLUB 
         		&& (attacker.getSpecies() == Species.CUBONE || attacker.getSpecies() == Species.MAROWAK);
