@@ -345,15 +345,24 @@ public class Pokemon implements Battleable {
 
     // gain stat exp from a pokemon of species s
     private void gainStatExp(Species s, int participants) {
-        ev_hp += s.getBaseHP() / participants;
-        ev_hp = capEV(ev_hp);
+		Settings.hasPokerus ? (
+        ev_hp += (s.getBaseHP() / participants) * 2;
+        ev_atk += (s.getBaseAtk() / participants) * 2;
+        ev_def += (s.getBaseDef() / participants) * 2;
+        ev_spc += (s.getBaseSpcAtk() / participants) * 2;
+        ev_spd += (s.getBaseSpd() / participants) * 2;
+		) : (
+        ev_hp  += s.getBaseHP() / participants;
         ev_atk += s.getBaseAtk() / participants;
-        ev_atk = capEV(ev_atk);
         ev_def += s.getBaseDef() / participants;
-        ev_def = capEV(ev_def);
         ev_spc += s.getBaseSpcAtk() / participants;
-        ev_spc = capEV(ev_spc);
         ev_spd += s.getBaseSpd() / participants;
+		)
+		
+        ev_hp  = capEV(ev_hp);
+        ev_atk = capEV(ev_atk);
+        ev_def = capEV(ev_def);
+        ev_spc = capEV(ev_spc);
         ev_spd = capEV(ev_spd);
     }
 

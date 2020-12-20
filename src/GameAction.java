@@ -203,6 +203,12 @@ public abstract class GameAction {
         	Settings.hasAmuletCoin = false;
         }
     };
+	
+    public static final GameAction infectPokerus = new GameAction() {
+        void performAction(Pokemon p) {
+        	Settings.hasPokerus = true;
+        }
+    };
     
     public static final GameAction addMoney = new GameAction() {
     	void performAction(Pokemon p) {

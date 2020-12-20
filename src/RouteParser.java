@@ -360,6 +360,10 @@ public class RouteParser {
         else if(firstToken.equalsIgnoreCase("unsetAmuletCoin")) {
         	return GameAction.unsetAmuletCoin;
         }
+		
+        else if (firstToken.equalsIgnoreCase("pokerus")) {
+            return GameAction.infectPokerus;
+		}
 
 
         // printing commands        
