@@ -217,8 +217,12 @@ public class DamageCalculator {
 
         if(options.getVerbose() == BattleOptions.EVERYTHING || options.getVerbose() == BattleOptions.ALL) {
             for(Move move : p1.getMoveset()) {
-                if (move == Move.ROLLOUT || move == Move.FURYCUTTER) {
+                if (move == Move.FURYCUTTER) {
                     for (int i = 1; i <= 5; i++) {
+                        damage_help(sb, move, p1, p2, mod1, mod2, i, Constants.isPlayer);
+                    }
+                } else if (move == Move.ROLLOUT) {
+                	for (int i = 1; i <= 6; i++) {
                         damage_help(sb, move, p1, p2, mod1, mod2, i, Constants.isPlayer);
                     }
                 } else if (move == Move.RAGE) {
@@ -251,11 +255,15 @@ public class DamageCalculator {
         if(options.getVerbose() == BattleOptions.EVERYTHING) {
             sb.append(endl);
             for(Move move : p2.getMoveset()) {
-                if (move == Move.ROLLOUT || move == Move.FURYCUTTER) {
+                if (move == Move.FURYCUTTER) {
                     for (int i = 1; i <= 5; i++) {
                         damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
                     }
-                } else if (move == Move.RAGE) {
+                } else if (move == Move.ROLLOUT) {
+                    for (int i = 1; i <= 6; i++) {
+                        damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
+                    }
+            	} else if (move == Move.RAGE) {
                     for (int i = 1; i <= 8; i++) {
                         damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
                     }
@@ -337,11 +345,15 @@ public class DamageCalculator {
         int enemyHP = p2.getHP();
 
         for (Move m : p1.getMoveset()) {
-            if (m == Move.ROLLOUT || m == Move.FURYCUTTER) {
+            if (m == Move.FURYCUTTER) {
                 for (int i = 1; i <= 5; i++) {
                     printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
                 }
-            } else if (m == Move.RAGE) {
+            } else if (m == Move.ROLLOUT) {
+                for (int i = 1; i <= 6; i++) {
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
+                }
+        	} else if (m == Move.RAGE) {
                 for (int i = 1; i <= 8; i++) {
                     printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
                 }
@@ -373,6 +385,8 @@ public class DamageCalculator {
 	        		sb.append(m.getName()+" -RAIN");
 	        	} else if (m.getType() == Type.WATER) {
 	        		sb.append(m.getName()+" +RAIN");
+	        	} else {
+	            	sb.append(m.getName());
 	        	}
 	        	break;
 	        case SUN :
@@ -380,9 +394,12 @@ public class DamageCalculator {
 	        		sb.append(m.getName()+" -SUN");
 	        	} else if (m.getType() == Type.FIRE) {
 	        		sb.append(m.getName()+" +SUN");
+	        	} else {
+	            	sb.append(m.getName());
 	        	}
 	        	break;
 	        default :
+	        	sb.append(m.getName());
 	        	break;
 	        } 
         } else {

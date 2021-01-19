@@ -246,8 +246,10 @@ public class Battle extends GameAction {
                     	int meMaxSpeed = options.getMod1().modSpdWithIV(p, 15);
                     	int oppSpeed = options.getMod2().modSpd(opps);
                     	
-                    	if(meMaxSpeed < oppSpeed)
+                    	if(meMaxSpeed < oppSpeed) {
                     		Main.appendln("(always slower)");
+                            Main.appendln("");
+                    	}
                     	
                     	else if (meMinSpeed <= oppSpeed && meMaxSpeed >= oppSpeed) {
                             int tieDV = 16, outspeedDV = 16;

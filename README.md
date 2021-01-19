@@ -38,7 +38,13 @@
 ► Compatibility-breaking update.  
 
 ○ Usual update.
- 
+
+
+**`[2021/01/19]`** 
+○ Added proper Flail handling.
+○ Added stage 6 of Rollout to mirror the Defense Curl combo.
+○ Fixed move names when weather applies.
+
 
 **`[2020/11/28]`**  
 ○ Fixed damage calculation for crits.  

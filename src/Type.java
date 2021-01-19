@@ -9,7 +9,7 @@ public enum Type {
     }
 
     private static double effectiveness(Type atkType, Type defType) {
-        if (defType == NONE || atkType == NONE) {
+        if (defType == NONE || atkType == NONE) { 
             return 1;
         } else {
             int val = typeTable[typeIndex(atkType)][typeIndex(defType)];
@@ -65,7 +65,8 @@ public enum Type {
     // representing 0.5
     private static final int[][] typeTable = {
             { 1, 1, 1, 1, 1, 5, 1, 0, 1, 1, 1, 1, 1, 1, 1, 5, 1 },
-            { 2, 1, 5, 5, 1, 2, 5, 0, 1, 1, 1, 1, 5, 2, 1, 2, 2 },
+            //{ 2, 1, 5, 5, 1, 2, 5, 1, 1, 1, 1, 1, 5, 2, 1, 2, 2 }, //2 - Foresight with Fighting
+            { 2, 1, 5, 5, 1, 2, 5, 0, 1, 1, 1, 1, 5, 2, 1, 2, 2 }, //2 - Normal
             { 1, 2, 1, 1, 1, 5, 2, 1, 1, 1, 2, 5, 1, 1, 1, 5, 1 },
             { 1, 1, 1, 5, 5, 5, 1, 5, 1, 1, 2, 1, 1, 1, 1, 0, 1 },
             { 1, 1, 0, 2, 1, 2, 5, 1, 2, 1, 5, 2, 1, 1, 1, 2, 1 },
