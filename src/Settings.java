@@ -4,6 +4,7 @@ public class Settings {
     public static boolean includeCrits = false;
     public static boolean showGuarantees = false;
     public static boolean hasAmuletCoin = false;
-	public static boolean hasPokerus = false;
+    public static boolean hasPokerus = false;
+    public static boolean hasBoostedExp = false;
     public static int money = 3000;
 }

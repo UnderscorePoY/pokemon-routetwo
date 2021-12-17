@@ -89,10 +89,6 @@ public class Pokemon implements Battleable {
         setExpForLevel();
     }
 
-    public void setBoostedExp() {
-        boostedExp = true;
-    }
-
     // TODO constructor which accepts EVs
     public void setZeroEVs() {
         ev_hp = ev_hp_used = 0;
@@ -335,7 +331,9 @@ public class Pokemon implements Battleable {
 
     // gain num exp
     private void gainExp(int num) {
-        totalExp += num * 3 / (boostedExp ? 2 : 3);
+        num = (num * 3) / (boostedExp ? 2 : 3);
+        num = (num * 3) / (luckyEgg ? 2 : 3);
+        totalExp += num;
         // update lvl if necessary
         while (expToNextLevel() <= 0 && level < 100) {
             level++;

@@ -24,6 +24,9 @@ public enum BattleHeldItem {
 	LIGHTBALL(Type.NONE),
 	METALPOWDER(Type.NONE),
 	THICKCLUB(Type.NONE);
+
+	// exp boosting item
+	LUCKYEGG(Type.NONE);
 	
 	public Type type;
 	
