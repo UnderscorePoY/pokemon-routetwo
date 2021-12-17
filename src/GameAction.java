@@ -259,7 +259,19 @@ class LearnMove extends GameAction {
     LearnMove(String s) { move = Move.valueOf(s); }
     public Move getMove() { return move; }
     @Override
-    void performAction(Pokemon p) { p.getMoveset().addMove(move); }
+    void performAction(Pokemon p) { 
+    	if(this.getMove() == Move.FLAIL) {  // TO-DO : hacky
+    		p.getMoveset().addMove(Move.FLAIL200);
+    		p.getMoveset().addMove(Move.FLAIL150);
+    		p.getMoveset().addMove(Move.FLAIL100);
+    		p.getMoveset().addMove(Move.FLAIL80);
+    		p.getMoveset().addMove(Move.FLAIL40);
+    		p.getMoveset().addMove(Move.FLAIL20);
+    		p.getMoveset().delMove(Move.FLAIL);
+    	} else {
+    		p.getMoveset().addMove(move);
+    	}
+    }
 }
 
 
@@ -268,7 +280,18 @@ class UnlearnMove extends GameAction {
     UnlearnMove(String s) { move = Move.valueOf(s); }
     public Move getMove() { return move; }
     @Override
-    void performAction(Pokemon p) { p.getMoveset().delMove(move); }
+    void performAction(Pokemon p) { 
+    	if(this.getMove() == Move.FLAIL) {  // TO-DO : hacky
+			p.getMoveset().delMove(Move.FLAIL200);
+			p.getMoveset().delMove(Move.FLAIL150);
+			p.getMoveset().delMove(Move.FLAIL100);
+			p.getMoveset().delMove(Move.FLAIL80);
+			p.getMoveset().delMove(Move.FLAIL40);
+			p.getMoveset().delMove(Move.FLAIL20);
+		} else {
+			p.getMoveset().delMove(move);
+		}
+    }
 }
 
 class Evolve extends GameAction {

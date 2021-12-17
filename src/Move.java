@@ -250,7 +250,15 @@ public enum Move {
     FUTURESIGHT("Future Sight", 248, MoveEffect.FUTURE_SIGHT, 80, Type.PSYCHIC, 90, 15, 0),
     ROCKSMASH("Rock Smash", 249, MoveEffect.DEFENSE_DOWN_HIT, 20, Type.FIGHTING, 100, 15, 50),
     WHIRLPOOL("Whirlpool", 250, MoveEffect.TRAP_TARGET, 15, Type.WATER, 70, 15, 0),
-    BEATUP("Beat Up", 251, MoveEffect.BEAT_UP, 10, Type.DARK, 100, 10, 0);
+    BEATUP("Beat Up", 251, MoveEffect.BEAT_UP, 10, Type.DARK, 100, 10, 0),
+    
+    FLAIL200("Flail 200", 252, MoveEffect.NORMAL_HIT, 200, Type.NORMAL, 100, 15, 0),
+    FLAIL150("Flail 150", 253, MoveEffect.NORMAL_HIT, 150, Type.NORMAL, 100, 15, 0),
+    FLAIL100("Flail 100", 254, MoveEffect.NORMAL_HIT, 100, Type.NORMAL, 100, 15, 0),
+	FLAIL80("Flail 80", 255, MoveEffect.NORMAL_HIT, 80, Type.NORMAL, 100, 15, 0),
+	FLAIL40("Flail 40", 256, MoveEffect.NORMAL_HIT, 40, Type.NORMAL, 100, 15, 0),
+	FLAIL20("Flail 20", 257, MoveEffect.NORMAL_HIT, 20, Type.NORMAL, 100, 15, 0),
+    ;
 
     private String name;
     private int index;
