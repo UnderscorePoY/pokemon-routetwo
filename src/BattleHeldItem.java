@@ -23,8 +23,8 @@ public enum BattleHeldItem {
 	// species boosting items
 	LIGHTBALL(Type.NONE),
 	METALPOWDER(Type.NONE),
-	THICKCLUB(Type.NONE);
-
+	THICKCLUB(Type.NONE),
+	
 	// exp boosting item
 	LUCKYEGG(Type.NONE);
 	
