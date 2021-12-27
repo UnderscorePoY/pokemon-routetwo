@@ -21,7 +21,6 @@ public class Pokemon implements Battleable {
     private boolean defBadge = false;
     private boolean spdBadge = false;
     private boolean spcBadge = false;
-    private boolean boostedExp = false;
     private boolean[] elementalBadgeBoosts = new boolean[17];
 
     // defaults to wild pokemon
@@ -87,10 +86,6 @@ public class Pokemon implements Battleable {
         this.moves = moves;
         this.battleTower = true;
         setExpForLevel();
-    }
-
-    public void setBoostedExp() {
-        boostedExp = true;
     }
 
     // TODO constructor which accepts EVs
@@ -335,7 +330,9 @@ public class Pokemon implements Battleable {
 
     // gain num exp
     private void gainExp(int num) {
-        totalExp += num * 3 / (boostedExp ? 2 : 3);
+        num = (num * 3) / (Settings.hasBoostedExp ? 2 : 3);
+        num = (num * 3) / (Constants.battleHeldItem == BattleHeldItem.LUCKYEGG ? 2 : 3);
+        totalExp += num;
         // update lvl if necessary
         while (expToNextLevel() <= 0 && level < 100) {
             level++;
@@ -345,15 +342,16 @@ public class Pokemon implements Battleable {
 
     // gain stat exp from a pokemon of species s
     private void gainStatExp(Species s, int participants) {
-        ev_hp += s.getBaseHP() / participants;
-        ev_hp = capEV(ev_hp);
-        ev_atk += s.getBaseAtk() / participants;
+        ev_hp += (s.getBaseHP() / participants)  * (Settings.hasPokerus ? 2 : 1);
+        ev_atk += (s.getBaseAtk() / participants)  * (Settings.hasPokerus ? 2 : 1);
+        ev_def += (s.getBaseDef() / participants)  * (Settings.hasPokerus ? 2 : 1);
+        ev_spc += (s.getBaseSpcAtk() / participants)  * (Settings.hasPokerus ? 2 : 1);
+        ev_spd += (s.getBaseSpd() / participants) * (Settings.hasPokerus ? 2 : 1);
+		
+        ev_hp  = capEV(ev_hp);
         ev_atk = capEV(ev_atk);
-        ev_def += s.getBaseDef() / participants;
         ev_def = capEV(ev_def);
-        ev_spc += s.getBaseSpcAtk() / participants;
         ev_spc = capEV(ev_spc);
-        ev_spd += s.getBaseSpd() / participants;
         ev_spd = capEV(ev_spd);
     }
 

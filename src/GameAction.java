@@ -85,6 +85,9 @@ public abstract class GameAction {
     public static final GameAction equipThickClub = new GameAction() {
         void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.THICKCLUB; }
     };
+    public static final GameAction equipLuckyEgg = new GameAction() {
+        void performAction(Pokemon p) { Constants.battleHeldItem = BattleHeldItem.LUCKYEGG; }
+    };
     public static final GameAction unequip = new GameAction() {
         void performAction(Pokemon p) { Constants.battleHeldItem = null; }
     };
@@ -201,6 +204,24 @@ public abstract class GameAction {
     public static final GameAction unsetAmuletCoin = new GameAction() {
         void performAction(Pokemon p) {
         	Settings.hasAmuletCoin = false;
+        }
+    };
+	
+    public static final GameAction infectPokerus = new GameAction() {
+        void performAction(Pokemon p) {
+        	Settings.hasPokerus = true;
+        }
+    };
+
+    public static final GameAction setBoostedExp = new GameAction() {
+        void performAction(Pokemon p) {
+        	Settings.hasBoostedExp = true;
+        }
+    };
+
+    public static final GameAction unsetBoostedExp = new GameAction() {
+        void performAction(Pokemon p) {
+        	Settings.hasBoostedExp = false;
         }
     };
     

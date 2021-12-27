@@ -1,5 +1,9 @@
 SOURCEPATH := src/
-CLASSPATH := src/:ini4j-0.5.2/ini4j-0.5.2.jar:ini4j-0.5.2/ini4j-0.5.2-jdk14.jar
+ifeq ($(OS),Windows_NT)
+	CLASSPATH := "src/;ini4j-0.5.2/ini4j-0.5.2.jar;ini4j-0.5.2/ini4j-0.5.2-jdk14.jar"
+else
+	CLASSPATH := src/:ini4j-0.5.2/ini4j-0.5.2.jar:ini4j-0.5.2/ini4j-0.5.2-jdk14.jar
+endif
 BUILDPATH := build/
 
 JARFILE := RouteTwo.jar

@@ -351,6 +351,9 @@ public class RouteParser {
         else if (firstToken.equalsIgnoreCase("thickClub")) {
             return GameAction.equipThickClub;
         }
+        else if (firstToken.equalsIgnoreCase("luckyEgg")) {
+            return GameAction.equipLuckyEgg;
+        }
         else if (firstToken.equalsIgnoreCase("unequip")) {
             return GameAction.unequip;
         }
@@ -360,6 +363,18 @@ public class RouteParser {
         }        
         else if(firstToken.equalsIgnoreCase("unsetAmuletCoin")) {
         	return GameAction.unsetAmuletCoin;
+        }
+
+        else if (firstToken.equalsIgnoreCase("pokerus")) {
+            return GameAction.infectPokerus;
+        }
+
+        else if (firstToken.equalsIgnoreCase("setBoostedExp")) {
+            return GameAction.setBoostedExp;
+        }
+
+        else if (firstToken.equalsIgnoreCase("unsetBoostedExp")) {
+            return GameAction.unsetBoostedExp;
         }
 
 

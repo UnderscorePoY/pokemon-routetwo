@@ -54,7 +54,7 @@ public class Main {
             if(ini.get("poke").containsKey("boostedExp")) {
                 boolean boostedExp = ini.get("poke", "boostedExp", boolean.class);
                 if(boostedExp) {
-                    p.setBoostedExp();
+                    Settings.hasBoostedExp = true;
                 }
             }
         } catch(NullPointerException e) {
