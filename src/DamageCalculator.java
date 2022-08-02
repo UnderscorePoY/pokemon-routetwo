@@ -126,7 +126,9 @@ public class DamageCalculator {
         if (STAB) {
             damage = damage * 3 / 2;
         }
-        damage *= effectiveMult;
+        //damage *= effectiveMult;
+        damage = Type.applyTypeEffectiveness(damage, modAttack.getType(), defender
+                .getSpecies().getType1(), defender.getSpecies().getType2());
         damage *= extra_multiplier;
         damage = damage * rangeNum / 255;
         return Math.max(damage, 1);
