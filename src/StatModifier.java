@@ -17,6 +17,7 @@ public class StatModifier {
     private boolean lightscreen = false;
     private boolean reflect = false;
     private Weather weather = Weather.NONE;
+    private boolean burned = false;
 
     public StatModifier() {}
 
@@ -261,14 +262,14 @@ public class StatModifier {
     public String summary() {
         if (hasMods()) {
             if (hasBBs()) {
-                return String.format("+[%s/%s/%s/%s/%s]%s%s%s +<%s/%s/%s/%s>",
+                return String.format("+[%s/%s/%s/%s/%s]%s%s%s%s +<%s/%s/%s/%s>",
                 		atk, def, spd, spcAtk, spcDef, 
-                        (usedxacc ? " +X ACC" : ""), (isLightscreen() ? " +LIGHTSCREEN" : ""), (isReflect() ? " +REFLECT" : ""),
+                        (isBurned() ? " -BRN" : ""), (usedxacc ? " +X ACC" : ""), (isLightscreen() ? " +LIGHTSCREEN" : ""), (isReflect() ? " +REFLECT" : ""),
                         atkBB, defBB, spdBB, spcBB);
             } else {
-                return String.format("+[%s/%s/%s/%s/%s]%s%s%s", 
+                return String.format("+[%s/%s/%s/%s/%s]%s%s%s%s", 
                 		atk, def, spd, spcAtk, spcDef, 
-                		(usedxacc ? " +X ACC" : ""), (isLightscreen() ? " +LIGHTSCREEN" : ""), (isReflect() ? " +REFLECT" : ""));
+                		(isBurned() ? " -BRN" : ""), (usedxacc ? " +X ACC" : ""), (isLightscreen() ? " +LIGHTSCREEN" : ""), (isReflect() ? " +REFLECT" : ""));
             }
         } else {
             if (hasBBs()) {
@@ -361,6 +362,14 @@ public class StatModifier {
 
 	public void setWeather(Weather weather) {
 		this.weather = weather;
+	}
+
+	public boolean isBurned() {
+		return burned;
+	}
+
+	public void setBurned(boolean burned) {
+		this.burned = burned;
 	}
 
 }

@@ -113,10 +113,10 @@ public class Battle extends GameAction {
                         Main.appendln(p.statRanges(true));
                     }
                 }
-                if(getVerbose() == BattleOptions.EVERYTHING) {
+                //if(getVerbose() == BattleOptions.EVERYTHING) {
                     Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
                         p.expToNextLevel(), p.expForLevel()));
-                }
+                //}
             }
         } else { // is a Trainer
             Trainer t = (Trainer) opponent;
@@ -138,10 +138,11 @@ public class Battle extends GameAction {
             Integer[] xreflect = options.getXreflect();
             Integer[] yreflect = options.getYreflect();
             Weather[] weathers = options.getWeathers();
+            boolean burned = options.isBurn();
             Iterable<Pokemon> trainerPokes = null;
             if(order == null) {
                 trainerPokes = t;
-            } else {
+            } else { // modify Pokémon order
                 ArrayList<Pokemon> origPokes = new ArrayList<>();
                 t.forEach(origPokes::add);
                 ArrayList<Pokemon> modPokes = new ArrayList<>();
@@ -236,11 +237,17 @@ public class Battle extends GameAction {
                     options.setMod1(mod1);
                     options.setMod2(mod2);
                 }
+                if(burned) {
+                	StatModifier mod1 = options.getMod1();
+                	mod1.setBurned(burned);
+                	options.setMod1(mod1);
+                }
                 if(sxp != 0) {
                     if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.EVERYTHING)
                         printBattle(p, (Pokemon) opps);
                     else if (getVerbose() == BattleOptions.SOME)
                         printShortBattle(p, (Pokemon) opps);
+                    
                     if (getVerbose() != BattleOptions.NONE) {
                     	int meMinSpeed = options.getMod1().modSpdWithIV(p, 0);
                     	int meMaxSpeed = options.getMod1().modSpdWithIV(p, 15);
@@ -287,23 +294,23 @@ public class Battle extends GameAction {
                             Main.appendln(p.statRanges(true));
                         }
                     }
-                    if(getVerbose() == BattleOptions.EVERYTHING) {
+                    //if(getVerbose() == BattleOptions.EVERYTHING) {
                         Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d",
                                 p.getLevel(), p.expToNextLevel(), p.expForLevel()));
-                    }
+                    //}
                 }
                 sxpIdx++;
             }
         }
-        if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.SOME) {
-            Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
-                    p.expToNextLevel(), p.expForLevel()));
-        }
+        //if(getVerbose() == BattleOptions.ALL || getVerbose() == BattleOptions.SOME) {
+        //   Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
+        //            p.expToNextLevel(), p.expForLevel()));
+       	//}
     }
 
     // does not actually do the battle, just prints summary
     public void printBattle(Pokemon us, Pokemon them) {
-        Main.appendln(DamageCalculator.summary(us, them, options));
+    	Main.appendln(DamageCalculator.summary(us, them, options));
     }
 
     // does not actually do the battle, just prints short summary

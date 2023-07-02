@@ -258,7 +258,9 @@ public enum Move {
 	FLAIL80("Flail 80", 255, MoveEffect.NORMAL_HIT, 80, Type.NORMAL, 100, 15, 0),
 	FLAIL40("Flail 40", 256, MoveEffect.NORMAL_HIT, 40, Type.NORMAL, 100, 15, 0),
 	FLAIL20("Flail 20", 257, MoveEffect.NORMAL_HIT, 20, Type.NORMAL, 100, 15, 0),
-    ;
+    
+	SELFHIT("Self hit", 258, MoveEffect.SELF_HIT, 40, Type.NONE, 100, 0, 0),
+	;
 
     private String name;
     private int index;

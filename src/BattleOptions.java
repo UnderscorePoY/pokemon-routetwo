@@ -18,6 +18,9 @@ public class BattleOptions {
     private boolean printSRsBoostOnLvl = false;
     private StatModifier mod1;
     private StatModifier mod2;
+    private boolean dvDmgRanges = false;
+    private boolean splitForCrits = false;
+    private boolean burn = false;
     private int verbose = BattleOptions.NONE;
     //verbose options
     public static final int NONE = 0;
@@ -202,5 +205,29 @@ public class BattleOptions {
 	
 	public Weather[] getWeathers() {
 		return weathers;
+	}
+
+	public boolean isDvDmgRanges() {
+		return dvDmgRanges;
+	}
+
+	public void setDvDmgRanges(boolean dvDmgRanges) {
+		this.dvDmgRanges = dvDmgRanges;
+	}
+
+	public boolean isSplitForCrits() {
+		return splitForCrits;
+	}
+
+	public void setSplitForCrits(boolean splitForCrits) {
+		this.splitForCrits = splitForCrits;
+	}
+
+	public boolean isBurn() {
+		return burn;
+	}
+
+	public void setBurn(boolean burn) {
+		this.burn = burn;
 	}
 }

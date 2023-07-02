@@ -155,5 +155,7 @@ public enum MoveEffect {
     TELEPORT,
     BEAT_UP,
     FLY,
-    DEFENSE_CURL
+    DEFENSE_CURL,
+    
+    SELF_HIT
 }

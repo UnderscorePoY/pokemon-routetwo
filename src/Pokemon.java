@@ -101,12 +101,20 @@ public class Pokemon implements Battleable {
     // automatically called on level ups/rare candies, but not just from gaining
     // stat EV
     public void calculateStats() {
+    	updateEvs();
+    	updateStats();
+    }
+    
+    private void updateEvs() {
         ev_hp_used = ev_hp;
         ev_atk_used = ev_atk;
         ev_def_used = ev_def;
         ev_spc_used = ev_spc;
         ev_spd_used = ev_spd;
-        hp = calcHPWithIV(ivs.getHPIV());
+    }
+    
+    private void updateStats() {
+    	hp = calcHPWithIV(ivs.getHPIV());
         atk = calcAtkWithIV(ivs.getAtkIV());
         def = calcDefWithIV(ivs.getDefIV());
         spd = calcSpdWithIV(ivs.getSpdIV());
@@ -159,6 +167,12 @@ public class Pokemon implements Battleable {
     public IVs getIVs() {
         return ivs;
     }
+    public void setIVs(IVs newivs) { // This doesn't update EVs, used for varying IVs for damage calcs
+        this.ivs = newivs;
+        this.updateStats();
+    }
+    
+    
     // TODO: EV setter
 
     public int getHP() {

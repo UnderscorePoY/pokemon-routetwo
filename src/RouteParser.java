@@ -425,7 +425,8 @@ public class RouteParser {
         XATKS, XDEFS, XSPDS, XSPCS, XSPDEFS, YDEFS, YSPDEFS, 
         ORDER, BBS,
         XREFLECT, YREFLECT, XLIGHTSCREEN, YLIGHTSCREEN,
-        WEATHER
+        WEATHER,
+        DVVARIATION
     }
 
     private static GameAction addFlagsToBattleable(Battleable b,
@@ -433,7 +434,7 @@ public class RouteParser {
         NextFlag nf = NextFlag.ANY_FLAG;
         BattleOptions options = new BattleOptions();
 
-        for (String s : flagTokens) {
+        for(String s : flagTokens) {
             // we're looking for a flag
             if (nf == NextFlag.ANY_FLAG) {
                 // set this pokemon to wild
@@ -587,6 +588,25 @@ public class RouteParser {
                     nf = NextFlag.YLIGHTSCREEN;
                     continue;
                 }
+                
+                else if (s.equalsIgnoreCase("-dvvariation")) {
+                	options.setDvDmgRanges(true);
+                	options.setSplitForCrits(false);
+                	nf = NextFlag.ANY_FLAG;
+                	continue;
+                }
+                else if (s.equalsIgnoreCase("-dvvariationcrit")) {
+                	options.setDvDmgRanges(true);
+                	options.setSplitForCrits(true);
+                	nf = NextFlag.ANY_FLAG;
+                	continue;
+                }
+                
+                else if (s.equalsIgnoreCase("-xburn")) {
+                	options.setBurn(true);
+                	nf = NextFlag.ANY_FLAG;
+                	continue;
+                }
             }
             // -x flag
             else if (nf == NextFlag.XITEMS) {
@@ -618,8 +638,7 @@ public class RouteParser {
                 options.getMod2().incrementAtkStage(Integer.parseInt(nums[0]));
                 options.getMod2().incrementDefStage(Integer.parseInt(nums[1]));
                 options.getMod2().incrementSpdStage(Integer.parseInt(nums[2]));
-                options.getMod2().incrementSpcAtkStage(
-                        Integer.parseInt(nums[3]));
+                options.getMod2().incrementSpcAtkStage(Integer.parseInt(nums[3]));
                 nf = NextFlag.ANY_FLAG;
                 continue;
                 // ignore y accuracy

@@ -71,7 +71,11 @@ public class DamageCalculator {
         boolean isMetalPowder = isPlayer && Constants.battleHeldItem == BattleHeldItem.METALPOWDER && defender.getSpecies() == Species.DITTO;
 
         if (Type.isPhysicalType(modAttack.getType())) {
-        	effective_atk = !applyAtkModifiers ? aa_orig : atk_atk * (isThickClub ? 2 : 1) ;
+        	effective_atk = !applyAtkModifiers ? aa_orig : atk_atk;
+        	if(atkMod.isBurned())
+        		effective_atk /= 2;
+        	if(applyAtkModifiers && isThickClub)
+        		effective_atk *= 2;
         	effective_def = !applyDefModifiers ? dd_orig : (int)(def_def * (defMod.isReflect() ? 2 : 1) * (isMetalPowder ? 1.5 : 1));
         } else {
         	effective_atk = !applySpcAtkModifiers ? as_orig : atk_spc * (isLightBall ? 2 : 1) ;
@@ -213,7 +217,7 @@ public class DamageCalculator {
             sb.append(endl);
         }
 
-        sb.append(summary_help(p1, p2, mod1, mod2, Constants.isPlayer));
+        sb.append(summary_help(p1, p2, mod1, mod2, Constants.isPlayer, options.isDvDmgRanges(), options.isSplitForCrits()));
 
         sb.append(endl);
 
@@ -252,7 +256,7 @@ public class DamageCalculator {
                         + endl);
             }
         }
-        sb.append(summary_help(p2, p1, mod2, mod1, Constants.isEnemy));
+        sb.append(summary_help(p2, p1, mod2, mod1, Constants.isEnemy, options.isDvDmgRanges(), options.isSplitForCrits()));
 
         if(options.getVerbose() == BattleOptions.EVERYTHING) {
             sb.append(endl);
@@ -340,7 +344,7 @@ public class DamageCalculator {
         
     // String summary of all of p1's moves used on p2
     // (would be faster if i didn't return intermediate strings)
-    private static String summary_help(Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer) {
+    private static String summary_help(Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer, boolean varyDVs, boolean splitForCrits) {
         StringBuilder sb = new StringBuilder();
         String endl = Constants.endl;
 
@@ -349,33 +353,40 @@ public class DamageCalculator {
         for (Move m : p1.getMoveset()) {
             if (m == Move.FURYCUTTER) {
                 for (int i = 1; i <= 5; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer, varyDVs, splitForCrits);
                 }
             } else if (m == Move.ROLLOUT) {
                 for (int i = 1; i <= 6; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer, varyDVs, splitForCrits);
                 }
         	} else if (m == Move.RAGE) {
                 for (int i = 1; i <= 8; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer);
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer, varyDVs, splitForCrits);
                 }
             } else if(m == Move.MAGNITUDE) {
                 for (int i=4; i<=10; i++) {
                     if(i==10) { i++; }
                     m.setPower(i*20-70);
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer);
+                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer, varyDVs, splitForCrits);
                     m.setPower(1);
                 }
             } else {
-                printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer);
+                printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer, varyDVs, splitForCrits);
             }
         }
+        for(Move m : p2.getMoveset()) {
+        	if(m.getEffect() == MoveEffect.CONFUSE || m.getEffect() == MoveEffect.CONFUSE_HIT) {
+        		printMoveDamage(sb, Move.SELFHIT, p1, p1, mod1, mod1, endl, p1.getHP(), 1, isPlayer, varyDVs, splitForCrits);
+        		break;
+        	}
+        }
+        
         return sb.toString();
     }
 
     public static void printMoveDamage(StringBuilder sb, Move m, Pokemon p1,
                                        Pokemon p2, StatModifier mod1, StatModifier mod2, String endl,
-                                       int enemyHP, int _extra_multiplier, boolean isPlayer) {
+                                       int enemyHP, int _extra_multiplier, boolean isPlayer, boolean varyDVs, boolean splitForCrits) {
         int extra_multiplier =
                 (m == Move.FURYCUTTER || m == Move.ROLLOUT) ? 1 << (_extra_multiplier - 1) : _extra_multiplier;
         if(m == Move.RAGE || m == Move.FURYCUTTER || m == Move.ROLLOUT) {
@@ -409,7 +420,88 @@ public class DamageCalculator {
         }
         
         sb.append("\t");
-        // calculate damage of this move, and its percentages on opposing
+        
+        if(varyDVs){
+        	if(isPlayer && m == Move.SELFHIT) {
+    	    	sb.append(endl);
+    	    	
+        		int oldAtkIV = p1.getIVs().getAtkIV();
+        		int oldDefIV = p1.getIVs().getDefIV();
+        		int oldSpdIV = p1.getIVs().getSpdIV();
+        		int oldSpcIV = p1.getIVs().getSpcIV();
+        		for(int atkDV = 0; atkDV <= 15; atkDV++) {
+            		String dvStr = String.format("%d", atkDV);
+            		sb.append(String.format(" Atk DV:%s ", dvStr));
+            		
+        			p1.setIVs(new IVs(atkDV, oldDefIV, oldSpdIV, oldSpcIV));
+        			printMoveDamageVaryDV(sb, m, p1, p1, mod1, mod1, endl, enemyHP, extra_multiplier, false, false);
+        		}
+    			p1.setIVs(new IVs(oldAtkIV, oldDefIV, oldSpdIV, oldSpcIV));
+        	} else {
+        		printMoveDamageVaryDV(sb, m, p1, p2, mod1, mod2, endl, enemyHP, extra_multiplier, isPlayer, splitForCrits);
+        	}
+        	
+        } else { // don't vary DVs
+        	printMoveDamageCore(sb, m, p1, p2, mod1, mod2, endl, enemyHP, extra_multiplier, isPlayer);
+        }
+    }
+    
+    public static void printMoveDamageVaryDV(StringBuilder sb, Move m, Pokemon p1,
+            Pokemon p2, StatModifier mod1, StatModifier mod2, String endl,
+            int enemyHP, int extra_multiplier, boolean isPlayer, boolean splitForCrits) {
+    	sb.append(endl);
+    	
+    	Pokemon player = isPlayer ? p1 : p2;
+    	int oldAtkIV = player.getIVs().getAtkIV();
+    	int oldDefIV = player.getIVs().getDefIV();
+    	int oldSpdIV = player.getIVs().getSpdIV();
+    	int oldSpcIV = player.getIVs().getSpcIV();
+    	
+    	if(isPlayer)
+    		player.setIVs(new IVs(0, oldDefIV, oldSpdIV, 0));
+    	else
+    		player.setIVs(new IVs(oldAtkIV, 0, oldSpdIV, 0));
+    	
+    	int lowDv = 0;
+    	int lowDmg = splitForCrits ? maxCritDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer):
+    			                     maxDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer);
+    	int highDmg = lowDmg;
+    	for(int highDv = 0; highDv <= 15; highDv++) {
+    		while(highDv <= 15 && 
+    				(isPlayer ? 
+    						lowDmg >= (highDmg = splitForCrits ? 
+    								maxCritDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer):
+    								maxDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer)):
+    				        lowDmg <= (highDmg = splitForCrits ? 
+    				        		maxCritDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer):
+			                        maxDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer)))
+    			 ) { // if player, damage increase ; if enemy, damage decrease
+        		highDv++;
+            	if(isPlayer)
+            		player.setIVs(new IVs(highDv, oldDefIV, oldSpdIV, highDv));
+            	else
+            		player.setIVs(new IVs(oldAtkIV, highDv, oldSpdIV, highDv));
+    		}
+    		highDv--;
+        	if(isPlayer)
+        		player.setIVs(new IVs(highDv, oldDefIV, oldSpdIV, highDv));
+        	else
+        		player.setIVs(new IVs(oldAtkIV, highDv, oldSpdIV, highDv));
+            String dvStr = highDv == lowDv ? String.format("%d", lowDv) : String.format("%d-%d", lowDv, highDv);
+            String typeStr = !Type.isPhysicalType(m.getType()) ? "Spc" : (isPlayer ?  "Atk" : "Def");
+            			
+    		sb.append(String.format("  %s DV:%s ", typeStr, dvStr));
+    		printMoveDamageCore(sb, m, p1, p2, mod1, mod2, endl, enemyHP, extra_multiplier, isPlayer);
+    		lowDv = highDv+1;
+    		lowDmg = highDmg;
+    	}
+    	player.setIVs(new IVs(oldAtkIV, oldDefIV, oldSpdIV, oldSpcIV));
+    }
+    
+    public static void printMoveDamageCore(StringBuilder sb, Move m, Pokemon p1,
+            Pokemon p2, StatModifier mod1, StatModifier mod2, String endl,
+            int enemyHP, int extra_multiplier, boolean isPlayer) {
+    	// calculate damage of this move, and its percentages on opposing
         // pokemon
         int minDmg = minDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer);
         int maxDmg = maxDamage(m, p1, p2, mod1, mod2, extra_multiplier, isPlayer);
@@ -420,8 +512,16 @@ public class DamageCalculator {
             sb.append(endl);
             return;
         }
+        
         double minPct = 100.0 * minDmg / enemyHP;
         double maxPct = 100.0 * maxDmg / enemyHP;
+        
+        //Deal with confusion
+        if(m == Move.SELFHIT) {
+        	sb.append(String.format("%d%s",  maxDmg, endl));
+        	return;
+        }
+        
         sb.append(String.format("%d-%d %.02f-%.02f", minDmg, maxDmg, minPct,
                 maxPct));
         sb.append("%\t(crit: ");
@@ -591,6 +691,10 @@ public class DamageCalculator {
         */
     }
     
+    
+    
+    
+    
     public static long choose(long total, long choose) {
         if (total < choose)
             return 0;
@@ -626,7 +730,7 @@ public class DamageCalculator {
             sb.append(endl);
         }
 
-        sb.append(summary_help(p1, p2, mod1, mod2, isPlayer) + endl);
+        sb.append(summary_help(p1, p2, mod1, mod2, isPlayer, options.isDvDmgRanges(), options.isSplitForCrits()) + endl);
         if (mod2.hasMods()) {
             sb.append(String.format("%s (%s) %s -> (%s): ", p2.pokeName(),
                     p2.statsStr(), mod2.summary(), mod2.modStatsStr(p2)));

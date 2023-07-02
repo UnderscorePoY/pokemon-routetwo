@@ -240,15 +240,15 @@ public abstract class GameAction {
     public static final GameAction printAllStats = new GameAction() {
         void performAction(Pokemon p) { 
             Main.appendln(p.statsWithBoost());
-            Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
-                    p.expToNextLevel(), p.expForLevel()));
+            //Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
+            //        p.expToNextLevel(), p.expForLevel()));
         }
     };
     public static final GameAction printAllStatsNoBoost = new GameAction() {
         void performAction(Pokemon p) { 
             Main.appendln(p.statsWithoutBoost());
-            Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
-                    p.expToNextLevel(), p.expForLevel()));
+            //Main.appendln(String.format("LVL: %d EXP NEEDED: %d/%d", p.getLevel(),
+            //        p.expToNextLevel(), p.expForLevel()));
         }
     };
     public static final GameAction printStatRanges = new GameAction() {
