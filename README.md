@@ -41,15 +41,15 @@
 
 
 **`[2023/07/02]`** 
-○ Added DV variation in battles with options `-dvvariation` and `-dvvariationcrit`.
-○ Added burn for player in battles with option `-xburn`.
-○ Added automatic handling of self-hit damage when a Pokémon has a move that can confuse.
+○ Added DV variation in battles with options `-dvvariation` and `-dvvariationcrit`.  
+○ Added burn for player in battles with option `-xburn`.  
+○ Added automatic handling of self-hit damage when a Pokémon has a move that can confuse.  
 
 
 **`[2021/01/19]`** 
-○ Added proper Flail handling.
-○ Added stage 6 of Rollout to emulate the Defense Curl combo.
-○ Fixed move names when weather applies.
+○ Added proper Flail handling.  
+○ Added stage 6 of Rollout to emulate the Defense Curl combo.  
+○ Fixed move names when weather applies.  
 
 
 **`[2020/11/28]`**  
