@@ -45,6 +45,8 @@
 ○ Added burn for player in battles with option `-xburn`.  
 ○ Added automatic handling of self-hit damage when a Pokémon has a move that can confuse.  
 
+○ Updated xml formatting file accordingly.
+
 
 **`[2021/01/19]`**  
 ○ Added proper Flail handling.  
