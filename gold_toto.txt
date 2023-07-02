@@ -167,7 +167,7 @@ returnpower 88
 VANCE -lvranges -v 3
 
 // blackthorn city
-pinkbowflag
+pinkbow
 returnpower 89
 PAUL -lvranges -v 3 
 FRAN -lvranges -v 3 
