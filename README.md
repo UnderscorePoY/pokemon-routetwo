@@ -317,8 +317,8 @@ The options under `[util]` should generally be set to true, unless you really do
 > Example : `"BROCK -order 1/2/4/5/3 // Sends Graveler, Rhyhorn, Onix, Omastar, Kabutops. Initial order(desired order): Graveler(1), Rhyhorn(2), Omastar(4), Kabutops(5), Onix(3)`  
 
 ###### 4.4.3.5. Output
-  `-dvvariation` : Makes player Attack and Special DVs vary to calculate offensive damage ranges, and player Defense and Special DVs to calculate defensive damage ranges. Results are grouped by non-critical hit damage values.
-  `-dvvariationcrit` : Makes player Attack and Special DVs vary to calculate offensive damage ranges, and player Defense and Special DVs to calculate defensive damage ranges. Results are grouped by critical hit damage values.
+  `-dvvariation` : Makes player Attack and Special DVs vary to calculate offensive damage ranges, and player Defense and Special DVs to calculate defensive damage ranges. Results are grouped by non-critical hit damage values.  
+  `-dvvariationcrit` : Makes player Attack and Special DVs vary to calculate offensive damage ranges, and player Defense and Special DVs to calculate defensive damage ranges. Results are grouped by critical hit damage values.  
   `"-lvranges"`  : Outputs player Pokemon stats when a level up occurs during a battle.  
   `"-lvrangesb"` : Outputs player Pokemon stats accounting for badge boosts when a level up occurs during a battle.  
 
