@@ -40,9 +40,15 @@
 ○ Usual update.
 
 
+**`[2023/07/02]`** 
+○ Added DV variation in battles with options `-dvvariation` and `-dvvariationcrit`.
+○ Added burn for player in battles with option `-xburn`.
+○ Added automatic handling of self-hit damage when a Pokémon has a move that can confuse.
+
+
 **`[2021/01/19]`** 
 ○ Added proper Flail handling.
-○ Added stage 6 of Rollout to mirror the Defense Curl combo.
+○ Added stage 6 of Rollout to emulate the Defense Curl combo.
 ○ Fixed move names when weather applies.
 
 
@@ -259,7 +265,7 @@ The options under `[util]` should generally be set to true, unless you really do
   For all battle options, `x` refers to the player, `y` refers to the enemy.  
   Any option starting with `-x` can be written starting with `-y` to have the same effect on the enemy team.  
   
-###### 4.4.3.1. Stat boosts
+###### 4.4.3.1. Stat modifications
   `"-xitems <ATK>/<DEF>/<SPD>/<SPC>[/ACC]"` : Sets `ATK` X Attacks, `DEF` X Defends, etc.  
   alias: `"-x"`  
 > Example : `RED -xitems 2/0/1/0 // sets 2 X Attacks & 1 X Speed`  
@@ -284,6 +290,8 @@ The options under `[util]` should generally be set to true, unless you really do
 
   `"-bbs <ATK>/<DEF>/<SPD>/<SPC>"` : Sets up manual badge boosts. Useless for Gen2.  
 
+  `-xburn` : Calculates physical damage with burn applied (option only available for the player).
+
 ###### 4.4.3.2. Experience
   `"-sxp <NUM>"` : Divides all earned experience by `NUM`.  
   `"-sxps <FIRST>[/SECOND...]"` : Divides first enemy Pokemon experience by `FIRST`, the second by `SECOND`, etc.  
@@ -307,6 +315,8 @@ The options under `[util]` should generally be set to true, unless you really do
 > Example : `"BROCK -order 1/2/4/5/3 // Sends Graveler, Rhyhorn, Onix, Omastar, Kabutops. Initial order(desired order): Graveler(1), Rhyhorn(2), Omastar(4), Kabutops(5), Onix(3)`  
 
 ###### 4.4.3.5. Output
+  `-dvvariation` : Makes player Attack and Special DVs vary to calculate offensive damage ranges, and player Defense and Special DVs to calculate defensive damage ranges. Results are grouped by non-critical hit damage values.
+  `-dvvariationcrit` : Makes player Attack and Special DVs vary to calculate offensive damage ranges, and player Defense and Special DVs to calculate defensive damage ranges. Results are grouped by critical hit damage values.
   `"-lvranges"`  : Outputs player Pokemon stats when a level up occurs during a battle.  
   `"-lvrangesb"` : Outputs player Pokemon stats accounting for badge boosts when a level up occurs during a battle.  
 
