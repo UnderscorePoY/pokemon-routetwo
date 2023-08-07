@@ -9,13 +9,15 @@ public class DamageCalculator {
     private static int damage(Move attack, Pokemon attacker, Pokemon defender,
                               StatModifier atkMod, StatModifier defMod, int rangeNum,
                               boolean crit, int extra_multiplier, boolean isPlayer) {
+        Move modAttack = attack;
+
         if (rangeNum < MIN_RANGE) {
             rangeNum = MIN_RANGE;
         }
-        if (rangeNum > MAX_RANGE) {
+        //Flail and Reversal do not have range
+        if (rangeNum > MAX_RANGE || modAttack.getEffect() == MoveEffect.REVERSAL) {
             rangeNum = MAX_RANGE;
         }
-        Move modAttack = attack;
 
         double effectiveMult = Type.effectiveness(modAttack.getType(), defender
                 .getSpecies().getType1(), defender.getSpecies().getType2());
@@ -528,8 +530,12 @@ public class DamageCalculator {
         	return;
         }
         
-        sb.append(String.format("%d-%d %.02f-%.02f", minDmg, maxDmg, minPct,
+        if (minDmg == maxDmg) {
+            sb.append(String.format("%d %.02f", maxDmg, maxPct));
+        } else {
+            sb.append(String.format("%d-%d %.02f-%.02f", minDmg, maxDmg, minPct,
                 maxPct));
+        }
         sb.append("%");
 
         // do it again, for crits
@@ -542,8 +548,12 @@ public class DamageCalculator {
 
             double critMinPct = 100.0 * critMinDmg / enemyHP;
             double critMaxPct = 100.0 * critMaxDmg / enemyHP;
-            sb.append(String.format("%d-%d %.02f-%.02f", critMinDmg, critMaxDmg,
+            if (critMinDmg == critMaxDmg) {
+                sb.append(String.format("%d %.02f", critMaxDmg, critMaxPct));
+            } else {
+                sb.append(String.format("%d-%d %.02f-%.02f", critMinDmg, critMaxDmg,
                     critMinPct, critMaxPct));
+            }
             sb.append("%)");
         }
         sb.append(endl);
