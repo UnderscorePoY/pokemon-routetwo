@@ -30,23 +30,8 @@ public class Moveset implements Iterable<Move>{
         for(int i =  0; i < lms.length; i++) {
             Move m = lms[i].getMove();
             if (!movesSet.contains(m) && lms[i].getLevel() <= level) {
-            	if(m == Move.FLAIL && !movesSet.contains(Move.FLAIL200)) { // TO-DO : hacky
-            		movesSet.add(Move.FLAIL200);
-            		movesSet.add(Move.FLAIL150);
-            		movesSet.add(Move.FLAIL100);
-            		movesSet.add(Move.FLAIL80);
-            		movesSet.add(Move.FLAIL40);
-            		movesSet.add(Move.FLAIL20);
-            		distinctMoves.add(Move.FLAIL200);
-            		distinctMoves.add(Move.FLAIL150);
-            		distinctMoves.add(Move.FLAIL100);
-            		distinctMoves.add(Move.FLAIL80);
-            		distinctMoves.add(Move.FLAIL40);
-            		distinctMoves.add(Move.FLAIL20);
-            	} else {
-	                movesSet.add(m);
-	                distinctMoves.add(m);
-            	}
+            	movesSet.add(m);
+	            distinctMoves.add(m);
             }
         }
         
@@ -54,8 +39,6 @@ public class Moveset implements Iterable<Move>{
             return new Moveset(distinctMoves);
         else {
             int n = distinctMoves.size();
-            if(distinctMoves.subList(n-4, n).contains(Move.FLAIL20))  // TO-DO : hacky
-            	return new Moveset(distinctMoves.subList(n-9, n));
             return new Moveset(distinctMoves.subList(n-4, n));
         }
             

@@ -284,6 +284,17 @@ public class DamageCalculator {
                         move.setPower(1);
                     }
                     break;
+                case REVERSAL:
+                    for (int i=1; i<=6; i++) {
+                        if(i < 4) { 
+                            move.setPower((1 << i)*10);
+                        } else {
+                            move.setPower((i-2)*50);
+                        }
+                        damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, 1, isPlayer, varyDVs, splitForCrits);
+                        move.setPower(1);
+                    }
+                    break;
                 default:
                     damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, 1, isPlayer, varyDVs, splitForCrits);
         	}
@@ -369,6 +380,8 @@ public class DamageCalculator {
             case ROLLOUT:
             case MAGNITUDE:
                 return move.getBoostedName(_extra_modifier);
+            case REVERSAL:
+                return move.getBoostedName(move.getPower());
             default: return move.getName();
         }
     }
