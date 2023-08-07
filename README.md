@@ -341,7 +341,6 @@ The options under `[util]` should generally be set to true, unless you really do
 ### 6. TODOS
 (from original RouteTwo)  
 
-○ Fix move damage displays for weird moves, like Dragon Rage.  
 ○ Add ability to indicate that a battle's EXP is split between some number of pokemon.  
 ○ Add ability to preserve move slot orders.  
 ○ Add ability to print strings into output.  
