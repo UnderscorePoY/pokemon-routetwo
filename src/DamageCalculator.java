@@ -297,18 +297,14 @@ public class DamageCalculator {
     }
 
     private static void damage_help(StringBuilder sb, Move move, Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, int _extra_modifier, boolean isPlayer) {
-        int extra_modifier = (move == Move.FURYCUTTER || move == Move.ROLLOUT) ? 1 << (_extra_modifier - 1) : _extra_modifier;
+        int extra_modifier = getExtraModifier(move.getEffect(), _extra_modifier);
         String endl = Constants.endl;
         int minDmg = Math.min(p2.getHP(), minDamage(move, p1, p2, mod1, mod2, extra_modifier, Constants.isPlayer));
         if(minDmg > 0) {
             int minCritDmg = Math.min(p2.getHP(), minCritDamage(move, p1, p2, mod1, mod2, extra_modifier, Constants.isPlayer));
             TreeMap<Integer,Double> dmgMap = detailedDamage(move, p1, p2, mod1, mod2, false, extra_modifier, isPlayer);
             TreeMap<Integer,Double> critMap = detailedDamage(move, p1, p2, mod1, mod2, true, extra_modifier, isPlayer);
-            if(move == Move.RAGE || move == Move.FURYCUTTER || move == Move.ROLLOUT) {
-                sb.append(move.getBoostedName(_extra_modifier));
-            } else {
-                sb.append(move.getName());
-            }
+            sb.append(getMoveName(move, _extra_modifier));
             sb.append(endl);
             sb.append("          NON-CRITS");
             for(Integer i : dmgMap.keySet()) {
@@ -351,7 +347,26 @@ public class DamageCalculator {
         }
 
     }
-        
+
+    private static int getExtraModifier(MoveEffect effect, int _extra_modifier) {
+        switch(effect) {
+            case FURY_CUTTER:
+            case ROLLOUT:
+                return 1 << (_extra_modifier - 1);
+            default: return _extra_modifier;
+        }
+    }
+
+    private static String getMoveName(Move move, int _extra_modifier) {
+        switch(move.getEffect()) {
+            case RAGE:
+            case FURY_CUTTER:
+            case ROLLOUT:
+                return move.getBoostedName(_extra_modifier);
+            default: return move.getName();
+        }
+    }
+
     // String summary of all of p1's moves used on p2
     // (would be faster if i didn't return intermediate strings)
     private static String summary_help(Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer, boolean varyDVs, boolean splitForCrits) {
@@ -371,36 +386,30 @@ public class DamageCalculator {
     public static void printMoveDamage(StringBuilder sb, Move m, Pokemon p1,
                                        Pokemon p2, StatModifier mod1, StatModifier mod2, String endl,
                                        int enemyHP, int _extra_multiplier, boolean isPlayer, boolean varyDVs, boolean splitForCrits) {
-        int extra_multiplier =
-                (m == Move.FURYCUTTER || m == Move.ROLLOUT) ? 1 << (_extra_multiplier - 1) : _extra_multiplier;
-        if(m == Move.RAGE || m == Move.FURYCUTTER || m == Move.ROLLOUT) {
-            sb.append(m.getBoostedName(_extra_multiplier));
-        } else if (mod1.getWeather() != Weather.NONE) {
-	        switch(mod1.getWeather()) {
+        int extra_multiplier = getExtraModifier(m.getEffect(), _extra_multiplier);
+        String moveName = getMoveName(m, _extra_multiplier);
+        switch(mod1.getWeather()) {
 	        case RAIN :
 	        	if(m == Move.SOLARBEAM || m.getType() == Type.FIRE) {
-	        		sb.append(m.getName()+" -RAIN");
+	        		sb.append(moveName+" -RAIN");
 	        	} else if (m.getType() == Type.WATER) {
-	        		sb.append(m.getName()+" +RAIN");
+	        		sb.append(moveName+" +RAIN");
 	        	} else {
-	            	sb.append(m.getName());
+	            	sb.append(moveName);
 	        	}
 	        	break;
 	        case SUN :
 	        	if(m.getType() == Type.WATER) {
-	        		sb.append(m.getName()+" -SUN");
+	        		sb.append(moveName+" -SUN");
 	        	} else if (m.getType() == Type.FIRE) {
-	        		sb.append(m.getName()+" +SUN");
+	        		sb.append(moveName+" +SUN");
 	        	} else {
-	            	sb.append(m.getName());
+	            	sb.append(moveName);
 	        	}
 	        	break;
 	        default :
-	        	sb.append(m.getName());
+	        	sb.append(moveName);
 	        	break;
-	        } 
-        } else {
-        	sb.append(m.getName());
         }
         
         sb.append("\t");
