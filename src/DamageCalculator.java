@@ -59,11 +59,6 @@ public class DamageCalculator {
         boolean STAB = modAttack.getType() != Type.NONE &&
         		(modAttack.getType() == attacker.getSpecies().getType1()
                 || modAttack.getType() == attacker.getSpecies().getType2());
-        double effectiveMult = Type.effectiveness(modAttack.getType(), defender
-                .getSpecies().getType1(), defender.getSpecies().getType2());
-        if (effectiveMult == 0) {
-            return 0;
-        }
 
         int effective_atk = 0, effective_def = 0;        
         boolean applyAtkModifiers = !crit || crit && (defMod.getDefStage() < atkMod.getAtkStage());
