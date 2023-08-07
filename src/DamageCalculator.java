@@ -275,9 +275,12 @@ public class DamageCalculator {
                     break;
                 case MAGNITUDE:
                     for (int i=4; i<=10; i++) {
-                        if(i==10) { i++; }
-                        move.setPower(i*20-70);
-                        damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, 1, isPlayer, varyDVs, splitForCrits);
+                        if(i==10) { 
+                            move.setPower(150);
+                        } else {
+                            move.setPower(i*20-70);
+                        }
+                        damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, i, isPlayer, varyDVs, splitForCrits);
                         move.setPower(1);
                     }
                     break;
@@ -353,6 +356,8 @@ public class DamageCalculator {
             case FURY_CUTTER:
             case ROLLOUT:
                 return 1 << (_extra_modifier - 1);
+            case MAGNITUDE:
+                return 1;
             default: return _extra_modifier;
         }
     }
@@ -362,6 +367,7 @@ public class DamageCalculator {
             case RAGE:
             case FURY_CUTTER:
             case ROLLOUT:
+            case MAGNITUDE:
                 return move.getBoostedName(_extra_modifier);
             default: return move.getName();
         }
