@@ -228,30 +228,7 @@ public class DamageCalculator {
         sb.append(endl);
 
         if(options.getVerbose() == BattleOptions.EVERYTHING || options.getVerbose() == BattleOptions.ALL) {
-            for(Move move : p1.getMoveset()) {
-                if (move == Move.FURYCUTTER) {
-                    for (int i = 1; i <= 5; i++) {
-                        damage_help(sb, move, p1, p2, mod1, mod2, i, Constants.isPlayer);
-                    }
-                } else if (move == Move.ROLLOUT) {
-                	for (int i = 1; i <= 6; i++) {
-                        damage_help(sb, move, p1, p2, mod1, mod2, i, Constants.isPlayer);
-                    }
-                } else if (move == Move.RAGE) {
-                    for (int i = 1; i <= 8; i++) {
-                        damage_help(sb, move, p1, p2, mod1, mod2, i, Constants.isPlayer);
-                    }
-                } else if(move == Move.MAGNITUDE) {
-                    for (int i=4; i<=10; i++) {
-                        if(i==10) { i++; }
-                        move.setPower(i*20-70);
-                        damage_help(sb, move, p1, p2, mod1, mod2, 1, Constants.isPlayer);
-                        move.setPower(1);
-                    }
-                } else {
-                    damage_help(sb, move, p1, p2, mod1, mod2, 1, Constants.isPlayer);
-                }
-            }
+            move_help(sb, p1, p2, mod1, mod2, Constants.isPlayer);
 
             if (mod2.hasMods()) {
                 sb.append(String.format("%s (%s) %s -> (%s): ", p2.pokeName(),
@@ -266,32 +243,37 @@ public class DamageCalculator {
 
         if(options.getVerbose() == BattleOptions.EVERYTHING) {
             sb.append(endl);
-            for(Move move : p2.getMoveset()) {
-                if (move == Move.FURYCUTTER) {
-                    for (int i = 1; i <= 5; i++) {
-                        damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
-                    }
-                } else if (move == Move.ROLLOUT) {
-                    for (int i = 1; i <= 6; i++) {
-                        damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
-                    }
-            	} else if (move == Move.RAGE) {
-                    for (int i = 1; i <= 8; i++) {
-                        damage_help(sb, move, p2, p1, mod2, mod1, i, Constants.isEnemy);
-                    }
-                } else if(move == Move.MAGNITUDE) {
-                    for (int i=4; i<=10; i++) {
-                        if(i==10) { i++; }
-                        move.setPower(i*20-70);
-                        damage_help(sb, move, p2, p1, mod2, mod1, 1, Constants.isEnemy);
-                        move.setPower(1);
-                    }
-                } else {
-                    damage_help(sb, move, p2, p1, mod2, mod1, 1, Constants.isEnemy);
-                }
-            }
+            move_help(sb, p2, p1, mod2, mod1, Constants.isEnemy);
         }
         return sb.toString();
+    }
+
+    private static void move_help(StringBuilder sb, Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer) {
+        for(Move move : p1.getMoveset()) {
+            if (move == Move.FURYCUTTER) {
+                for (int i = 1; i <= 5; i++) {
+                    damage_help(sb, move, p1, p2, mod1, mod2, i, isPlayer);
+                }
+            } else if (move == Move.ROLLOUT) {
+                for (int i = 1; i <= 6; i++) {
+                    damage_help(sb, move, p1, p2, mod1, mod2, i, isPlayer);
+                }
+            } else if (move == Move.RAGE) {
+                for (int i = 1; i <= 8; i++) {
+                    damage_help(sb, move, p1, p2, mod1, mod2, i, isPlayer);
+                }
+            } else if(move == Move.MAGNITUDE) {
+                for (int i=4; i<=10; i++) {
+                    if(i==10) { i++; }
+                    move.setPower(i*20-70);
+                    damage_help(sb, move, p1, p2, mod1, mod2, 1, isPlayer);
+                    move.setPower(1);
+                }
+            } else {
+                damage_help(sb, move, p1, p2, mod1, mod2, 1, isPlayer);
+            }
+        }
+
     }
 
     private static void damage_help(StringBuilder sb, Move move, Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, int _extra_modifier, boolean isPlayer) {
