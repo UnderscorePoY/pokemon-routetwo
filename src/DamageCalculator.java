@@ -16,7 +16,13 @@ public class DamageCalculator {
             rangeNum = MAX_RANGE;
         }
         Move modAttack = attack;
-        
+
+        double effectiveMult = Type.effectiveness(modAttack.getType(), defender
+                .getSpecies().getType1(), defender.getSpecies().getType2());
+        if (effectiveMult == 0) {
+            return 0;
+        }
+
         if (modAttack.getEffect() == MoveEffect.STATIC_DAMAGE) {
         	return modAttack.getPower();
         }
