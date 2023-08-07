@@ -30,15 +30,17 @@ public class DamageCalculator {
         }
         if (modAttack.getPower() <= 0) {
             // TODO: more special cases
-        	switch(modAttack) {
-        	case HIDDENPOWER :
-                Type type = getHP_Type(attacker);
-                int power = getHP_Power(attacker);
-                modAttack.setType(type);
-                modAttack.setPower(power);
-                modAttack.setName("Hidden Power [" + type.name() + " " + power + "]");
-                break;
-        	default: return 0;
+        	switch(modAttack.getEffect()) {
+                case LEVEL_DAMAGE:
+                    return attacker.getLevel();
+                case HIDDEN_POWER:
+                    Type type = getHP_Type(attacker);
+                    int power = getHP_Power(attacker);
+                    modAttack.setType(type);
+                    modAttack.setPower(power);
+                    modAttack.setName("Hidden Power [" + type.name() + " " + power + "]");
+                    break;
+                default: return 0;
         	}
         }
         if (!canCrit(modAttack.getEffect())) {
@@ -848,6 +850,7 @@ public class DamageCalculator {
     private static boolean canCrit(MoveEffect effect) {
         switch(effect) {
         	case STATIC_DAMAGE:
+            case LEVEL_DAMAGE:
             case REVERSAL:
             case FUTURE_SIGHT:
                 return false;
