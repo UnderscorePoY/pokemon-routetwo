@@ -251,31 +251,49 @@ public class DamageCalculator {
     }
 
     private static void move_help(StringBuilder sb, Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer) {
-        for(Move move : p1.getMoveset()) {
-            if (move == Move.FURYCUTTER) {
-                for (int i = 1; i <= 5; i++) {
-                    damage_help(sb, move, p1, p2, mod1, mod2, i, isPlayer);
-                }
-            } else if (move == Move.ROLLOUT) {
-                for (int i = 1; i <= 6; i++) {
-                    damage_help(sb, move, p1, p2, mod1, mod2, i, isPlayer);
-                }
-            } else if (move == Move.RAGE) {
-                for (int i = 1; i <= 8; i++) {
-                    damage_help(sb, move, p1, p2, mod1, mod2, i, isPlayer);
-                }
-            } else if(move == Move.MAGNITUDE) {
-                for (int i=4; i<=10; i++) {
-                    if(i==10) { i++; }
-                    move.setPower(i*20-70);
-                    damage_help(sb, move, p1, p2, mod1, mod2, 1, isPlayer);
-                    move.setPower(1);
-                }
-            } else {
-                damage_help(sb, move, p1, p2, mod1, mod2, 1, isPlayer);
-            }
-        }
+        move_help(false, sb, p1, p2, mod1, mod2, isPlayer, false, false);
+    }
 
+    private static void move_help(boolean isPrinting, StringBuilder sb, Pokemon p1,
+                                       Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer, boolean varyDVs, boolean splitForCrits) {
+        for(Move move : p1.getMoveset()) {
+            switch(move.getEffect()) {
+                case FURY_CUTTER:
+                    for (int i = 1; i <= 5; i++) {
+                        damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, i, isPlayer, varyDVs, splitForCrits);
+                    }
+                    break;
+                case ROLLOUT:
+                    for (int i = 1; i <= 6; i++) {
+                        damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, i, isPlayer, varyDVs, splitForCrits);
+                    }
+                    break;
+                case RAGE:
+                    for (int i = 1; i <= 8; i++) {
+                        damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, i, isPlayer, varyDVs, splitForCrits);
+                    }
+                    break;
+                case MAGNITUDE:
+                    for (int i=4; i<=10; i++) {
+                        if(i==10) { i++; }
+                        move.setPower(i*20-70);
+                        damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, 1, isPlayer, varyDVs, splitForCrits);
+                        move.setPower(1);
+                    }
+                    break;
+                default:
+                    damage_help_or_print(isPrinting, sb, move, p1, p2, mod1, mod2, 1, isPlayer, varyDVs, splitForCrits);
+        	}
+        }
+    }
+
+    private static void damage_help_or_print(boolean isPrinting, StringBuilder sb, Move move, Pokemon p1,
+                                       Pokemon p2, StatModifier mod1, StatModifier mod2, int _extra_multiplier, boolean isPlayer, boolean varyDVs, boolean splitForCrits) {
+        if (isPrinting) {
+            printMoveDamage(sb, move, p1, p2, mod1, mod2, Constants.endl, p2.getHP(), _extra_multiplier, isPlayer, varyDVs, splitForCrits);
+        } else {
+            damage_help(sb, move, p1, p2, mod1, mod2, _extra_multiplier, isPlayer);
+        }
     }
 
     private static void damage_help(StringBuilder sb, Move move, Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, int _extra_modifier, boolean isPlayer) {
@@ -338,37 +356,11 @@ public class DamageCalculator {
     // (would be faster if i didn't return intermediate strings)
     private static String summary_help(Pokemon p1, Pokemon p2, StatModifier mod1, StatModifier mod2, boolean isPlayer, boolean varyDVs, boolean splitForCrits) {
         StringBuilder sb = new StringBuilder();
-        String endl = Constants.endl;
 
-        int enemyHP = p2.getHP();
-
-        for (Move m : p1.getMoveset()) {
-            if (m == Move.FURYCUTTER) {
-                for (int i = 1; i <= 5; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer, varyDVs, splitForCrits);
-                }
-            } else if (m == Move.ROLLOUT) {
-                for (int i = 1; i <= 6; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer, varyDVs, splitForCrits);
-                }
-        	} else if (m == Move.RAGE) {
-                for (int i = 1; i <= 8; i++) {
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, i, isPlayer, varyDVs, splitForCrits);
-                }
-            } else if(m == Move.MAGNITUDE) {
-                for (int i=4; i<=10; i++) {
-                    if(i==10) { i++; }
-                    m.setPower(i*20-70);
-                    printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer, varyDVs, splitForCrits);
-                    m.setPower(1);
-                }
-            } else {
-                printMoveDamage(sb, m, p1, p2, mod1, mod2, endl, enemyHP, 1, isPlayer, varyDVs, splitForCrits);
-            }
-        }
+        move_help(true, sb, p1, p2, mod1, mod2, isPlayer, varyDVs, splitForCrits);
         for(Move m : p2.getMoveset()) {
         	if(m.getEffect() == MoveEffect.CONFUSE || m.getEffect() == MoveEffect.CONFUSE_HIT) {
-        		printMoveDamage(sb, Move.SELFHIT, p1, p1, mod1, mod1, endl, p1.getHP(), 1, isPlayer, varyDVs, splitForCrits);
+        		printMoveDamage(sb, Move.SELFHIT, p1, p1, mod1, mod1, Constants.endl, p1.getHP(), 1, isPlayer, varyDVs, splitForCrits);
         		break;
         	}
         }
