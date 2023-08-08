@@ -68,7 +68,7 @@ public enum Move {
     SUBMISSION("Submission", 66, MoveEffect.RECOIL_HIT, 80, Type.FIGHTING, 80, 25, 0),
     LOWKICK("Low Kick", 67, MoveEffect.FLINCH_HIT, 50, Type.FIGHTING, 90, 20, 30),
     COUNTER("Counter", 68, MoveEffect.COUNTER, 1, Type.FIGHTING, 100, 20, 0),
-    SEISMICTOSS("Seismic Toss", 69, MoveEffect.LEVEL_DAMAGE, 1, Type.FIGHTING, 100, 20, 0),
+    SEISMICTOSS("Seismic Toss", 69, MoveEffect.LEVEL_DAMAGE, 0, Type.FIGHTING, 100, 20, 0),
     STRENGTH("Strength", 70, MoveEffect.NORMAL_HIT, 80, Type.NORMAL, 100, 15, 0),
     ABSORB("Absorb", 71, MoveEffect.LEECH_HIT, 20, Type.GRASS, 100, 20, 0),
     MEGADRAIN("Mega Drain", 72, MoveEffect.LEECH_HIT, 40, Type.GRASS, 100, 10, 0),
@@ -100,7 +100,7 @@ public enum Move {
     QUICKATTACK("Quick Attack", 98, MoveEffect.PRIORITY_HIT, 40, Type.NORMAL, 100, 30, 0),
     RAGE("Rage", 99, MoveEffect.RAGE, 20, Type.NORMAL, 100, 20, 0),
     TELEPORT("Teleport", 100, MoveEffect.TELEPORT, 0, Type.PSYCHIC, 100, 20, 0),
-    NIGHTSHADE("Night Shade", 101, MoveEffect.LEVEL_DAMAGE, 1, Type.GHOST, 100, 15, 0),
+    NIGHTSHADE("Night Shade", 101, MoveEffect.LEVEL_DAMAGE, 0, Type.GHOST, 100, 15, 0),
     MIMIC("Mimic", 102, MoveEffect.MIMIC, 0, Type.NORMAL, 100, 10, 0),
     SCREECH("Screech", 103, MoveEffect.DEFENSE_DOWN_2, 0, Type.NORMAL, 85, 40, 0),
     DOUBLETEAM("Double Team", 104, MoveEffect.EVASION_UP, 0, Type.NORMAL, 100, 15, 0),
@@ -252,15 +252,7 @@ public enum Move {
     WHIRLPOOL("Whirlpool", 250, MoveEffect.TRAP_TARGET, 15, Type.WATER, 70, 15, 0),
     BEATUP("Beat Up", 251, MoveEffect.BEAT_UP, 10, Type.DARK, 100, 10, 0),
     
-    FLAIL200("Flail 200", 252, MoveEffect.REVERSAL, 200, Type.NORMAL, 100, 15, 0),
-    FLAIL150("Flail 150", 253, MoveEffect.REVERSAL, 150, Type.NORMAL, 100, 15, 0),
-    FLAIL100("Flail 100", 254, MoveEffect.REVERSAL, 100, Type.NORMAL, 100, 15, 0),
-	FLAIL80("Flail 80", 255, MoveEffect.REVERSAL, 80, Type.NORMAL, 100, 15, 0),
-	FLAIL40("Flail 40", 256, MoveEffect.REVERSAL, 40, Type.NORMAL, 100, 15, 0),
-	FLAIL20("Flail 20", 257, MoveEffect.REVERSAL, 20, Type.NORMAL, 100, 15, 0),
-    
-	SELFHIT("Self hit", 258, MoveEffect.SELF_HIT, 40, Type.NONE, 100, 0, 0),
-	;
+	SELFHIT("Self hit", 252, MoveEffect.SELF_HIT, 40, Type.NONE, 100, 0, 0);
 
     private String name;
     private int index;

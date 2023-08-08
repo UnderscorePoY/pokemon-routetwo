@@ -39,6 +39,8 @@
 
 ○ Usual update.
 
+**`[2023/08/07]`**  
+○ Added proper handling of moves that deal direct damage, do not vary, and/or cannot crit, including Reversal.  
 
 **`[2023/07/02]`**  
 ○ Added DV variation in battles with options `-dvvariation` and `-dvvariationcrit`.  
